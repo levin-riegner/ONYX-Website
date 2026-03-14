@@ -52,6 +52,97 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
 
+## DatoCMS Web Previews Setup
+
+This repository is wired for DatoCMS Web Previews + Visual Editing on the homepage only. To finish the setup, you need to complete the DatoCMS-side configuration and provide the required environment variables.
+
+### Required environment variables
+
+Set these in your local and deployed environments:
+
+```bash
+DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN=your-published-content-token
+DATOCMS_DRAFT_CONTENT_CDA_TOKEN=your-draft-content-token
+DATOCMS_BASE_EDITING_URL=https://your-project.admin.datocms.com/environments/main
+DRAFT_MODE_SECRET=replace-with-a-random-secret
+```
+
+Notes:
+- `DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN` should only return published content.
+- `DATOCMS_DRAFT_CONTENT_CDA_TOKEN` should be a CDA token with draft access enabled.
+- `DATOCMS_BASE_EDITING_URL` must be the full DatoCMS environment URL, not just the project root.
+- `DRAFT_MODE_SECRET` is the shared secret used by the draft mode and preview-links endpoints.
+
+### DatoCMS configuration
+
+1. Open your DatoCMS project and configure the Web Previews integration/plugin.
+2. Set the Preview Links webhook URL to your site URL plus the preview-links endpoint:
+
+```text
+https://your-site.com/api/preview-links?token=YOUR_DRAFT_MODE_SECRET
+```
+
+3. Save the configuration.
+4. Open a record and use the Web Previews panel. The repo will return:
+   - `Draft homepage`
+   - `Published homepage`
+
+### Current scope
+
+The preview-links endpoint is intentionally homepage-only right now. It does not map individual Dato records to separate frontend routes yet, so both draft and published preview actions open `/`.
+
+## Using Draft Mode Right Now
+
+You can enter draft mode directly without going through DatoCMS by visiting the enable endpoint with `DRAFT_MODE_SECRET`.
+
+### Enter draft mode
+
+Local example:
+
+```text
+http://localhost:3000/api/draft-mode/enable?token=YOUR_DRAFT_MODE_SECRET&redirect=/
+```
+
+Production example:
+
+```text
+https://your-site.com/api/draft-mode/enable?token=YOUR_DRAFT_MODE_SECRET&redirect=/
+```
+
+What this does:
+1. Validates the `token` against `DRAFT_MODE_SECRET`.
+2. Enables Next.js draft mode.
+3. Rewrites the draft cookie so it works inside the DatoCMS preview iframe.
+4. Redirects the browser to `/`.
+5. Loads the homepage using the draft CDA token.
+6. Enables realtime preview updates and the Visual Editing controller for draft content.
+
+### Exit draft mode
+
+Use the toolbar button on the homepage or visit:
+
+```text
+http://localhost:3000/api/draft-mode/disable?redirect=/
+```
+
+What this does:
+1. Clears the draft mode cookie, including the iframe-compatible version.
+2. Returns the browser to the published homepage.
+3. Removes the draft toolbar.
+4. Turns off the persisted visual editing toggle for that browser session when using the homepage toolbar.
+
+### Realtime preview and Visual Editing behavior
+
+When draft mode is active on the homepage:
+- the homepage queries DatoCMS using the draft CDA token
+- realtime updates are subscribed to automatically
+- Visual Editing metadata is included in draft responses only
+- the draft toolbar lets editors:
+  - enable or disable visual editing overlays
+  - exit draft mode
+
+The visual editing toggle only controls the click-to-edit overlays. Draft mode remains active until the disable endpoint is used.
+
 ## Committing code
 
 This project uses Husky and a custom commit message script to ensure consistent and informative commit messages. When you're ready to commit your changes:

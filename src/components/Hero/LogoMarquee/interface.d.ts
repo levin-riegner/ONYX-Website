@@ -8,7 +8,7 @@ export interface LogoMarqueeProps {
 }
 
 export interface Logo {
-	id: number;
+	id: string | number;
 	url: string;
-	alt: string;
+	alt: string | null;
 }

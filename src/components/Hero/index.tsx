@@ -1,43 +1,33 @@
 'use client';
 
-// Imports
-// ------------
+import { stripStega } from '@datocms/content-link';
 import Background from './Background';
 import LogoMarquee from './LogoMarquee';
 import MobileNav from './MobileNav';
 import Frame from '@parts/Frame';
 import { useAnimation } from '@utils/useAnimation';
-import { use, useEffect, useRef } from 'react';
+import { use, useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { GlobalContext } from '@parts/Contexts';
 import { bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
-
-// Styles + Interfaces
-// ------------
 import type * as I from './interface';
 import * as S from './styles';
 
-// Component
-// ------------
 const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.HeroProps) => {
-	// Contexts
 	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
 
-	// Refs
 	const jacketRef = useRef<HTMLDivElement>(null);
 	const headingRef = useRef<HTMLHeadingElement>(null);
 	const descRef = useRef<HTMLParagraphElement>(null);
 	const textTimelineRef = useRef<gsap.core.Timeline | null>(null);
+	const cleanTitle = useMemo(() => stripStega(title), [title]);
+	const cleanDescription = useMemo(() => stripStega(description), [description]);
 
-	// Animations
 	useAnimation(
 		() => {
-			// Only animate once the loader has finished and both elements are mounted
 			if (!isLoaderFinished || !headingRef.current || !descRef.current) return;
 
-			// Split heading into characters (for flicker) and lines (if needed later),
-			// and split description into lines so we can stagger each line.
 			const headingSplit = SplitText.create(headingRef.current, {
 				type: 'lines,chars',
 				linesClass: 'line',
@@ -51,21 +41,17 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 			const headingChars = headingSplit.chars as HTMLElement[];
 			const descLines = descSplit.lines as HTMLElement[];
 
-			// If either split failed, revert immediately and bail out
 			if (!headingChars.length || !descLines.length) {
 				descSplit.revert();
 				return () => headingSplit.revert();
 			}
 
-			// Master timeline for heading + description (store for modal reverse/play)
 			const tl = gsap.timeline();
 			textTimelineRef.current = tl;
 
-			// Start with everything hidden / offset
 			gsap.set(headingChars, { autoAlpha: 0 });
 			gsap.set(descLines, { autoAlpha: 0, y: 24 });
 
-			// Heading: random character flicker in
 			tl.to(headingChars, {
 				autoAlpha: 1,
 				duration: 0.75,
@@ -73,7 +59,6 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 				ease: bezzy4,
 			});
 
-			// Description: each line fades in + moves up, slightly overlapping the heading
 			tl.to(
 				descLines,
 				{
@@ -86,17 +71,15 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 				'-=0.5'
 			);
 
-			// Clean up SplitText on unmount / dependency change
 			return () => {
 				textTimelineRef.current = null;
 				headingSplit.revert();
 				descSplit.revert();
 			};
 		},
-		{ scope: jacketRef, dependencies: [isLoaderFinished] }
+		{ scope: jacketRef, dependencies: [cleanDescription, cleanTitle, isLoaderFinished] }
 	);
 
-	// Reverse text timeline when modal opens, play forward when it closes
 	useEffect(() => {
 		const tl = textTimelineRef.current;
 		if (!tl) return;
@@ -117,8 +100,12 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 			</S.FullFrame>
 
 			<S.Content>
-				<h1 ref={headingRef}>{title}</h1>
-				<p ref={descRef}>{description}</p>
+				<h1 ref={headingRef} data-datocms-content-link-source={title}>
+					{cleanTitle}
+				</h1>
+				<p ref={descRef} data-datocms-content-link-source={description}>
+					{cleanDescription}
+				</p>
 			</S.Content>
 
 			<LogoMarquee logos={logos} />
@@ -128,7 +115,5 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 	);
 };
 
-// Exports
-// ------------
 Hero.displayName = 'Hero';
 export default Hero;

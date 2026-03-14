@@ -1,99 +1,124 @@
-// Imports
-// ------------
-import { performRequest } from '@utils/datocms';
-import { EVERYTHING } from './query';
 import type { Metadata } from 'next';
+import { stripStega } from '@datocms/content-link';
+import { getHomepageData } from './data';
 
-// Data fetching at build time
-// ------------
-async function getAllData() {
-	try {
-		const data = await performRequest(EVERYTHING);
-		return data;
-	} catch (error) {
-		console.error('Failed to fetch data from DatoCMS:', error);
-		// Return fallback data or null to prevent app crash
-		return null;
+type TwitterCard = 'summary' | 'summary_large_image' | 'player' | 'app';
+
+function cleanText(value: string | null | undefined) {
+	return value ? stripStega(value) : undefined;
+}
+
+function getTwitterCard(value: string | null | undefined): TwitterCard {
+	switch (value) {
+		case 'summary':
+		case 'summary_large_image':
+		case 'player':
+		case 'app':
+			return value;
+		default:
+			return 'summary_large_image';
 	}
 }
 
-// SEO Metadata
-// ------------
 export async function generateMetadata(): Promise<Metadata> {
-	const { seo } = await getAllData();
-
 	const FALLBACK = {
 		title: 'ONYX',
 		desc: 'Unlock premium data + inventory across CTV, Video, and Display with supply-side targeting that drives lower CPAs and higher win rates.',
 		image: '/og.jpg',
-		twitterCard: 'summary_large_image',
+		twitterCard: 'summary_large_image' as const,
 	};
 
-	return {
-		title: seo?.meta?.title ?? FALLBACK.title,
-		metadataBase: new URL('https://onyxproject.com'),
+	try {
+		const { seo } = await getHomepageData();
+		const title = cleanText(seo?.meta?.title) ?? FALLBACK.title;
+		const description = cleanText(seo?.meta?.desc) ?? FALLBACK.desc;
+		const twitterCard = getTwitterCard(seo?.meta?.twitterCard);
 
-		// Basic Metadata
-		description: seo?.meta?.desc ?? FALLBACK.desc,
-		keywords:
-			'ONYX, data, inventory, CTV, Video, Display, supply-side targeting, lower CPAs, higher win rates',
-		robots: 'index, follow',
+		return {
+			title,
+			metadataBase: new URL('https://onyxproject.com'),
+			description,
+			keywords:
+				'ONYX, data, inventory, CTV, Video, Display, supply-side targeting, lower CPAs, higher win rates',
+			robots: 'index, follow',
+			openGraph: {
+				type: 'website',
+				title,
+				description,
+				url: 'https://onyxproject.com',
+				siteName: 'ONYX',
+				locale: 'en_US',
+				images: [
+					{
+						url: seo?.meta?.image?.url ?? FALLBACK.image,
+						width: 1200,
+						height: 630,
+						alt: 'ONYX OpenGraph Image',
+						type: 'image/jpeg',
+					},
+				],
+			},
+			twitter: {
+				card: twitterCard,
+				title,
+				description,
+				images: [
+					{
+						url: seo?.meta?.image?.url ?? FALLBACK.image,
+						width: 1200,
+						height: 630,
+						alt: 'ONYX OpenGraph Image',
+					},
+				],
+			},
+		};
+	} catch (error) {
+		console.error('Failed to build homepage metadata from DatoCMS:', error);
 
-		// Open Graph
-		openGraph: {
-			type: 'website',
-			title: seo?.meta?.title ?? FALLBACK.title,
-			description: seo?.meta?.desc ?? FALLBACK.desc,
-			url: 'https://onyxproject.com',
-			siteName: 'ONYX',
-			locale: 'en_US',
-			images: [
-				{
-					url: seo?.meta?.image?.url ?? FALLBACK.image,
-					width: 1200,
-					height: 630,
-					alt: 'ONYX OpenGraph Image',
-					type: 'image/jpeg', // Missing: image type
-				},
-			],
-		},
-
-		// Twitter
-		twitter: {
-			card: seo?.meta?.twitterCard ?? FALLBACK.twitterCard,
-			// site: '@username', // Missing: Twitter @username
-			// creator: '@username', // Missing: content creator's Twitter
-			title: seo?.meta?.title ?? FALLBACK.title,
-			description: seo?.meta?.desc ?? FALLBACK.desc,
-			images: [
-				{
-					url: seo?.meta?.image?.url ?? FALLBACK.image,
-					width: 1200,
-					height: 630,
-					alt: 'ONYX OpenGraph Image',
-				},
-			],
-		},
-
-		// Verification
-		// verification: {
-		// 	// Missing: site verification
-		// 	google: 'google-site-verification-code',
-		// 	yandex: 'yandex-verification-code',
-		// 	other: {
-		// 		me: ['your-social-profile-url'],
-		// 	},
-		// },
-	};
+		return {
+			title: FALLBACK.title,
+			metadataBase: new URL('https://onyxproject.com'),
+			description: FALLBACK.desc,
+			keywords:
+				'ONYX, data, inventory, CTV, Video, Display, supply-side targeting, lower CPAs, higher win rates',
+			robots: 'index, follow',
+			openGraph: {
+				type: 'website',
+				title: FALLBACK.title,
+				description: FALLBACK.desc,
+				url: 'https://onyxproject.com',
+				siteName: 'ONYX',
+				locale: 'en_US',
+				images: [
+					{
+						url: FALLBACK.image,
+						width: 1200,
+						height: 630,
+						alt: 'ONYX OpenGraph Image',
+						type: 'image/jpeg',
+					},
+				],
+			},
+			twitter: {
+				card: FALLBACK.twitterCard,
+				title: FALLBACK.title,
+				description: FALLBACK.desc,
+				images: [
+					{
+						url: FALLBACK.image,
+						width: 1200,
+						height: 630,
+						alt: 'ONYX OpenGraph Image',
+					},
+				],
+			},
+		};
+	}
 }
 
-// Component
-// ------------
 const Layout = ({ children }: { children: React.ReactNode }) => {
 	return children;
 };
 
-// Exports
-// ------------
 Layout.displayName = 'Layout';
 export default Layout;

@@ -1,45 +1,35 @@
-// Imports
-// ------------
 import Header from '@parts/Header';
-import { performRequest } from '@utils/datocms';
-import { EVERYTHING } from './(home)/query';
+import { getHomepageData } from './(home)/data';
+import { buildHeaderMenuItems } from './(home)/query';
 
-// Data fetching at build time
-// ------------
-async function getAllData() {
-	try {
-		const data = await performRequest(EVERYTHING);
-		return data;
-	} catch (error) {
-		console.error('Failed to fetch data from DatoCMS:', error);
-		// Return fallback data or null to prevent app crash
-		return null;
-	}
-}
+const FALLBACK_MENU_ITEMS = [
+	{ id: 'activation', label: 'Activation' },
+	{ id: 'dataSupply', label: 'Data Supply' },
+	{ id: 'about', label: 'About' },
+] as const;
 
-// Component
-// ------------
 const Server = async ({ children }: { children: React.ReactNode }) => {
-	// Fetch data
-	const { activation, dataSupply, about } = await getAllData();
+	try {
+		const data = await getHomepageData();
+		const menuItems = buildHeaderMenuItems(data);
 
-	// Create menu items array
-	const menuItemsArray = [
-		{ label: activation.title },
-		{ label: dataSupply.title },
-		{ label: about.title },
-	];
+		return (
+			<>
+				<Header menuItems={menuItems} />
+				{children}
+			</>
+		);
+	} catch (error) {
+		console.error('Failed to fetch header data from DatoCMS:', error);
 
-	return (
-		<>
-			<Header menuItems={menuItemsArray} />
-			{children}
-			{/* <Footer /> */}
-		</>
-	);
+		return (
+			<>
+				<Header menuItems={[...FALLBACK_MENU_ITEMS]} />
+				{children}
+			</>
+		);
+	}
 };
 
-// Exports
-// ------------
 Server.displayName = 'Server';
 export default Server;

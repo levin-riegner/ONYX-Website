@@ -19,11 +19,20 @@ const LogoMarquee = ({ logos }: I.LogoMarqueeProps) => {
 
 	// DRY - Render logos
 	const renderLogos = (data: I.Logo[]) => {
-		return data.map(({ id, url, alt }) => (
-			<li key={id}>
-				<SVG src={url} role='img' aria-label={alt} title={alt} />
-			</li>
-		));
+		return data.map(({ id, url, alt }) => {
+			const accessibleLabel = alt ?? undefined;
+
+			return (
+				<li key={id}>
+					<SVG
+						src={url}
+						role='img'
+						aria-label={accessibleLabel}
+						title={accessibleLabel}
+					/>
+				</li>
+			);
+		});
 	};
 
 	return (

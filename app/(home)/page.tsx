@@ -1,53 +1,26 @@
-// Imports
-// ------------
-
-import Hero from '@parts/Hero';
-import { performRequest } from '@utils/datocms';
+import { draftMode } from 'next/headers';
+import { getDatoCmsBaseEditingUrl, getDatoCmsDraftToken } from '@utils/executeQuery';
+import { getHomepageData } from './data';
+import HomePageContent from './HomePageContent';
+import HomepageDraftPreview from './HomepageDraftPreview';
 import { EVERYTHING } from './query';
-import Activation from '@parts/Activation';
 
-// Data fetching at build time
-// ------------
-async function getAllData() {
-	try {
-		const data = await performRequest(EVERYTHING);
-		return data;
-	} catch (error) {
-		console.error('Failed to fetch data from DatoCMS:', error);
-		// Return fallback data or null to prevent app crash
-		return null;
-	}
-}
-
-// Component
-// ------------
 const Page = async () => {
-	// Fetch data
-	const { home, activation, dataSupply, about } = await getAllData();
+	const { isEnabled } = await draftMode();
+	const data = await getHomepageData();
 
-	// Create menu items array
-	const menuItemsArray = [
-		{ label: activation.title, icon: 'activation' },
-		{ label: dataSupply.title, icon: 'dataSupply' },
-		{ label: about.title, icon: 'about' },
-	];
-
-	return (
-		<main>
-			<Hero
-				menuItems={menuItemsArray}
-				title={home.title}
-				description={home.desc}
-				logos={home.partnerLogos}
-				unicornId={home.unicornId}
-				video='/stone-desktop.mp4'
+	if (isEnabled) {
+		return (
+			<HomepageDraftPreview
+				initialData={data}
+				query={EVERYTHING}
+				token={getDatoCmsDraftToken()}
+				baseEditingUrl={getDatoCmsBaseEditingUrl()}
 			/>
+		);
+	}
 
-			<Activation title={activation.title} />
-		</main>
-	);
+	return <HomePageContent data={data} />;
 };
 
-// Exports
-// ------------
 export default Page;
