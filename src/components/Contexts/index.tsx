@@ -1,46 +1,41 @@
 'use client';
 
-// Imports
-// ------------
 import type { LenisRef } from 'lenis/react';
 import { createContext, useMemo, useRef, useState } from 'react';
 import { PerformanceProvider } from './Performance';
-
-// Interface
-// ------------
+import type { NavItem as HeaderNavItem } from '@parts/Header/Navigation/interface';
 import type * as I from './interface';
 
-// Context Definition
-// ------------
 export const GlobalContext = createContext({
 	lenisRef: { current: null } as React.RefObject<LenisRef | null>,
 
 	isModalOpen: false,
-	setIsModalOpen: (value: boolean) => {},
+	setIsModalOpen: (_value: boolean) => {},
 
 	isLoaderFinished: false,
-	setIsLoaderFinished: (value: boolean) => {},
+	setIsLoaderFinished: (_value: boolean) => {},
 
 	pageLoaded: false,
-	setPageLoaded: (value: boolean) => {},
+	setPageLoaded: (_value: boolean) => {},
 
 	modalActive: '',
-	setModalActive: (value: string) => {},
+	setModalActive: (_value: string) => {},
+
+	homeMenuItemsOverride: null as HeaderNavItem[] | null,
+	setHomeMenuItemsOverride: (_value: HeaderNavItem[] | null) => {},
 });
 
-// Component
-// ------------
 const Contexts = ({ children }: I.ContextsProps) => {
-	// Refs
 	const lenisRef = useRef<LenisRef | null>(null);
 
-	// States
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
 	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 	const [modalActive, setModalActive] = useState<string>('home');
+	const [homeMenuItemsOverride, setHomeMenuItemsOverride] = useState<HeaderNavItem[] | null>(
+		null
+	);
 
-	// Context Values
 	const contextValue = useMemo(
 		() => ({
 			lenisRef,
@@ -52,8 +47,10 @@ const Contexts = ({ children }: I.ContextsProps) => {
 			setPageLoaded,
 			modalActive,
 			setModalActive,
+			homeMenuItemsOverride,
+			setHomeMenuItemsOverride,
 		}),
-		[isModalOpen, isLoaderFinished, pageLoaded, modalActive]
+		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, homeMenuItemsOverride]
 	);
 
 	return (
@@ -63,6 +60,4 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	);
 };
 
-// Exports
-// ------------
 export default Contexts;

@@ -1,45 +1,40 @@
 'use client';
 
-// Imports
-// ------------
+import { stripStega } from '@datocms/content-link';
 import { use } from 'react';
 import { GlobalContext } from '@parts/Contexts';
-
-// Styles + Interfaces
-// ------------
 import type * as I from './interface';
 import * as S from './styles';
 
-// Component
-// ------------
 const Navigation = ({ menuItems }: I.NavigationProps) => {
-	// COntexts
 	const { setIsModalOpen, isModalOpen, setModalActive } = use(GlobalContext);
 
-	// Handle Click
-	const handleClick = (label: string) => {
+	const handleClick = (id: string) => {
 		setIsModalOpen(true);
-		setModalActive(label.toLowerCase());
+		setModalActive(id);
 	};
 
 	return (
 		<S.Jacket $isModalOpen={isModalOpen}>
-			{menuItems.map(({ label }) => (
-				<button
-					key={label}
-					data-hover
-					type='button'
-					aria-label={`Open ${label}`}
-					onClick={() => handleClick(label)}
-				>
-					{label}
-				</button>
-			))}
+			{menuItems.map(({ id, label }) => {
+				const cleanLabel = stripStega(label);
+
+				return (
+					<button
+						key={id}
+						data-hover
+						data-datocms-content-link-source={label}
+						type='button'
+						aria-label={`Open ${cleanLabel}`}
+						onClick={() => handleClick(id)}
+					>
+						{cleanLabel}
+					</button>
+				);
+			})}
 		</S.Jacket>
 	);
 };
 
-// Exports
-// ------------
 Navigation.displayName = 'Navigation';
 export default Navigation;
