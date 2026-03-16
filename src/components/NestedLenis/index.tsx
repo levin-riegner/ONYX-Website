@@ -26,42 +26,33 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 	// Refs
 	const scrollWrapper = useRef<HTMLDivElement>(null);
 	const scrollContent = useRef<HTMLDivElement>(null);
-	const lenisInstance = useRef<Lenis>(null);
+	const lenisInstance = useRef<Lenis | null>(null);
+	const rafIdRef = useRef<number | null>(null);
+	const rafControlRef = useRef<{ start: () => void; stop: () => void } | null>(null);
 
 	// States
 	const [lenisReady, setLenisReady] = useState(false);
 
-	// Setup
+	// Setup: create Lenis once (RAF controlled by isOpen in separate effect)
 	useLayoutEffect(() => {
-		// Create Shortcuts
 		const wrapper = scrollWrapper.current;
 		const content = scrollContent.current;
 
-		// Check if the wrapper and content are defined
 		if (!wrapper || !content) return;
 
-		// 1) Create Lenis instance for the modal container
-		// eventsTarget: wrapper so touch/wheel on the modal are captured here (not the main window) — critical for iOS
-		// syncTouch: true so Lenis handles touch scroll on mobile (required for iOS Safari)
 		const lenis = new Lenis({
 			wrapper,
 			content,
 			allowNestedScroll: true,
 		});
 
-		// Set the lenis instance in state for use in the context
 		lenisInstance.current = lenis;
 
-		// 2) Tell ScrollTrigger this modal wrapper is the scroller
-		// Important: scrollerProxy wants a "scrollTop" getter/setter that mirrors the scroller
 		ScrollTrigger.scrollerProxy(wrapper, {
-			scrollTop(value) {
-				// setter: ScrollTrigger wants to set scrollTop (for snapping, etc.)
-				if (arguments.length) {
-					lenis.scrollTo(value as number, { immediate: true });
+			scrollTop(value?: number) {
+				if (value !== undefined) {
+					lenis.scrollTo(value, { immediate: true });
 				} else {
-					// getter: ScrollTrigger wants current scrollTop
-					// Lenis versions vary, this is the most compatible pattern:
 					return lenis.scroll;
 				}
 			},
@@ -73,38 +64,54 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 					height: wrapper.clientHeight,
 				};
 			},
-
-			// Lenis generally plays nicest with transform pinning
 			pinType: 'transform',
 		});
 
-		// 3) Keep ScrollTrigger in sync with Lenis
 		lenis.on('scroll', ScrollTrigger.update);
 
-		// Create a variable to store the RAF ID
-		let rafId: number;
-
-		const raf = (time: number) => {
-			lenis.raf(time);
-			rafId = requestAnimationFrame(raf);
+		const startRaf = () => {
+			if (rafIdRef.current !== null) return;
+			const raf = (time: number) => {
+				lenis.raf(time);
+				rafIdRef.current = requestAnimationFrame(raf);
+			};
+			rafIdRef.current = requestAnimationFrame(raf);
 		};
 
-		rafId = requestAnimationFrame(raf);
+		const stopRaf = () => {
+			if (rafIdRef.current !== null) {
+				cancelAnimationFrame(rafIdRef.current);
+				rafIdRef.current = null;
+			}
+		};
 
-		// 5) Important: refresh after proxy is set
+		rafControlRef.current = { start: startRaf, stop: stopRaf };
+
 		ScrollTrigger.refresh();
 
-		// 6) Set lenis ready
-		setLenisReady(true);
-
-		// Cleanup
 		return () => {
-			if (rafId) cancelAnimationFrame(rafId);
+			stopRaf();
 			lenis.off('scroll', ScrollTrigger.update);
 			ScrollTrigger.scrollerProxy(wrapper, {});
 			lenis.destroy();
+			lenisInstance.current = null;
+			rafControlRef.current = null;
 		};
 	}, []);
+
+	// Start RAF when modal opens, stop when closed (prevents 5 concurrent RAF loops draining CPU)
+	useLayoutEffect(() => {
+		const control = rafControlRef.current;
+		if (!control) return;
+
+		if (isOpen) {
+			control.start();
+			setLenisReady(true);
+		} else {
+			control.stop();
+			setLenisReady(false);
+		}
+	}, [isOpen]);
 
 	// When modal closes, reset scroll to top so it opens at top next time
 	useEffect(() => {
