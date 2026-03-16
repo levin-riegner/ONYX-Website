@@ -20,7 +20,14 @@ async function getAllData() {
 // SEO Metadata
 // ------------
 export async function generateMetadata(): Promise<Metadata> {
-	const { seo } = await getAllData();
+	const data = await getAllData();
+	const { seo, home } = data ?? {};
+
+	// LCP: preload video poster for mobile hero (fetchpriority=high, discoverable in HTML)
+	const muxPlaybackId = home?.video?.video?.muxPlaybackId;
+	const posterUrl = muxPlaybackId
+		? `https://image.mux.com/${muxPlaybackId}/thumbnail.webp?width=1000&fit_mode=smartcrop`
+		: null;
 
 	const FALLBACK = {
 		title: 'ONYX',
@@ -32,6 +39,20 @@ export async function generateMetadata(): Promise<Metadata> {
 	return {
 		title: seo?.meta?.title ?? FALLBACK.title,
 		metadataBase: new URL('https://onyxproject.com'),
+
+		// LCP: preload video poster (IconDescriptor uses url, rel, fetchPriority)
+		...(posterUrl && {
+			icons: {
+				other: [
+					{
+						url: posterUrl,
+						rel: 'preload',
+						type: 'image/webp',
+						fetchPriority: 'high',
+					},
+				],
+			},
+		}),
 
 		// Basic Metadata
 		description: seo?.meta?.desc ?? FALLBACK.desc,
