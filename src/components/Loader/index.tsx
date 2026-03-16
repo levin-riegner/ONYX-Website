@@ -8,7 +8,7 @@ import Frame from '@parts/Frame';
 import { use, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import { useAnimation } from '@utils/useAnimation';
-import { bezzy2, bezzy4, slow } from '@parts/AnimationPlugins/Curves';
+import { bezzy2, bezzy4 } from '@parts/AnimationPlugins/Curves';
 
 // Styles + Interfaces
 // ------------

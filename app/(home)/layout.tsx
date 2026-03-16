@@ -40,19 +40,26 @@ export async function generateMetadata(): Promise<Metadata> {
 		title: seo?.meta?.title ?? FALLBACK.title,
 		metadataBase: new URL('https://onyxproject.com'),
 
-		// LCP: preload video poster (IconDescriptor uses url, rel, fetchPriority)
-		...(posterUrl && {
-			icons: {
-				other: [
-					{
-						url: posterUrl,
-						rel: 'preload',
-						type: 'image/webp',
-						fetchPriority: 'high',
-					},
-				],
-			},
-		}),
+		// LCP + early connections: preload poster, preconnect to LCP origins
+		icons: {
+			other: [
+				// Preconnect to origins used for LCP (reduces connection latency)
+				{ url: 'https://image.mux.com', rel: 'preconnect' },
+				{ url: 'https://www.datocms-assets.com', rel: 'preconnect' },
+				{ url: 'https://assets.unicorn.studio', rel: 'preconnect' },
+				// Preload LCP poster
+				...(posterUrl
+					? [
+							{
+								url: posterUrl,
+								rel: 'preload',
+								type: 'image/webp',
+								fetchPriority: 'high' as const,
+							},
+						]
+					: []),
+			].flat(),
+		},
 
 		// Basic Metadata
 		description: seo?.meta?.desc ?? FALLBACK.desc,

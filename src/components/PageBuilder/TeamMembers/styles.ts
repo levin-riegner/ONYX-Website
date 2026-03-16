@@ -26,7 +26,6 @@ export const Jacket = styled(Section)<StylesInterface>(
 export const Top = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
-        background: ${getBrand('bc3')};
         padding-block: ${getGap('xxl')} ${getGap('l')};
 
         > .frame.top {
