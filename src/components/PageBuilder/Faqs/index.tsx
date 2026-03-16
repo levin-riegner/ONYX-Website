@@ -34,11 +34,18 @@ const Faqs = ({ heading, desc, allFaqs, background }: I.FaqsProps) => {
 	// Contexts
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
 
-	// Handle resize
+	// Handle resize (debounced to avoid rapid ScrollTrigger recreation during drag)
 	useEffect(() => {
-		const handleResize = () => setResizeKey(k => k + 1);
+		let timeoutId: ReturnType<typeof setTimeout>;
+		const handleResize = () => {
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => setResizeKey(k => k + 1), 150);
+		};
 		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		return () => {
+			clearTimeout(timeoutId);
+			window.removeEventListener('resize', handleResize);
+		};
 	}, []);
 
 	// Check if all refs are ready

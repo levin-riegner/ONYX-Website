@@ -2,9 +2,9 @@
 
 // Imports
 // ------------
-import type { LenisRef } from 'lenis/react';
-import { createContext, useMemo, useRef, useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 import { PerformanceProvider } from './Performance';
+import { useScrollPerformance } from '@utils/useScrollPerformance';
 
 // Interface
 // ------------
@@ -13,8 +13,6 @@ import type * as I from './interface';
 // Context Definition
 // ------------
 export const GlobalContext = createContext({
-	lenisRef: { current: null } as React.RefObject<LenisRef | null>,
-
 	isModalOpen: false,
 	setIsModalOpen: (_value: boolean) => {},
 
@@ -60,8 +58,8 @@ export const GlobalContext = createContext({
 // Component
 // ------------
 const Contexts = ({ children }: I.ContextsProps) => {
-	// Refs
-	const lenisRef = useRef<LenisRef | null>(null);
+	// Disable hover during scroll to reduce repaints (CSS in global.css)
+	useScrollPerformance();
 
 	// States
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -88,7 +86,6 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	// Context Values
 	const contextValue = useMemo(
 		() => ({
-			lenisRef,
 			isModalOpen,
 			setIsModalOpen,
 			isLoaderFinished,
