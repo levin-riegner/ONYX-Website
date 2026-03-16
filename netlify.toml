@@ -3,10 +3,11 @@
 # In Netlify UI: Build & deploy → Build settings → Publish directory must be EMPTY.
 
 [build]
-  command = "bun run build"
+  command = "bun install && bun run build"
 
 [build.environment]
   NODE_VERSION = "24"
+  HUSKY = "0"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

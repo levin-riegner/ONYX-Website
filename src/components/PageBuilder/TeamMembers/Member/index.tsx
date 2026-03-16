@@ -74,8 +74,20 @@ const Member = ({ name, role, linkedinUrl, email, image }: I.MemberProps) => {
 
 				{(linkedinUrl || email) && (
 					<S.Right>
-						{linkedinUrl && <IconButton icon='linkedin' to={linkedinUrl} />}
-						{email && <IconButton icon='mail' to={`mailto:${email}`} />}
+						{linkedinUrl && (
+							<IconButton
+								icon='linkedin'
+								to={linkedinUrl}
+								ariaLabel={`Connect with ${name} on LinkedIn`}
+							/>
+						)}
+						{email && (
+							<IconButton
+								icon='mail'
+								to={`mailto:${email}`}
+								ariaLabel={`Email ${name}`}
+							/>
+						)}
 					</S.Right>
 				)}
 			</S.Details>

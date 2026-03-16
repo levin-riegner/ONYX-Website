@@ -43,7 +43,7 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 					lazyLoad={true}
 					production={true}
 					dpi={1.5}
-					fps={120}
+					fps={60}
 				/>
 			) : (
 				<MobileVideo
