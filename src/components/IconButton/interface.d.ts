@@ -6,4 +6,5 @@
 export interface IconButtonProps {
 	icon: string;
 	to: string;
+	ariaLabel?: string;
 }
