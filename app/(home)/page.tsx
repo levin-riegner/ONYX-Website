@@ -3,14 +3,14 @@
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
-// import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic';
 
 // Lazy Sections
-// const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
-// const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
-// const About = dynamic(() => import('@parts/About'), { ssr: true });
-// const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
-// const Legal = dynamic(() => import('@parts/Legal'), { ssr: true });
+const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
+const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
+const About = dynamic(() => import('@parts/About'), { ssr: true });
+const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
+const Legal = dynamic(() => import('@parts/Legal'), { ssr: true });
 
 // Data fetching at build time
 // ------------
@@ -41,15 +41,15 @@ const Page = async () => {
 	];
 
 	// Shared CTA props
-	// const sharedCtaProps = {
-	// 	ctaHeading: cta.heading,
-	// 	ctaButtonLabel: cta.buttonLabel,
-	// 	email: contactDetails?.email,
-	// 	linkedin: contactDetails?.linkedin,
-	// 	twitter: contactDetails?.twitter,
-	// 	contactTitle: contact.title,
-	// 	legalTitle: legal.title,
-	// };
+	const sharedCtaProps = {
+		ctaHeading: cta.heading,
+		ctaButtonLabel: cta.buttonLabel,
+		email: contactDetails?.email,
+		linkedin: contactDetails?.linkedin,
+		twitter: contactDetails?.twitter,
+		contactTitle: contact.title,
+		legalTitle: legal.title,
+	};
 
 	return (
 		<main>
@@ -62,7 +62,7 @@ const Page = async () => {
 				video={home.video?.video}
 			/>
 
-			{/* <Activation
+			<Activation
 				{...sharedCtaProps}
 				title={activation.title}
 				heading={activation.heading}
@@ -72,8 +72,8 @@ const Page = async () => {
 				isCtaOverridden={activation.isCtaOverridden}
 				ctaOverrideHeading={activation.overrideHeading}
 				ctaOverrideButtonLabel={activation.overrideButtonLabel}
-			/> */}
-			{/* 
+			/>
+
 			<DataSupply
 				{...sharedCtaProps}
 				title={dataSupply.title}
@@ -84,9 +84,9 @@ const Page = async () => {
 				isCtaOverridden={dataSupply.isCtaOverridden}
 				ctaOverrideHeading={dataSupply.overrideHeading}
 				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
-			/> */}
+			/>
 
-			{/* <About
+			<About
 				{...sharedCtaProps}
 				title={about.title}
 				heading={about.heading}
@@ -96,23 +96,23 @@ const Page = async () => {
 				isCtaOverridden={about.isCtaOverridden}
 				ctaOverrideHeading={about.overrideHeading}
 				ctaOverrideButtonLabel={about.overrideButtonLabel}
-			/> */}
+			/>
 
-			{/* <Contact
+			<Contact
 				{...sharedCtaProps}
 				title={contact.title}
 				heading={contact.heading}
 				desc={contact.desc}
-			/> */}
+			/>
 
-			{/* <Legal
+			<Legal
 				title={legal.title}
 				heading={legal.heading}
 				desc={legal.desc}
 				lastUpdated={legal.lastUpdated}
 				pageBuilder={legal.pageBuilder}
 				legalTitle={legal.title}
-			/> */}
+			/>
 		</main>
 	);
 };

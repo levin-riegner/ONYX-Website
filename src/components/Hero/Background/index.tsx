@@ -15,10 +15,6 @@ const Video = dynamic(() => import('./Video'), { ssr: false });
 import type * as I from './interface';
 import * as S from './styles';
 
-// LCP: poster URL for hero video (same as Video component)
-const getPosterUrl = (muxPlaybackId: string) =>
-	`https://image.mux.com/${muxPlaybackId}/thumbnail.webp?width=1000&fit_mode=smartcrop`;
-
 // Component
 // ------------
 const Background = ({ sceneId, video }: I.BackgroundProps) => {
@@ -28,18 +24,8 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 	// Event Handlers (stable ref to avoid MobileVideo effect churn)
 	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
 
-	// LCP: render poster immediately when we have video data (don't wait for useResponsive)
-	const posterUrl = video?.muxPlaybackId ? getPosterUrl(video.muxPlaybackId) : null;
-
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
-			{/* LCP: poster in DOM on first paint so Lighthouse measures it early */}
-			{posterUrl && (
-				<S.PosterWrapper>
-					<S.Poster src={posterUrl} alt='' fetchPriority='high' onLoad={handleLoad} />
-				</S.PosterWrapper>
-			)}
-
 			{/* Video + Unicorn load when device is known */}
 			{/* {isReady && isDesktop && (
 				<UnicornScene
