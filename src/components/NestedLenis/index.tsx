@@ -107,6 +107,10 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 		if (isOpen) {
 			control.start();
 			setLenisReady(true);
+			// Reset scroll when opening so modal always starts at top (fixes reopen-after-scroll-down)
+			requestAnimationFrame(() => {
+				lenisInstance.current?.scrollTo(0, { immediate: true });
+			});
 		} else {
 			control.stop();
 			setLenisReady(false);

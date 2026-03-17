@@ -53,6 +53,7 @@ export async function generateMetadata(): Promise<Metadata> {
 							{
 								url: posterUrl,
 								rel: 'preload',
+								as: 'image',
 								type: 'image/webp',
 								fetchPriority: 'high' as const,
 							},
