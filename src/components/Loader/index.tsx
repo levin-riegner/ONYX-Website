@@ -57,15 +57,8 @@ const Loader = () => {
 		areModalsReady.about &&
 		areModalsReady.contact;
 
-	// Fallback: proceed after 2s even if modals aren't ready (avoids blocking on slow networks)
-	const [modalsTimeout, setModalsTimeout] = useState(false);
-	useEffect(() => {
-		const t = setTimeout(() => setModalsTimeout(true), 2000);
-		return () => clearTimeout(t);
-	}, []);
-	const canProceed =
-		(pageLoaded && isFontsLoaded && allModalsReady) ||
-		(pageLoaded && isFontsLoaded && modalsTimeout);
+	// Pulse stops only when everything is ready (keeps pulsing if e.g. About is commented out for testing)
+	const canStopPulse = pageLoaded && isFontsLoaded && allModalsReady;
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);
@@ -83,6 +76,7 @@ const Loader = () => {
 	const bottomFirstPlusRef = useRef<HTMLSpanElement>(null);
 	const bottomLastPlusRef = useRef<HTMLSpanElement>(null);
 	const frameRef = useRef<gsap.core.Timeline | null>(null);
+	const hasStoppedPulseRef = useRef(false);
 
 	// Set logo initial state before paint to prevent flash/pop (useAnimation runs after paint)
 	useLayoutEffect(() => {
@@ -135,7 +129,7 @@ const Loader = () => {
 		{ scope: jacketRef }
 	);
 
-	// Frame Animation
+	// Frame Animation — play once page is loaded
 	useAnimation(
 		() => {
 			const horizontalLines = [topLineRef.current, bottomLineRef.current];
@@ -158,7 +152,7 @@ const Loader = () => {
 			gsap.set(verticalLines, { scaleY: LINE_SETTINGS.BEFORE.SCALE });
 			gsap.set(pluses, { autoAlpha: 0 });
 
-			if (!canProceed) return;
+			if (!pageLoaded) return;
 
 			const tl = gsap.timeline({ delay: LINE_SETTINGS.DELAY });
 
@@ -193,9 +187,17 @@ const Loader = () => {
 		},
 		{
 			scope: jacketRef,
-			dependencies: [pageLoaded, isFontsLoaded, allModalsReady, modalsTimeout],
+			dependencies: [pageLoaded],
 		}
 	);
+
+	// Kill logo pulse when loader is hidden (shouldRender false)
+	useEffect(() => {
+		if (!shouldRender) {
+			pulseRef.current?.kill();
+			frameRef.current?.kill();
+		}
+	}, [shouldRender]);
 
 	// Kill GSAP timelines on unmount to prevent memory leaks
 	useEffect(
@@ -206,22 +208,25 @@ const Loader = () => {
 		[]
 	);
 
-	// Stop pulse after minimum 3 iterations when page, fonts, and modals (or timeout) are ready
+	// Stop pulse only when all modals are ready (no timeout — keeps pulsing if e.g. About is commented out)
 	useEffect(() => {
-		if (!canProceed || !pulseRef.current) return;
+		if (!canStopPulse || !pulseRef.current || hasStoppedPulseRef.current) return;
 
+		hasStoppedPulseRef.current = true;
 		const tl = pulseRef.current;
 		const currentIteration = tl.iteration();
-		const remaining = Math.max(2 - currentIteration, 0);
+		// Always complete at least 1 full iteration so we never stop mid-pulse
+		const remaining = Math.max(2 - currentIteration, 1);
 
 		tl.repeat(remaining);
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));
-	}, [canProceed, setIsLoaderFinished]);
+	}, [canStopPulse, setIsLoaderFinished]);
 
-	// Outro Animation — run immediately when loader is ready (don't wait for frame)
+	// Outro Animation — only fade out once all components are ready
 	useAnimation(
 		() => {
-			if (!isLoaderFinished || !jacketRef.current) return;
+			if (!isLoaderFinished || !allModalsReady || !isFontsLoaded || !jacketRef.current)
+				return;
 
 			gsap.to(jacketRef.current, {
 				autoAlpha: 0,
@@ -232,7 +237,7 @@ const Loader = () => {
 		},
 		{
 			scope: jacketRef,
-			dependencies: [isLoaderFinished],
+			dependencies: [isLoaderFinished, allModalsReady, isFontsLoaded],
 		}
 	);
 
