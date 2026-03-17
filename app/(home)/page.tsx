@@ -98,21 +98,21 @@ const Page = async () => {
 				ctaOverrideButtonLabel={about.overrideButtonLabel}
 			/> */}
 
-			<Contact
+			{/* <Contact
 				{...sharedCtaProps}
 				title={contact.title}
 				heading={contact.heading}
 				desc={contact.desc}
-			/>
+			/> */}
 
-			<Legal
+			{/* <Legal
 				title={legal.title}
 				heading={legal.heading}
 				desc={legal.desc}
 				lastUpdated={legal.lastUpdated}
 				pageBuilder={legal.pageBuilder}
 				legalTitle={legal.title}
-			/>
+			/> */}
 		</main>
 	);
 };
