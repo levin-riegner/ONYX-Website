@@ -9,7 +9,7 @@ import { NestedLenisContext } from '@parts/NestedLenis';
 import { use, useRef, useState, useEffect } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { bezzy4 } from '@parts/AnimationPlugins/Curves';
 import Member from './Member';
 
@@ -34,25 +34,38 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 
 	// Effect – Track dimensions for animation; only on desktop (matches useAnimation isDesktop: 1024px)
 	const DESKTOP_MEDIA = '(min-width: 1024px)';
+	const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
 	useEffect(() => {
 		const list = listRef.current;
 		if (!list) return;
 
+		let rafId: number | null = null;
+		let pending = false;
+
 		const updateWidth = () => {
 			const firstLi = list.querySelector('li');
-			setMemberWidth(firstLi?.getBoundingClientRect().width ?? 0);
+			const w = firstLi?.getBoundingClientRect().width ?? 0;
+			setMemberWidth(w);
+			pending = false;
+		};
+
+		const throttledUpdate = () => {
+			if (pending) return;
+			pending = true;
+			rafId = requestAnimationFrame(updateWidth);
 		};
 
 		let observer: ResizeObserver | null = null;
 
 		const startObserving = () => {
 			updateWidth();
-			observer = new ResizeObserver(updateWidth);
+			observer = new ResizeObserver(throttledUpdate);
 			observer.observe(list);
 		};
 
 		const stopObserving = () => {
+			if (rafId !== null) cancelAnimationFrame(rafId);
 			setMemberWidth(0);
 			observer?.disconnect();
 			observer = null;
@@ -92,10 +105,9 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 			const scroller = scrollWrapper.current;
 			if (!list || !bottom || !scroller) return;
 
-			// Kill existing ScrollTriggers for this trigger to prevent stale state / conflicts
-			ScrollTrigger.getAll().forEach(st => {
-				if (st.trigger === bottom) st.kill();
-			});
+			// Kill existing ScrollTrigger for this section (avoids iterating all triggers)
+			scrollTriggerRef.current?.kill();
+			scrollTriggerRef.current = null;
 
 			// Reset list position before animating (prevents wrong initial state from previous runs)
 			gsap.set(list, { x: 0 });
@@ -111,7 +123,7 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 				return Math.max(0, Math.min(1, index * step));
 			};
 
-			gsap.to(list, {
+			const tween = gsap.to(list, {
 				x: -(teamMembers.length - 1) * memberWidth,
 				ease: 'none',
 				scrollTrigger: {
@@ -120,7 +132,7 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 					start: 'top top',
 					end: `+=${scrollDistance}%`,
 					pin: true,
-					scrub: true,
+					scrub: 0.5,
 					snap: {
 						snapTo: snapToNearestMember,
 						duration: { min: 0.5, max: 1 },
@@ -130,6 +142,7 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 					},
 				},
 			});
+			scrollTriggerRef.current = tween.scrollTrigger ?? null;
 		},
 		{
 			scope: jacketRef,

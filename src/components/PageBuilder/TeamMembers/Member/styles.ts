@@ -83,8 +83,7 @@ export const Details = styled(Div)<StylesInterface>(
             
             inset: auto var(--offset) var(--offset) var(--offset);
 
-            background: ${getGlobal('black', 60)};
-            backdrop-filter: blur(1.6rem);
+            background: ${getGlobal('black', 75)};
             padding: ${getGap('sm')};
             border-radius: ${getRadius('s')};
 

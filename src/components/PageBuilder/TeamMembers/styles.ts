@@ -103,13 +103,12 @@ export const Bottom = styled(Section)<StylesInterface>(
             display: flex;
             flex-direction: column;
 
-            
-
             ${bp.l`
                 flex-direction: row;
                 flex-wrap: nowrap;
                 width: max-content;
                 height: 100%;
+                will-change: transform;
             `}
         }
 	`
