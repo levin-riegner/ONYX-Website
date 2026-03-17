@@ -2,8 +2,13 @@
 
 // Imports
 // ------------
-import Logo from '@parts/Logo';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { CustomEase } from 'gsap/CustomEase';
+
+gsap.registerPlugin(useGSAP, CustomEase);
+
+import Logo from '@parts/Logo';
 import Frame from '@parts/Frame';
 import { use, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';

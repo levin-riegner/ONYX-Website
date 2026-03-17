@@ -2,14 +2,19 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { CustomEase } from 'gsap/CustomEase';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(useGSAP, CustomEase, SplitText);
+
 import Background from './Background';
 import LogoMarquee from './LogoMarquee';
 import MobileNav from './MobileNav';
 import Frame from '@parts/Frame';
 import { useAnimation } from '@utils/useAnimation';
 import { use, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { GlobalContext } from '@parts/Contexts';
 import { bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
 

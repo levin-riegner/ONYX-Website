@@ -2,8 +2,12 @@
 
 // Imports
 // ------------
-import Lenis from 'lenis';
+import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+import Lenis from 'lenis';
 import { useRef, useLayoutEffect, useEffect, createContext, useState } from 'react';
 
 // Styles (lenis rules inlined in global.css to reduce render-blocking requests)

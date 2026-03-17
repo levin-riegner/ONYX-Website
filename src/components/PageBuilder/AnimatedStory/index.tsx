@@ -2,6 +2,12 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(useGSAP, SplitText);
+
 import { StructuredText } from 'react-datocms/structured-text';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
@@ -10,8 +16,6 @@ import { use, useRef } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import { GlobalContext } from '@parts/Contexts';
-import { SplitText } from 'gsap/SplitText';
-import gsap from 'gsap';
 import Button from '@parts/Button';
 
 // Styles + Interfaces

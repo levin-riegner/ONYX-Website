@@ -2,10 +2,15 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { CustomEase } from 'gsap/CustomEase';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(useGSAP, CustomEase, SplitText);
+
 import { useRef } from 'react';
 import { useAnimation } from '@utils/useAnimation';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { bezzy4 } from '@parts/AnimationPlugins/Curves';
 
 // Interfaces
