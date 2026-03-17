@@ -30,6 +30,13 @@ html {
 	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
 }
 
+/*/ Breakpoint for devices under 380px */
+@media (max-width: 379px) {
+	html {
+		font-size: 50%;
+	}
+}
+
 /*/ Breakpoint for devices between 1024px and 1200px */
 @media (min-width: 1024px) and (max-width: 1399px) {
 	html {
