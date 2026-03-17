@@ -53,14 +53,14 @@ const Page = async () => {
 
 	return (
 		<main>
-			{/* <Hero
+			<Hero
 				menuItems={menuItemsArray}
 				title={home.title}
 				description={home.desc}
 				logos={home.partnerLogos}
 				unicornId={home.unicornId}
 				video={home.video?.video}
-			/> */}
+			/>
 
 			{/* <Activation
 				{...sharedCtaProps}
