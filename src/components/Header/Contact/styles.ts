@@ -2,7 +2,7 @@
 // ------------
 import styled, { css } from 'styled-components';
 import { bp, getBrand, getGlobal, getEase, Button } from '@tackl';
-import { bodyS } from '@tackl/type';
+import { bodyS, captionL } from '@tackl/type';
 
 // Interfaces
 // ------------
@@ -62,14 +62,14 @@ export const Jacket = styled(Button)<StylesInterface>(
 		}
 
 		span {
-			${bodyS}
+			${captionL}
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
 			transform-origin: center center;
 			overflow: hidden;
 
-			color: ${getGlobal('luxuryWhite')};
+			color: ${getGlobal('white')};
 			transition: scale 0.5s ${getEase('bezzy3')}, opacity 0.5s ${getEase('bezzy3')};
 		}
 

@@ -10,6 +10,25 @@ const nextConfig = {
 				},
 			],
 		},
+		// Cache static assets for 1 year (immutable) – improves repeat visit performance
+		{
+			source: '/_next/static/:path*',
+			headers: [
+				{
+					key: 'Cache-Control',
+					value: 'public, max-age=31536000, immutable',
+				},
+			],
+		},
+		{
+			source: '/:path*.woff2',
+			headers: [
+				{
+					key: 'Cache-Control',
+					value: 'public, max-age=31536000, immutable',
+				},
+			],
+		},
 	],
 	// Image loader settings
 	images: {

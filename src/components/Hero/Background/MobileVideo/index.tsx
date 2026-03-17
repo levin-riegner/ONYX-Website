@@ -58,10 +58,14 @@ const MobileVideo = ({ data, src, onReady, isModalOpen }: I.MobileVideoProps) =>
 
 	// Use VideoPlayer when we have DatoCMS/Mux data
 	if (data?.muxPlaybackId) {
+		// Optimized poster: ~1000px width for displayed ~988x556 (saves ~32KB vs default 2048px)
+		const posterUrl = `https://image.mux.com/${data.muxPlaybackId}/thumbnail.webp?width=1000&fit_mode=smartcrop`;
+
 		return (
 			<S.Jacket>
 				<VideoPlayer
 					data={data}
+					poster={posterUrl}
 					theme='minimal'
 					autoPlay={!isModalOpen}
 					loop
