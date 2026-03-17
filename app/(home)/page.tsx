@@ -86,7 +86,7 @@ const Page = async () => {
 				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
 			/>
 
-			<About
+			{/* <About
 				{...sharedCtaProps}
 				title={about.title}
 				heading={about.heading}
@@ -96,7 +96,7 @@ const Page = async () => {
 				isCtaOverridden={about.isCtaOverridden}
 				ctaOverrideHeading={about.overrideHeading}
 				ctaOverrideButtonLabel={about.overrideButtonLabel}
-			/>
+			/> */}
 
 			<Contact
 				{...sharedCtaProps}

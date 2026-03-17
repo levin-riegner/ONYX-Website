@@ -78,7 +78,7 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		home: false,
 		activation: false,
 		dataSupply: false,
-		about: false,
+		about: true,
 		contact: false,
 		legal: false,
 	});
