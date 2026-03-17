@@ -63,7 +63,9 @@ const Loader = () => {
 		const t = setTimeout(() => setModalsTimeout(true), 2000);
 		return () => clearTimeout(t);
 	}, []);
-	const canProceed = (pageLoaded && isFontsLoaded && allModalsReady) || (pageLoaded && isFontsLoaded && modalsTimeout);
+	const canProceed =
+		(pageLoaded && isFontsLoaded && allModalsReady) ||
+		(pageLoaded && isFontsLoaded && modalsTimeout);
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);
@@ -189,7 +191,10 @@ const Loader = () => {
 
 			frameRef.current = tl;
 		},
-		{ scope: jacketRef, dependencies: [pageLoaded, isFontsLoaded, allModalsReady, modalsTimeout] }
+		{
+			scope: jacketRef,
+			dependencies: [pageLoaded, isFontsLoaded, allModalsReady, modalsTimeout],
+		}
 	);
 
 	// Kill GSAP timelines on unmount to prevent memory leaks

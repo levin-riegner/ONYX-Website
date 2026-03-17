@@ -47,6 +47,7 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.Anim
 			});
 
 			const chars = split.chars as HTMLElement[];
+
 			if (!chars.length) {
 				split.revert();
 				return;
@@ -57,8 +58,8 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.Anim
 					scrub: true,
 					trigger: animatedTextRef.current,
 					scroller: scrollWrapper.current,
-					start: 'top 90%',
-					end: 'center 40%',
+					start: 'top 70%',
+					end: 'bottom 70%',
 				},
 			});
 
