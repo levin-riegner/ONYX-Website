@@ -2,32 +2,44 @@
 
 // Imports
 // ------------
-import dynamic from 'next/dynamic';
-import { use, useCallback } from 'react';
+import { use, useCallback, useEffect, useRef } from 'react';
 import { GlobalContext } from '@parts/Contexts';
-
-// Lazy load: only the rendered component's bundle is fetched
-// const UnicornScene = dynamic(() => import('unicornstudio-react/next'), { ssr: false });
-const Video = dynamic(() => import('./Video'), { ssr: false });
+import UnicornScene from 'unicornstudio-react/next';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
 import * as S from './styles';
 
+// HAVE_CURRENT_DATA = 2, HAVE_FUTURE_DATA = 3, HAVE_ENOUGH_DATA = 4
+const READY_STATE_LOADED = 2;
+
 // Component
 // ------------
-const Background = ({ sceneId, video }: I.BackgroundProps) => {
-	// Contexts
+const Background = ({ sceneId }: I.BackgroundProps) => {
+	const videoRef = useRef<HTMLVideoElement>(null);
+	const hasFiredRef = useRef(false);
+
 	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
 
-	// Event Handlers (stable ref to avoid MobileVideo effect churn)
-	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
+	const handleReady = useCallback(() => {
+		if (hasFiredRef.current) return;
+		hasFiredRef.current = true;
+		setPageLoaded(true);
+	}, [setPageLoaded]);
+
+	// Handle cached video: loadeddata may fire before listener attaches
+	useEffect(() => {
+		const el = videoRef.current;
+		if (!el) return;
+		if (el.readyState >= READY_STATE_LOADED) {
+			handleReady();
+		}
+	}, [handleReady]);
 
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
-			{/* Video + Unicorn load when device is known */}
-			{/* {isReady && isDesktop && (
+			{isLoaderFinished && (
 				<UnicornScene
 					className='unicorn'
 					projectId={sceneId}
@@ -38,9 +50,19 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 					dpi={1}
 					fps={60}
 				/>
-			)} */}
+			)}
 
-			<Video data={video ?? undefined} onReady={handleLoad} isModalOpen={isModalOpen} />
+			<S.Video
+				ref={videoRef}
+				src='/stone.mp4'
+				autoPlay
+				loop
+				muted
+				playsInline
+				preload='auto'
+				onLoadedData={handleReady}
+				onCanPlay={handleReady}
+			/>
 		</S.Jacket>
 	);
 };
