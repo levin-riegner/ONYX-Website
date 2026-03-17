@@ -51,8 +51,6 @@ export const GlobalContext = createContext({
 			legal: boolean;
 		}>
 	>,
-	isFontsLoaded: false,
-	setIsFontsLoaded: (_value: boolean) => {},
 });
 
 // Component
@@ -66,7 +64,6 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
 	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 	const [modalActive, setModalActive] = useState<string>('home');
-	const [isFontsLoaded, setIsFontsLoaded] = useState<boolean>(false);
 	const [areModalsReady, setAreModalsReady] = useState<{
 		home: boolean;
 		activation: boolean;
@@ -96,10 +93,8 @@ const Contexts = ({ children }: I.ContextsProps) => {
 			setModalActive,
 			areModalsReady,
 			setAreModalsReady,
-			isFontsLoaded,
-			setIsFontsLoaded,
 		}),
-		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, areModalsReady, isFontsLoaded]
+		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, areModalsReady]
 	);
 
 	return (

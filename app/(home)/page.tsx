@@ -7,10 +7,10 @@ import dynamic from 'next/dynamic';
 
 // Lazy Sections
 const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
-const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
-const About = dynamic(() => import('@parts/About'), { ssr: true });
-const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
-const Legal = dynamic(() => import('@parts/Legal'), { ssr: true });
+// const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
+// const About = dynamic(() => import('@parts/About'), { ssr: true });
+// const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
+// const Legal = dynamic(() => import('@parts/Legal'), { ssr: true });
 
 // Data fetching at build time
 // ------------
@@ -73,7 +73,7 @@ const Page = async () => {
 				ctaOverrideHeading={activation.overrideHeading}
 				ctaOverrideButtonLabel={activation.overrideButtonLabel}
 			/>
-
+			{/* 
 			<DataSupply
 				{...sharedCtaProps}
 				title={dataSupply.title}
@@ -84,7 +84,7 @@ const Page = async () => {
 				isCtaOverridden={dataSupply.isCtaOverridden}
 				ctaOverrideHeading={dataSupply.overrideHeading}
 				ctaOverrideButtonLabel={dataSupply.overrideButtonLabel}
-			/>
+			/> */}
 
 			{/* <About
 				{...sharedCtaProps}

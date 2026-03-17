@@ -47,18 +47,17 @@ const LINE_SETTINGS = {
 // ------------
 const Loader = () => {
 	// Contexts
-	const { isLoaderFinished, setIsLoaderFinished, pageLoaded, areModalsReady, isFontsLoaded } =
+	const { isLoaderFinished, setIsLoaderFinished, pageLoaded, areModalsReady } =
 		use(GlobalContext);
 
-	// Relaxed: only require page + fonts for LCP; modals load async below the fold
 	const allModalsReady =
 		areModalsReady.activation &&
 		areModalsReady.dataSupply &&
 		areModalsReady.about &&
 		areModalsReady.contact;
 
-	// Pulse stops only when everything is ready (keeps pulsing if e.g. About is commented out for testing)
-	const canStopPulse = pageLoaded && isFontsLoaded && allModalsReady;
+	// Pulse stops only when page + modals are ready (no font wait)
+	const canStopPulse = pageLoaded && allModalsReady;
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);
@@ -225,8 +224,7 @@ const Loader = () => {
 	// Outro Animation — only fade out once all components are ready
 	useAnimation(
 		() => {
-			if (!isLoaderFinished || !allModalsReady || !isFontsLoaded || !jacketRef.current)
-				return;
+			if (!isLoaderFinished || !allModalsReady || !jacketRef.current) return;
 
 			gsap.to(jacketRef.current, {
 				autoAlpha: 0,
@@ -237,7 +235,7 @@ const Loader = () => {
 		},
 		{
 			scope: jacketRef,
-			dependencies: [isLoaderFinished, allModalsReady, isFontsLoaded],
+			dependencies: [isLoaderFinished, allModalsReady],
 		}
 	);
 
