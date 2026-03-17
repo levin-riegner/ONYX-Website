@@ -41,26 +41,26 @@ const Page = async () => {
 	];
 
 	// Shared CTA props
-	const sharedCtaProps = {
-		ctaHeading: cta.heading,
-		ctaButtonLabel: cta.buttonLabel,
-		email: contactDetails?.email,
-		linkedin: contactDetails?.linkedin,
-		twitter: contactDetails?.twitter,
-		contactTitle: contact.title,
-		legalTitle: legal.title,
-	};
+	// const sharedCtaProps = {
+	// 	ctaHeading: cta.heading,
+	// 	ctaButtonLabel: cta.buttonLabel,
+	// 	email: contactDetails?.email,
+	// 	linkedin: contactDetails?.linkedin,
+	// 	twitter: contactDetails?.twitter,
+	// 	contactTitle: contact.title,
+	// 	legalTitle: legal.title,
+	// };
 
 	return (
 		<main>
-			<Hero
+			{/* <Hero
 				menuItems={menuItemsArray}
 				title={home.title}
 				description={home.desc}
 				logos={home.partnerLogos}
 				unicornId={home.unicornId}
 				video={home.video?.video}
-			/>
+			/> */}
 
 			{/* <Activation
 				{...sharedCtaProps}
