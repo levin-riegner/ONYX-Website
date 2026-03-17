@@ -2,6 +2,7 @@
 
 // Imports
 // ------------
+import Loader from '@parts/Loader';
 import { GlobalContext } from '@parts/Contexts';
 import { use, useEffect } from 'react';
 
@@ -16,7 +17,12 @@ const Template = ({ children }: { children: React.ReactNode }) => {
 		});
 	}, [setIsFontsLoaded]);
 
-	return <>{children}</>;
+	return (
+		<>
+			<Loader />
+			{children}
+		</>
+	);
 };
 
 // Exports

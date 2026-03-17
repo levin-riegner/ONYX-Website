@@ -5,7 +5,6 @@
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 // import CookieBar from '@parts/CookieBar';
-import Loader from '@parts/Loader';
 import { GlobalStyle, theme } from '@theme';
 import { neueHaas, pp } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
@@ -44,7 +43,6 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 							{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
 
 							<Contexts>
-								<Loader />
 								<Cursor />
 								{children}
 							</Contexts>
