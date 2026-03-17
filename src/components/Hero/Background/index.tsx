@@ -3,12 +3,11 @@
 // Imports
 // ------------
 import dynamic from 'next/dynamic';
-import { useResponsive } from '@utils/useResponsive';
 import { use, useCallback } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 
 // Lazy load: only the rendered component's bundle is fetched
-const UnicornScene = dynamic(() => import('unicornstudio-react/next'), { ssr: false });
+// const UnicornScene = dynamic(() => import('unicornstudio-react/next'), { ssr: false });
 const Video = dynamic(() => import('./Video'), { ssr: false });
 
 // Styles + Interfaces
@@ -23,17 +22,11 @@ const getPosterUrl = (muxPlaybackId: string) =>
 // Component
 // ------------
 const Background = ({ sceneId, video }: I.BackgroundProps) => {
-	// Responsive Hook
-	const { isDesktop, isMobile } = useResponsive();
-
 	// Contexts
 	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
 
 	// Event Handlers (stable ref to avoid MobileVideo effect churn)
 	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
-
-	// Don't load Video/Unicorn until we know the device (avoids loading both bundles)
-	const isReady = isDesktop || isMobile;
 
 	// LCP: render poster immediately when we have video data (don't wait for useResponsive)
 	const posterUrl = video?.muxPlaybackId ? getPosterUrl(video.muxPlaybackId) : null;
@@ -48,7 +41,7 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 			)}
 
 			{/* Video + Unicorn load when device is known */}
-			{isReady && isDesktop && (
+			{/* {isReady && isDesktop && (
 				<UnicornScene
 					className='unicorn'
 					projectId={sceneId}
@@ -59,7 +52,7 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 					dpi={1}
 					fps={60}
 				/>
-			)}
+			)} */}
 
 			<Video data={video ?? undefined} onReady={handleLoad} isModalOpen={isModalOpen} />
 		</S.Jacket>
