@@ -4,7 +4,6 @@
 // ------------
 import { createContext, useMemo, useState } from 'react';
 import { PerformanceProvider } from './Performance';
-import { useScrollPerformance } from '@utils/useScrollPerformance';
 
 // Interface
 // ------------
@@ -56,9 +55,6 @@ export const GlobalContext = createContext({
 // Component
 // ------------
 const Contexts = ({ children }: I.ContextsProps) => {
-	// Disable hover during scroll to reduce repaints (CSS in global.css)
-	useScrollPerformance();
-
 	// States
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
