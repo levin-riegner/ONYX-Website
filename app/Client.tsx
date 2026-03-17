@@ -8,7 +8,6 @@ import Contexts from '@parts/Contexts';
 import { GlobalStyle, theme } from '@theme';
 import { neueHaas, pp } from '@theme/fonts';
 import StyledComponentsRegistry from '@utils/registry';
-import { ViewTransitions } from '@utils/viewTransitions';
 import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'styled-components';
 
@@ -25,32 +24,26 @@ const Cursor = dynamic(() => import('@parts/Cursor'), { ssr: false });
 // ------------
 const Client = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<ViewTransitions>
-			<html
-				lang='en'
-				className={`${neueHaas.variable} ${pp.variable}`}
-				suppressHydrationWarning
-			>
-				<body>
-					<StyledComponentsRegistry>
-						<ThemeProvider theme={theme} key='themeprovider'>
-							<GlobalStyle />
+		<html lang='en' className={`${neueHaas.variable} ${pp.variable}`} suppressHydrationWarning>
+			<body>
+				<StyledComponentsRegistry>
+					<ThemeProvider theme={theme} key='themeprovider'>
+						<GlobalStyle />
 
-							{/* GridExposer only rendered in development environment */}
-							{process.env.NODE_ENV === 'development' && <GridExposer />}
+						{/* GridExposer only rendered in development environment */}
+						{process.env.NODE_ENV === 'development' && <GridExposer />}
 
-							{/* CookieBar only rendered in production environment */}
-							{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
+						{/* CookieBar only rendered in production environment */}
+						{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
 
-							<Contexts>
-								<Cursor />
-								{children}
-							</Contexts>
-						</ThemeProvider>
-					</StyledComponentsRegistry>
-				</body>
-			</html>
-		</ViewTransitions>
+						<Contexts>
+							<Cursor />
+							{children}
+						</Contexts>
+					</ThemeProvider>
+				</StyledComponentsRegistry>
+			</body>
+		</html>
 	);
 };
 

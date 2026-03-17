@@ -6,6 +6,21 @@ const IMAGE_FRAGMENT = `
     }
 `;
 
+export const SEO = `
+    query {
+        seo {
+            meta: metadata {
+                image {
+                    url
+                }
+                desc: description
+                title
+                twitterCard
+            }
+        }
+    }
+`;
+
 export const EVERYTHING = `
     ${IMAGE_FRAGMENT}
     query {
@@ -280,17 +295,6 @@ export const EVERYTHING = `
                         }
                     }
                 }
-            }
-        }
-        
-        seo {
-            meta: metadata {
-                image {
-                    ...ReusableImage
-                }
-                desc: description
-                title
-                twitterCard
             }
         }
     }

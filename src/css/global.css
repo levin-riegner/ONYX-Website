@@ -166,28 +166,3 @@ html.lenis body {
 	overflow-y: scroll;
 	scrollbar-width: none;
 }
-
-/* Page Transitions using the new transitions API*/
-::view-transition-old(root),
-::view-transition-new(root) {
-	animation: none;
-}
-
-::view-transition-group(root) {
-	z-index: auto;
-}
-
-::view-transition-image-pair(root) {
-	isolation: isolate;
-	/* NOTE • Change to whatever property you want to animate */
-	will-change: transform, opacity, clip-path;
-	z-index: 1;
-}
-
-::view-transition-new(root) {
-	z-index: 2;
-}
-
-::view-transition-old(root) {
-	z-index: 1;
-}
