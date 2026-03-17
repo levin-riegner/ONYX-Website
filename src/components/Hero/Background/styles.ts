@@ -23,13 +23,14 @@ export const PosterWrapper = styled(Div)(
 		width: 120lvh;
 		aspect-ratio: 48/27;
 		overflow: visible;
+		mix-blend-mode: screen;
 
 		${bp.l`
 			top: auto;
 			bottom: 0;
 			transform: translate(-50%, 50%) rotate(90deg);
 			width: 120vw;
-			mix-blend-mode: screen;
+			
 		`}
 	`
 );
@@ -95,8 +96,14 @@ export const Jacket = styled(Div)<StylesInterface>(
 		${bp.l` mix-blend-mode: normal; `}
 
 		.unicorn {
-			position: absolute !important;
-			inset: 0 auto auto 0;
+			display: none;
+			
+
+			${bp.l`
+				display: block;
+				position: absolute !important;
+				inset: 0 auto auto 0;
+			`}
 		}
 	`
 );
