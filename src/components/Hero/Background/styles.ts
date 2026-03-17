@@ -107,13 +107,3 @@ export const Jacket = styled(Div)<StylesInterface>(
 		}
 	`
 );
-
-export const Video = styled.video(
-	() => css`
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	`
-);

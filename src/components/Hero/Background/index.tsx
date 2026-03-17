@@ -2,40 +2,20 @@
 
 // Imports
 // ------------
-import { use, useCallback, useEffect, useRef } from 'react';
+import { use } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import UnicornScene from 'unicornstudio-react/next';
+import Video from './Video';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
 import * as S from './styles';
 
-// HAVE_CURRENT_DATA = 2, HAVE_FUTURE_DATA = 3, HAVE_ENOUGH_DATA = 4
-const READY_STATE_LOADED = 2;
-
 // Component
 // ------------
 const Background = ({ sceneId }: I.BackgroundProps) => {
-	const videoRef = useRef<HTMLVideoElement>(null);
-	const hasFiredRef = useRef(false);
-
-	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
-
-	const handleReady = useCallback(() => {
-		if (hasFiredRef.current) return;
-		hasFiredRef.current = true;
-		setPageLoaded(true);
-	}, [setPageLoaded]);
-
-	// Handle cached video: loadeddata may fire before listener attaches
-	useEffect(() => {
-		const el = videoRef.current;
-		if (!el) return;
-		if (el.readyState >= READY_STATE_LOADED) {
-			handleReady();
-		}
-	}, [handleReady]);
+	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
 
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
@@ -52,17 +32,7 @@ const Background = ({ sceneId }: I.BackgroundProps) => {
 				/>
 			)}
 
-			<S.Video
-				ref={videoRef}
-				src='/stone.mp4'
-				autoPlay
-				loop
-				muted
-				playsInline
-				preload='auto'
-				onLoadedData={handleReady}
-				onCanPlay={handleReady}
-			/>
+			<Video videoSrc='/stone.mp4' />
 		</S.Jacket>
 	);
 };
