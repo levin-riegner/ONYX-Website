@@ -2,14 +2,14 @@
 
 // Imports
 // ------------
-import Loader from '@parts/Loader';
+// import Loader from '@parts/Loader';
 
 // Component
 // ------------
 const Template = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
-			<Loader />
+			{/* <Loader /> */}
 			{children}
 		</>
 	);
