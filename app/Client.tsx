@@ -17,9 +17,6 @@ const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 	ssr: false,
 });
 
-// Lazy load Cursor – defers ~20–30KB until after initial paint (desktop-only enhancement)
-const Cursor = dynamic(() => import('@parts/Cursor'), { ssr: false });
-
 // Component
 // ------------
 const Client = ({ children }: { children: React.ReactNode }) => {
@@ -36,10 +33,7 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 						{/* CookieBar only rendered in production environment */}
 						{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
 
-						<Contexts>
-							<Cursor />
-							{children}
-						</Contexts>
+						<Contexts>{children}</Contexts>
 					</ThemeProvider>
 				</StyledComponentsRegistry>
 			</body>
