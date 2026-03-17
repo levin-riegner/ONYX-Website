@@ -38,6 +38,13 @@ html {
 	}
 }
 
+@media (min-width: 1800px) {
+	html {
+		/* Example: 12px base font size for extra large screens */
+		font-size: 76%;
+	}
+}
+
 html,
 body {
 	/* height: 100%;
