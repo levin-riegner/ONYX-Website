@@ -48,7 +48,7 @@ Commit **6666f09** achieved a **100** Netlify Lighthouse score. Differences in *
 - SplitText `aria: 'none'` added
 
 ### src/components/Loader/index.tsx
-- Added `areModalsReady` gate; removed `isFontsLoaded`
+- Simplified: pulse on `pageLoaded`, outro on `isLoaderFinished` (no areModalsReady)
 
 ### src/components/AnimationPlugins/index.tsx
 - ScrambleTextPlugin → SplitText
@@ -60,8 +60,6 @@ Commit **6666f09** achieved a **100** Netlify Lighthouse score. Differences in *
 
 ## Items to Try
 
-1. **Simplify Loader** – Pulse on `pageLoaded` only; outro on `isLoaderFinished`; add timeout fallback
-2. **Remove areModalsReady from Loader**
-3. **Revert global.css Lenis rules**
-4. **Revert .disable-hover** to `!important`
-5. **Revert AnimationPlugins** – ScrambleTextPlugin → SplitText
+1. **Revert global.css Lenis rules**
+2. **Revert .disable-hover** to `!important` (or remove dead CSS)
+3. **Revert AnimationPlugins** – ScrambleTextPlugin → SplitText

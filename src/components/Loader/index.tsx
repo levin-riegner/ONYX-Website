@@ -47,17 +47,7 @@ const LINE_SETTINGS = {
 // ------------
 const Loader = () => {
 	// Contexts
-	const { isLoaderFinished, setIsLoaderFinished, pageLoaded, areModalsReady } =
-		use(GlobalContext);
-
-	const allModalsReady =
-		areModalsReady.activation &&
-		areModalsReady.dataSupply &&
-		areModalsReady.about &&
-		areModalsReady.contact;
-
-	// Pulse stops only when page + modals are ready (no font wait)
-	const canStopPulse = pageLoaded && allModalsReady;
+	const { isLoaderFinished, setIsLoaderFinished, pageLoaded } = use(GlobalContext);
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);
@@ -207,9 +197,9 @@ const Loader = () => {
 		[]
 	);
 
-	// Stop pulse only when all modals are ready (no timeout — keeps pulsing if e.g. About is commented out)
+	// Stop pulse when page is loaded
 	useEffect(() => {
-		if (!canStopPulse || !pulseRef.current || hasStoppedPulseRef.current) return;
+		if (!pageLoaded || !pulseRef.current || hasStoppedPulseRef.current) return;
 
 		hasStoppedPulseRef.current = true;
 		const tl = pulseRef.current;
@@ -219,12 +209,12 @@ const Loader = () => {
 
 		tl.repeat(remaining);
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));
-	}, [canStopPulse, setIsLoaderFinished]);
+	}, [pageLoaded, setIsLoaderFinished]);
 
-	// Outro Animation — only fade out once all components are ready
+	// Outro Animation — fade out when loader is finished
 	useAnimation(
 		() => {
-			if (!isLoaderFinished || !allModalsReady || !jacketRef.current) return;
+			if (!isLoaderFinished || !jacketRef.current) return;
 
 			gsap.to(jacketRef.current, {
 				autoAlpha: 0,
@@ -235,7 +225,7 @@ const Loader = () => {
 		},
 		{
 			scope: jacketRef,
-			dependencies: [isLoaderFinished, allModalsReady],
+			dependencies: [isLoaderFinished],
 		}
 	);
 
