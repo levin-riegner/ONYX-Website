@@ -19,7 +19,7 @@ export const Jacket = styled(Div)(
 			top: auto;
 			bottom: 0;
 			transform: translate(-50%, 50%) rotate(90deg);
-			width: 150vw;
+			width: 120vw;
 			mix-blend-mode: screen;
 		`}
 
