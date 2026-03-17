@@ -55,7 +55,6 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 							projectId={sceneId}
 							width='100%'
 							height='100%'
-							onLoad={handleLoad}
 							lazyLoad={true}
 							production={true}
 							dpi={1}
