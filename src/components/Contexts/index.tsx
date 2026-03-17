@@ -4,7 +4,6 @@
 // ------------
 import { createContext, useMemo, useState } from 'react';
 import { PerformanceProvider } from './Performance';
-import { useScrollPerformance } from '@utils/useScrollPerformance';
 
 // Interface
 // ------------
@@ -51,22 +50,16 @@ export const GlobalContext = createContext({
 			legal: boolean;
 		}>
 	>,
-	isFontsLoaded: false,
-	setIsFontsLoaded: (_value: boolean) => {},
 });
 
 // Component
 // ------------
 const Contexts = ({ children }: I.ContextsProps) => {
-	// Disable hover during scroll to reduce repaints (CSS in global.css)
-	useScrollPerformance();
-
 	// States
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
 	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 	const [modalActive, setModalActive] = useState<string>('home');
-	const [isFontsLoaded, setIsFontsLoaded] = useState<boolean>(false);
 	const [areModalsReady, setAreModalsReady] = useState<{
 		home: boolean;
 		activation: boolean;
@@ -76,11 +69,11 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		legal: boolean;
 	}>({
 		home: false,
-		activation: false,
-		dataSupply: false,
-		about: false,
-		contact: false,
-		legal: false,
+		activation: true,
+		dataSupply: true,
+		about: true,
+		contact: true,
+		legal: true,
 	});
 
 	// Context Values
@@ -96,10 +89,8 @@ const Contexts = ({ children }: I.ContextsProps) => {
 			setModalActive,
 			areModalsReady,
 			setAreModalsReady,
-			isFontsLoaded,
-			setIsFontsLoaded,
 		}),
-		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, areModalsReady, isFontsLoaded]
+		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, areModalsReady]
 	);
 
 	return (

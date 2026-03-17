@@ -2,8 +2,13 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 import Image from 'next/image';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 import { use, useEffect, useRef, useState } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import { useAnimation } from '@utils/useAnimation';

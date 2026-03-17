@@ -2,14 +2,18 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(useGSAP, SplitText);
+
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Subheading from '@parts/Subheading';
 import { useRef, use } from 'react';
 import { useAnimation } from '@utils/useAnimation';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import { GlobalContext } from '@parts/Contexts';
 import Button from '@parts/Button';

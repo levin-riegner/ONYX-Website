@@ -49,7 +49,7 @@ const Video = ({ data, onReady, isModalOpen }: I.VideoProps) => {
 	if (hasMuxError) {
 		return (
 			<S.Jacket>
-				<S.Poster src={posterUrl} alt="" onLoad={handleLoadedData} />
+				<S.Poster src={posterUrl} alt='' onLoad={handleLoadedData} />
 			</S.Jacket>
 		);
 	}

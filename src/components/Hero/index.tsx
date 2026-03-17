@@ -2,14 +2,16 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { CustomEase } from 'gsap/CustomEase';
+import { SplitText } from 'gsap/SplitText';
 import Background from './Background';
 import LogoMarquee from './LogoMarquee';
 import MobileNav from './MobileNav';
 import Frame from '@parts/Frame';
 import { useAnimation } from '@utils/useAnimation';
 import { use, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { GlobalContext } from '@parts/Contexts';
 import { bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
 
@@ -17,6 +19,7 @@ import { bezzy3, bezzy4 } from '@parts/AnimationPlugins/Curves';
 // ------------
 import type * as I from './interface';
 import * as S from './styles';
+gsap.registerPlugin(useGSAP, CustomEase, SplitText);
 
 // Component
 // ------------
@@ -33,62 +36,56 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 	// Animations
 	useAnimation(
 		() => {
-			// Only animate once the loader has finished and both elements are mounted
 			if (!isLoaderFinished || !headingRef.current || !descRef.current) return;
 
-			// Split heading into characters (for flicker) and lines (if needed later),
-			// and split description into lines so we can stagger each line.
+			// Split desc first (no animation – included in heading's onSplit)
+			const descSplit = SplitText.create(descRef.current, {
+				type: 'lines',
+				linesClass: 'line',
+				aria: 'none',
+				autoSplit: true,
+			});
+
+			// Split heading with onSplit – create combined timeline
 			const headingSplit = SplitText.create(headingRef.current, {
 				type: 'lines,chars',
 				linesClass: 'line',
 				charsClass: 'char',
 				aria: 'none',
-			});
-			const descSplit = SplitText.create(descRef.current, {
-				type: 'lines',
-				linesClass: 'line',
-				aria: 'none',
-			});
+				autoSplit: true,
+				onSplit: self => {
+					const headingChars = self.chars as HTMLElement[];
+					const descLines = descSplit.lines as HTMLElement[];
+					if (!headingChars?.length || !descLines?.length) {
+						descSplit.revert();
+						self.revert();
+						return;
+					}
 
-			const headingChars = headingSplit.chars as HTMLElement[];
-			const descLines = descSplit.lines as HTMLElement[];
+					const tl = gsap.timeline();
+					tl.from(headingChars, {
+						autoAlpha: 0,
+						duration: 0.75,
+						stagger: { each: 0.02, from: 'random' },
+						ease: bezzy4,
+					});
+					tl.from(
+						descLines,
+						{
+							autoAlpha: 0,
+							y: 24,
+							duration: 0.6,
+							stagger: { each: 0.12, from: 'start' },
+							ease: bezzy3,
+						},
+						'-=0.5'
+					);
 
-			// If either split failed, revert immediately and bail out
-			if (!headingChars.length || !descLines.length) {
-				descSplit.revert();
-				return () => headingSplit.revert();
-			}
-
-			// Master timeline for heading + description (store for modal reverse/play)
-			const tl = gsap.timeline();
-			textTimelineRef.current = tl;
-
-			// Start with everything hidden / offset
-			gsap.set(headingChars, { autoAlpha: 0 });
-			gsap.set(descLines, { autoAlpha: 0, y: 24 });
-
-			// Heading: random character flicker in
-			tl.to(headingChars, {
-				autoAlpha: 1,
-				duration: 0.75,
-				stagger: { each: 0.02, from: 'random' },
-				ease: bezzy4,
-			});
-
-			// Description: each line fades in + moves up, slightly overlapping the heading
-			tl.to(
-				descLines,
-				{
-					autoAlpha: 1,
-					y: 0,
-					duration: 0.6,
-					stagger: { each: 0.12, from: 'start' },
-					ease: bezzy3,
+					textTimelineRef.current = tl;
+					return tl;
 				},
-				'-=0.5'
-			);
+			});
 
-			// Clean up SplitText on unmount / dependency change
 			return () => {
 				textTimelineRef.current = null;
 				headingSplit.revert();

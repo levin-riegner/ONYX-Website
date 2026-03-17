@@ -1,14 +1,14 @@
 // Imports
 // ------------
 import { performRequest } from '@utils/datocms';
-import { EVERYTHING } from './query';
+import { SEO } from './query';
 import type { Metadata } from 'next';
 
 // Data fetching at build time
 // ------------
 async function getAllData() {
 	try {
-		const data = await performRequest(EVERYTHING);
+		const data = await performRequest(SEO);
 		return data;
 	} catch (error) {
 		console.error('Failed to fetch data from DatoCMS:', error);

@@ -2,13 +2,17 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
 import { use, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import SingleFaq from './SingleFaq';
 import { useAnimation } from '@utils/useAnimation';

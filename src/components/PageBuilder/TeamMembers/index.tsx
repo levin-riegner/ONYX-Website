@@ -2,14 +2,19 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { CustomEase } from 'gsap/CustomEase';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(useGSAP, CustomEase, ScrollTrigger);
+
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import { use, useRef, useState, useEffect } from 'react';
 import { useAnimation } from '@utils/useAnimation';
-import gsap from 'gsap';
-import type { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { bezzy4 } from '@parts/AnimationPlugins/Curves';
 import Member from './Member';
 
