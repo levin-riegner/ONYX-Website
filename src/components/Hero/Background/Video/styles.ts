@@ -5,6 +5,8 @@ import { bp, Div } from '@tackl';
 
 // Exports
 // ------------
+export const Poster = styled.img(() => css``);
+
 export const Jacket = styled(Div)(
 	() => css`
 		position: absolute;
@@ -18,13 +20,14 @@ export const Jacket = styled(Div)(
 		${bp.l`
 			top: auto;
 			bottom: 0;
-			transform: translate(-50%, 50%) rotate(90deg);
+			transform: translate(-50%, 60%) rotate(90deg);
 			width: 120vw;
 			mix-blend-mode: screen;
 		`}
 
 		video,
-		mux-player {
+		mux-player,
+		img {
 			position: absolute;
 			inset: 0;
 			width: 100%;

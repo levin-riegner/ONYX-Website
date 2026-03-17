@@ -5,7 +5,6 @@
 import '@parts/AnimationPlugins';
 import Contexts from '@parts/Contexts';
 // import CookieBar from '@parts/CookieBar';
-import Cursor from '@parts/Cursor';
 import Loader from '@parts/Loader';
 import { GlobalStyle, theme } from '@theme';
 import { neueHaas, pp } from '@theme/fonts';
@@ -19,6 +18,9 @@ import { ThemeProvider } from 'styled-components';
 const GridExposer = dynamic(() => import('@parts/GridExposer'), {
 	ssr: false,
 });
+
+// Lazy load Cursor – defers ~20–30KB until after initial paint (desktop-only enhancement)
+const Cursor = dynamic(() => import('@parts/Cursor'), { ssr: false });
 
 // Component
 // ------------

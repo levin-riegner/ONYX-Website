@@ -13,6 +13,37 @@ interface StylesInterface {
 
 // Exports
 // ------------
+/** LCP poster wrapper: same layout as Video Jacket (rotated, aspect ratio) */
+export const PosterWrapper = styled(Div)(
+	() => css`
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(90deg);
+		width: 120lvh;
+		aspect-ratio: 48/27;
+		overflow: visible;
+
+		${bp.l`
+			top: auto;
+			bottom: 0;
+			transform: translate(-50%, 50%) rotate(90deg);
+			width: 120vw;
+			mix-blend-mode: screen;
+		`}
+	`
+);
+
+export const Poster = styled.img(
+	() => css`
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	`
+);
+
 export const Jacket = styled(Div)<StylesInterface>(
 	({ $isLoaderFinished, $isModalOpen }) => css`
 		--speed: 1s;
