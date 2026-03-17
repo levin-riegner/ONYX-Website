@@ -69,7 +69,7 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		legal: boolean;
 	}>({
 		home: false,
-		activation: false,
+		activation: true,
 		dataSupply: true,
 		about: true,
 		contact: true,

@@ -3,10 +3,10 @@
 import Hero from '@parts/Hero';
 import { performRequest } from '@utils/datocms';
 import { EVERYTHING } from './query';
-import dynamic from 'next/dynamic';
+// import dynamic from 'next/dynamic';
 
 // Lazy Sections
-const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
+// const Activation = dynamic(() => import('@parts/Activation'), { ssr: true });
 // const DataSupply = dynamic(() => import('@parts/DataSupply'), { ssr: true });
 // const About = dynamic(() => import('@parts/About'), { ssr: true });
 // const Contact = dynamic(() => import('@parts/Contact'), { ssr: true });
@@ -62,7 +62,7 @@ const Page = async () => {
 				video={home.video?.video}
 			/>
 
-			<Activation
+			{/* <Activation
 				{...sharedCtaProps}
 				title={activation.title}
 				heading={activation.heading}
@@ -72,7 +72,7 @@ const Page = async () => {
 				isCtaOverridden={activation.isCtaOverridden}
 				ctaOverrideHeading={activation.overrideHeading}
 				ctaOverrideButtonLabel={activation.overrideButtonLabel}
-			/>
+			/> */}
 			{/* 
 			<DataSupply
 				{...sharedCtaProps}
