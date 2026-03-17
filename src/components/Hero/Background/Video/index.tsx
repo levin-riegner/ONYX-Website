@@ -2,7 +2,7 @@
 
 // Imports
 // ------------
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 import { VideoPlayer } from 'react-datocms';
 
 // Styles + Interfaces
@@ -12,9 +12,12 @@ import * as S from './styles';
 
 // Component
 // ------------
-const MobileVideo = ({ data, src, onReady, isModalOpen }: I.MobileVideoProps) => {
+const Video = ({ data, src, onReady, isModalOpen }: I.VideoProps) => {
 	// Refs
 	const videoRef = useRef<HTMLVideoElement>(null);
+
+	// Delayed pause: wait 1100ms after modal opens (matches modal close animation) before pausing
+	const [isPaused, setIsPaused] = useState(false);
 
 	const handleLoadedData = useCallback(() => onReady(), [onReady]);
 
@@ -33,28 +36,28 @@ const MobileVideo = ({ data, src, onReady, isModalOpen }: I.MobileVideoProps) =>
 		};
 	}, [onReady]);
 
-	// When modal opens, pause the video; when it closes, play
+	// When modal opens, schedule pause after 1100ms; when it closes, resume immediately
 	useEffect(() => {
-		let timer: NodeJS.Timeout | null = null;
+		let timer: ReturnType<typeof setTimeout> | null = null;
 
 		if (isModalOpen) {
-			timer = setTimeout(() => {
-				const nativeEl = videoRef.current;
-				if (nativeEl) {
-					nativeEl.pause();
-				}
-			}, 1100);
+			timer = setTimeout(() => setIsPaused(true), 1100);
 		} else {
-			const nativeEl = videoRef.current;
-			if (nativeEl) {
-				nativeEl.play();
-			}
+			setIsPaused(false);
 		}
 
 		return () => {
 			if (timer) clearTimeout(timer);
 		};
 	}, [isModalOpen]);
+
+	// Sync isPaused to native video element (fallback path only)
+	useEffect(() => {
+		const video = videoRef.current;
+		if (!video) return;
+		if (isPaused) video.pause();
+		else video.play();
+	}, [isPaused]);
 
 	// Use VideoPlayer when we have DatoCMS/Mux data
 	if (data?.muxPlaybackId) {
@@ -67,11 +70,11 @@ const MobileVideo = ({ data, src, onReady, isModalOpen }: I.MobileVideoProps) =>
 					data={data}
 					poster={posterUrl}
 					theme='minimal'
-					autoPlay={!isModalOpen}
+					autoPlay
 					loop
 					muted
 					playsInline
-					paused={isModalOpen}
+					paused={isPaused}
 					onLoadedData={handleLoadedData}
 					minResolution='720p'
 					renditionOrder='desc'
@@ -114,5 +117,5 @@ const MobileVideo = ({ data, src, onReady, isModalOpen }: I.MobileVideoProps) =>
 
 // Exports
 // ------------
-MobileVideo.displayName = 'MobileVideo';
-export default MobileVideo;
+Video.displayName = 'Video';
+export default Video;

@@ -14,7 +14,7 @@ export type DatoVideoData = {
 	blurUpThumb?: string;
 };
 
-export type MobileVideoProps = {
+export type VideoProps = {
 	/** DatoCMS/Mux video object for VideoPlayer (preferred) */
 	data?: DatoVideoData | null;
 	/** Fallback URL for native video when data is unavailable */
