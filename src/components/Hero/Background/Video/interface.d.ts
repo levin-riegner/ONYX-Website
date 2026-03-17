@@ -15,10 +15,8 @@ export type DatoVideoData = {
 };
 
 export type VideoProps = {
-	/** DatoCMS/Mux video object for VideoPlayer (preferred) */
+	/** DatoCMS/Mux video object for VideoPlayer */
 	data?: DatoVideoData | null;
-	/** Fallback URL for native video when data is unavailable */
-	src?: string;
 	onReady: () => void;
 	isModalOpen: boolean;
 };

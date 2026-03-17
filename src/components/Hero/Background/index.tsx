@@ -16,6 +16,10 @@ const Video = dynamic(() => import('./Video'), { ssr: false });
 import type * as I from './interface';
 import * as S from './styles';
 
+// LCP: poster URL for hero video (same as Video component)
+const getPosterUrl = (muxPlaybackId: string) =>
+	`https://image.mux.com/${muxPlaybackId}/thumbnail.webp?width=1000&fit_mode=smartcrop`;
+
 // Component
 // ------------
 const Background = ({ sceneId, video }: I.BackgroundProps) => {
@@ -28,12 +32,22 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 	// Event Handlers (stable ref to avoid MobileVideo effect churn)
 	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
 
-	// Don't load either until we know the device (avoids loading both bundles)
+	// Don't load Video/Unicorn until we know the device (avoids loading both bundles)
 	const isReady = isDesktop || isMobile;
+
+	// LCP: render poster immediately when we have video data (don't wait for useResponsive)
+	const posterUrl = video?.muxPlaybackId ? getPosterUrl(video.muxPlaybackId) : null;
 
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
-			{!isReady ? null : (
+			{/* LCP: poster in DOM on first paint so Lighthouse measures it early */}
+			{posterUrl && (
+				<S.PosterWrapper>
+					<S.Poster src={posterUrl} alt='' fetchPriority='high' onLoad={handleLoad} />
+				</S.PosterWrapper>
+			)}
+			{/* Video + Unicorn load when device is known */}
+			{isReady && (
 				<>
 					{isDesktop && (
 						<UnicornScene
@@ -49,14 +63,7 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 						/>
 					)}
 					<Video
-						data={video}
-						src={
-							video?.streamingUrl ??
-							video?.mp4High ??
-							video?.mp4Med ??
-							video?.mp4Low ??
-							'/stone-desktop.mp4'
-						}
+						data={video ?? undefined}
 						onReady={handleLoad}
 						isModalOpen={isModalOpen}
 					/>

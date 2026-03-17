@@ -50,11 +50,20 @@ const Loader = () => {
 	const { isLoaderFinished, setIsLoaderFinished, pageLoaded, areModalsReady, isFontsLoaded } =
 		use(GlobalContext);
 
+	// Relaxed: only require page + fonts for LCP; modals load async below the fold
 	const allModalsReady =
 		areModalsReady.activation &&
 		areModalsReady.dataSupply &&
 		areModalsReady.about &&
 		areModalsReady.contact;
+
+	// Fallback: proceed after 2s even if modals aren't ready (avoids blocking on slow networks)
+	const [modalsTimeout, setModalsTimeout] = useState(false);
+	useEffect(() => {
+		const t = setTimeout(() => setModalsTimeout(true), 2000);
+		return () => clearTimeout(t);
+	}, []);
+	const canProceed = (pageLoaded && isFontsLoaded && allModalsReady) || (pageLoaded && isFontsLoaded && modalsTimeout);
 
 	// States
 	const [shouldRender, setShouldRender] = useState(true);
@@ -147,7 +156,7 @@ const Loader = () => {
 			gsap.set(verticalLines, { scaleY: LINE_SETTINGS.BEFORE.SCALE });
 			gsap.set(pluses, { autoAlpha: 0 });
 
-			if (!pageLoaded || !isFontsLoaded || !allModalsReady) return;
+			if (!canProceed) return;
 
 			const tl = gsap.timeline({ delay: LINE_SETTINGS.DELAY });
 
@@ -180,7 +189,7 @@ const Loader = () => {
 
 			frameRef.current = tl;
 		},
-		{ scope: jacketRef, dependencies: [pageLoaded, isFontsLoaded, allModalsReady] }
+		{ scope: jacketRef, dependencies: [pageLoaded, isFontsLoaded, allModalsReady, modalsTimeout] }
 	);
 
 	// Kill GSAP timelines on unmount to prevent memory leaks
@@ -192,9 +201,9 @@ const Loader = () => {
 		[]
 	);
 
-	// Stop pulse after minimum 3 iterations when page, fonts, and modals are ready
+	// Stop pulse after minimum 3 iterations when page, fonts, and modals (or timeout) are ready
 	useEffect(() => {
-		if (!pageLoaded || !isFontsLoaded || !allModalsReady || !pulseRef.current) return;
+		if (!canProceed || !pulseRef.current) return;
 
 		const tl = pulseRef.current;
 		const currentIteration = tl.iteration();
@@ -202,7 +211,7 @@ const Loader = () => {
 
 		tl.repeat(remaining);
 		tl.eventCallback('onComplete', () => setIsLoaderFinished(true));
-	}, [pageLoaded, isFontsLoaded, allModalsReady, setIsLoaderFinished]);
+	}, [canProceed, setIsLoaderFinished]);
 
 	// Outro Animation — run immediately when loader is ready (don't wait for frame)
 	useAnimation(
