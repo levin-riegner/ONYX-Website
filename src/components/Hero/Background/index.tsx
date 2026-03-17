@@ -46,28 +46,22 @@ const Background = ({ sceneId, video }: I.BackgroundProps) => {
 					<S.Poster src={posterUrl} alt='' fetchPriority='high' onLoad={handleLoad} />
 				</S.PosterWrapper>
 			)}
+
 			{/* Video + Unicorn load when device is known */}
-			{isReady && (
-				<>
-					{isDesktop && (
-						<UnicornScene
-							className='unicorn'
-							projectId={sceneId}
-							width='100%'
-							height='100%'
-							lazyLoad={true}
-							production={true}
-							dpi={1}
-							fps={60}
-						/>
-					)}
-					<Video
-						data={video ?? undefined}
-						onReady={handleLoad}
-						isModalOpen={isModalOpen}
-					/>
-				</>
+			{isReady && isDesktop && (
+				<UnicornScene
+					className='unicorn'
+					projectId={sceneId}
+					width='100%'
+					height='100%'
+					lazyLoad={true}
+					production={true}
+					dpi={1}
+					fps={60}
+				/>
 			)}
+
+			<Video data={video ?? undefined} onReady={handleLoad} isModalOpen={isModalOpen} />
 		</S.Jacket>
 	);
 };
