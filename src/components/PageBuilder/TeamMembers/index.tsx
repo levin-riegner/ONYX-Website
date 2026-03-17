@@ -9,6 +9,7 @@ import { NestedLenisContext } from '@parts/NestedLenis';
 import { use, useRef, useState, useEffect } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { bezzy4 } from '@parts/AnimationPlugins/Curves';
 import Member from './Member';
 
@@ -86,6 +87,19 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 		({ isDesktop }) => {
 			if (!isDesktop || aniCheck) return;
 
+			const list = listRef.current;
+			const bottom = bottomRef.current;
+			const scroller = scrollWrapper.current;
+			if (!list || !bottom || !scroller) return;
+
+			// Kill existing ScrollTriggers for this trigger to prevent stale state / conflicts
+			ScrollTrigger.getAll().forEach(st => {
+				if (st.trigger === bottom) st.kill();
+			});
+
+			// Reset list position before animating (prevents wrong initial state from previous runs)
+			gsap.set(list, { x: 0 });
+
 			const scrollDistance = (teamMembers.length - 1) * 100;
 			const n = teamMembers.length;
 
@@ -97,12 +111,12 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 				return Math.max(0, Math.min(1, index * step));
 			};
 
-			gsap.to(listRef.current, {
+			gsap.to(list, {
 				x: -(teamMembers.length - 1) * memberWidth,
 				ease: 'none',
 				scrollTrigger: {
-					trigger: bottomRef.current,
-					scroller: scrollWrapper.current,
+					trigger: bottom,
+					scroller,
 					start: 'top top',
 					end: `+=${scrollDistance}%`,
 					pin: true,
@@ -117,7 +131,11 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 				},
 			});
 		},
-		{ scope: jacketRef, dependencies: [lenisReady, teamMembers.length, memberWidth] }
+		{
+			scope: jacketRef,
+			dependencies: [lenisReady, teamMembers.length, memberWidth],
+			revertOnUpdate: true,
+		}
 	);
 
 	return (

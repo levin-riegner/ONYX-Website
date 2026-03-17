@@ -63,6 +63,9 @@ const Member = ({ name, role, linkedinUrl, email, image }: I.MemberProps) => {
 					sizes='100vw, (min-width: 1024px) 66vw'
 					blurDataURL={image.blur}
 					placeholder='blur'
+					loading='eager'
+					priority={true}
+					fetchPriority='high'
 				/>
 			</S.Picture>
 
