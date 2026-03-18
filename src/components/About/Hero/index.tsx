@@ -41,10 +41,7 @@ const Hero = ({ title, heading, desc, featuredImage }: I.HeroProps) => {
 			<S.Bottom $padBottom>
 				<Grid>
 					<S.Heading $l='1/10'>
-						{/* <AnimatedHeading isReady={isReady}>{heading}</AnimatedHeading> */}
-						<AnimatedHeading isReady={isReady}>
-							Founded by industry leaders
-						</AnimatedHeading>
+						<AnimatedHeading isReady={isReady}>{heading}</AnimatedHeading>
 					</S.Heading>
 
 					<S.Desc $l='1/9'>{desc}</S.Desc>
