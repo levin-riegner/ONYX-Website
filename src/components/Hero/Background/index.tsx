@@ -25,10 +25,10 @@ const Background = ({ sceneId }: I.BackgroundProps) => {
 					projectId={sceneId}
 					width='100%'
 					height='100%'
-					lazyLoad={true}
 					production={true}
 					dpi={1}
 					fps={60}
+					sdkUrl='https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.4/dist/unicornStudio.umd.js'
 				/>
 			)}
 

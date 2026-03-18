@@ -111,18 +111,15 @@ export const Vertical = styled.span<StylesInterface>(
 );
 
 export const FeatureMedia = styled(Picture)<StylesInterface>(
-	({ $isEven }) => css`
+	() => css`
         width: 100%;
         aspect-ratio: var(--aspect);
 		position: relative;
         display: block;
-        
-        padding: ${getGap('sm')};
         background: ${getGlobal('luxuryWhite')};
 
         ${bp.l`
             flex: 1 1 50%;
-            padding: ${getGap('xxl')};
         `}
 
         img {

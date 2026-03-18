@@ -95,7 +95,7 @@ export const Heading = styled(Div)(
 export const Marquee = styled(Div)<StylesInterface>(
 	({ $isModalOpen, $isLoaderFinished, $speed }) => css`
 		--gap: ${getGap('xxl')};
-		--max: 90.6rem;
+		--max: 90%;
 
 		display: flex;
 		overflow: hidden;

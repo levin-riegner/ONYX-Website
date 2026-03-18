@@ -19,8 +19,6 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 					<ThemeProvider theme={theme} key='themeprovider'>
 						<GlobalStyle />
 
-						{/* GridExposer only rendered in development environment */}
-
 						{/* CookieBar only rendered in production environment */}
 						{/* {process.env.NODE_ENV === 'production' && <CookieBar />} */}
 
