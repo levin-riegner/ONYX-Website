@@ -15,12 +15,6 @@ import * as S from './styles';
 const FORM_NAME = 'contact';
 const FORM_ACTION = '/__forms.html';
 const FORM_DATA = {
-	radios: [
-		{ label: 'Platform' },
-		{ label: 'Agency' },
-		{ label: 'Brand' },
-		{ label: 'General Enquiry' },
-	],
 	inputs: {
 		name: {
 			label: 'Name',
@@ -104,30 +98,6 @@ const Form = () => {
 			onSubmit={handleSubmit}
 		>
 			<input type='hidden' name='form-name' value={FORM_NAME} />
-
-			<S.Radios>
-				<h3>What are you?</h3>
-
-				<fieldset>
-					{FORM_DATA.radios.map(({ label }, index) => {
-						// Label to Value
-						const labelToValue = label.toLowerCase().replace(/ /g, '-');
-						const isLast = index === FORM_DATA.radios.length - 1;
-
-						return (
-							<S.Radio data-hover key={labelToValue}>
-								<input
-									type='radio'
-									name='typical-radio'
-									value={labelToValue}
-									defaultChecked={isLast}
-								/>
-								<span>{label}</span>
-							</S.Radio>
-						);
-					})}
-				</fieldset>
-			</S.Radios>
 
 			<S.Inputs>
 				<S.Input
