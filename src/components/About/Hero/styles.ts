@@ -1,7 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, Div, getGlobal, getGap, Header, P, H3, Picture } from '@tackl';
+import { bp, Section, Div, getGlobal, getGap, Header, P, H3, Picture, getBrand } from '@tackl';
 import { bodyL, headlineL } from '@tackl/type';
 
 // Interfaces
@@ -48,6 +48,7 @@ export const Jacket = styled(Header)<StylesInterface>(
 export const Top = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
+        z-index: 2;
         flex: 0 1 auto;
 	`
 );
@@ -55,24 +56,13 @@ export const Top = styled(Section)<StylesInterface>(
 export const Bottom = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-
-        waffl-grid {
-            flex: 1;
-            min-height: 0;
-            display: grid;
-            grid-template-rows: 1fr;
-            align-content: stretch;
-        }
 	`
 );
 
 export const SectionTitlePosition = styled(Div)<StylesInterface>(
 	() => css`
 		position: relative;
+        z-index: 2;
 	`
 );
 
@@ -146,5 +136,44 @@ export const FeaturedImage = styled(Picture)<StylesInterface>(
             height: 100%;
             object-fit: cover;  
         }
+	`
+);
+
+export const LogoBackground = styled(Div)(
+	() => css`
+		position: absolute;
+        inset: 0;
+		z-index: 0;
+
+        display: grid;
+        place-items: center;
+
+        > i {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            transform: rotate(45deg) translateY(-25%);
+            /* transform-origin: top left; */
+
+            > i {
+                display: flex;
+                align-items: center;
+                justify-self: flex-start;
+                gap: ${getGap('m')};
+
+                &:nth-child(2) {
+                    transform: translateX(-25.55%);
+                }
+            }
+        }
+
+        svg {
+            --width: 182.1rem;
+
+            fill: ${getGlobal('luxuryWhite')};
+            filter: drop-shadow(0 0 10rem ${getBrand('bc5')});
+        }
+        
 	`
 );

@@ -29,6 +29,7 @@ export const Jacket = styled(Section)<StylesInterface>(
 	() => css`
       position: relative;
       overflow: clip;
+      background: ${getGlobal('luxuryWhite')};
 
       > .frame {
         position: absolute;
@@ -57,6 +58,7 @@ export const Top = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
     padding-top: ${getGap('xxl')};
+    background: ${getGlobal('luxuryWhite')};
 
     ${bp.l`
       padding-top: ${getGap('huge')};
@@ -95,6 +97,7 @@ export const Bottom = styled(Section)<StylesInterface>(
 		position: relative;
     width: 100%;
     padding: ${getGap('xl')} ${getGap('m')} ${getGap('m')} ${getGap('m')};
+    background: ${getGlobal('luxuryWhite')};
 
     ${bp.l`
       padding: ${getGap('huge')};
