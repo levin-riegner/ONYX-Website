@@ -19,18 +19,18 @@ const Background = ({ sceneId }: I.BackgroundProps) => {
 
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
-			{isLoaderFinished && (
-				<UnicornScene
-					className='unicorn'
-					projectId={sceneId}
-					width='100%'
-					height='100%'
-					lazyLoad={true}
-					production={true}
-					dpi={1}
-					fps={60}
-				/>
-			)}
+			{/* {isLoaderFinished && ( */}
+			<UnicornScene
+				className='unicorn'
+				projectId={sceneId}
+				width='100%'
+				height='100%'
+				production={true}
+				dpi={1}
+				fps={60}
+				sdkUrl='https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.4/dist/unicornStudio.umd.js'
+			/>
+			{/* )} */}
 
 			<Video videoSrc='/stone.mp4' />
 		</S.Jacket>
