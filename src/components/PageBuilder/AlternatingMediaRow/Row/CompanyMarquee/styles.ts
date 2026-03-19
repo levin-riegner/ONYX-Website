@@ -15,7 +15,7 @@ interface StylesInterface {
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
 	({ $speed, $isMarquee }) => css`
-        --gap: 1rem;
+        --gap: ${getGap('xs')};
         
         display: flex;
         width: 100%;
@@ -23,14 +23,18 @@ export const Jacket = styled(Section)<StylesInterface>(
         user-select: none;
         gap: var(--gap);
 
-        mask-image: linear-gradient(
-			270deg,
-			${getGlobal('white', 0)} 0%,
-			${getGlobal('white')} 10%,
-			${getGlobal('white')} 50%,
-			${getGlobal('white')} 90%,
-			${getGlobal('white', 0)} 100%
-		);
+        ${
+			$isMarquee &&
+			css`
+                mask-image: linear-gradient(
+                270deg,
+                ${getGlobal('white', 0)} 0%,
+                ${getGlobal('white')} 10%,
+                ${getGlobal('white')} 50%,
+                ${getGlobal('white')} 90%,
+                ${getGlobal('white', 0)} 100%
+            );`
+		}
 
         @keyframes company-scroll {
             from {
@@ -42,21 +46,31 @@ export const Jacket = styled(Section)<StylesInterface>(
         }
 
         ul {
-            flex-shrink: 0;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
             gap: var(--gap);
 
-            
+            ${
+				$isMarquee &&
+				css`
+                    flex-shrink: 0;
+                    display: flex;
+                    justify-content: space-around;
+                    gap: var(--gap);
+                    animation: company-scroll ${($speed ?? 1) * 10}s linear infinite;
+                `
+			}
 
-            animation: company-scroll ${($speed ?? 1) * 10}s linear infinite;
+            &:last-child {
+                display: ${$isMarquee ? 'flex' : 'none'};
+            }
 
             li {
                 ${captionL}
 
                 display: block;
                 color: ${getBrand('bc3')};
-                min-width: max-content;
+                min-width: ${$isMarquee ? 'max-content' : 'auto'};
 
                 &:after {
                     content: '•';
