@@ -40,7 +40,7 @@ const CompanyMarquee = ({ speed, companies }: I.CompanyMarqueeProps) => {
 				start: 'top bottom',
 				end: 'bottom top',
 				scrub: false,
-				markers: true,
+				markers: false,
 				onEnter: () => setCanPlay(true),
 				onEnterBack: () => setCanPlay(true),
 				onLeave: () => setCanPlay(false),
