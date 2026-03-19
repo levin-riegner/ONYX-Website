@@ -22,38 +22,50 @@ export const Jacket = styled(Div)<StylesInterface>(
 export const Content = styled(Div)<StylesInterface>(
 	({ $isEven }) => css`
         --aspect: 1/1;
+        --desktop-padd: ${getGap('uber')};
 
         display: flex;
         flex-flow: column;
         
         gap: ${getGap('sm')};
         width: 100%;
-        padding: 0 var(--mobile-extra-pad)  ${getGap('l')};
+        padding-inline: var(--mobile-extra-pad);
+        padding-bottom: ${getGap('l')};
 
         ${bp.m`
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-areas: '${$isEven ? 'media text' : 'text media'}';
             gap: ${getGap('l')};
-            padding-inline: ${getGap('uber')};
+            padding-inline: ${$isEven ? `0 var(--desktop-padd)` : `var(--desktop-padd) 0`};
+            padding-bottom: 0;
         `}
     `
 );
 
-export const Media = styled(Picture)(
+export const Media = styled(Div)(
 	() => css`
         grid-area: media;
 
         position: relative;
         display: flex;
         aspect-ratio: var(--aspect);
+        overflow: hidden;
+    `
+);
+
+export const MediaAnimation = styled(Picture)(
+	() => css`
+        position: absolute;
+        inset: 0;
+        mix-blend-mode: multiply;
 
         img {
             display: block;
             object-fit: contain;
             width: 100%;
             height: 100%;
-            mix-blend-mode: multiply;
+            
         }
     `
 );
