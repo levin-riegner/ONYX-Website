@@ -3,6 +3,7 @@
 // Imports
 // ------------
 import Image from 'next/image';
+import CompanyMarquee from './CompanyMarquee';
 
 // Styles + Interfaces
 // ------------
@@ -35,13 +36,7 @@ const Row = ({
 				<S.Texts>
 					<h3>{heading}</h3>
 					{showDescription && <p>{desc}</p>}
-					{showCompanyNames && (
-						<ul>
-							{companyNames.map(company => (
-								<li key={company.heading}>{company.heading}</li>
-							))}
-						</ul>
-					)}
+					{showCompanyNames && <CompanyMarquee speed={1} companies={companyNames} />}
 				</S.Texts>
 			</S.Content>
 		</S.Jacket>
