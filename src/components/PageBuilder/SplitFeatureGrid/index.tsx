@@ -5,7 +5,7 @@
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
-import Image from 'next/image';
+import GridItem from './GridItem';
 import { Fragment } from 'react';
 
 // Styles + Interfaces
@@ -37,27 +37,13 @@ const SplitFeatureGrid = ({ heading, features, isReady }: I.SplitFeatureGridProp
 
 					return (
 						<Fragment key={feature.heading}>
-							<S.Feature $isEven={isEven}>
-								<S.FeatureMedia $isEven={isEven}>
-									{isReady && (
-										<Image
-											src={feature.media.url}
-											alt={feature.media.alt}
-											width={360}
-											height={360}
-											loading='eager'
-											fetchPriority='high'
-										/>
-									)}
-								</S.FeatureMedia>
-
-								<S.Vertical />
-
-								<S.FeatureContent>
-									<S.FeatureHeading>{feature.heading}</S.FeatureHeading>
-									<S.FeatureDesc>{feature.desc}</S.FeatureDesc>
-								</S.FeatureContent>
-							</S.Feature>
+							<GridItem
+								heading={feature.heading}
+								desc={feature.desc}
+								media={feature.media}
+								isEven={isEven}
+								isReady={isReady}
+							/>
 
 							<Frame className='bottom' />
 						</Fragment>

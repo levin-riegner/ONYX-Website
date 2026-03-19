@@ -60,7 +60,7 @@ export const Heading = styled(H3)<StylesInterface>(
 );
 
 export const Desc = styled(P)<StylesInterface>(
-	({ $isReady }) => css`
+	() => css`
         ${bodyL}
         color: ${getGlobal('black', 50)};
 

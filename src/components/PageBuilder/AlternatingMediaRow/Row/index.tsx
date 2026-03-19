@@ -20,17 +20,22 @@ const Row = ({
 	showDescription,
 	iconImage,
 	isEven,
+	isReady,
 }: I.RowProps) => {
 	return (
 		<S.Jacket>
 			<S.Content $isEven={isEven}>
 				<S.Media>
-					<Image
-						src={iconImage.url}
-						alt={iconImage.alt}
-						fill
-						sizes='(max-width: 1023px) 100vw, 23vw'
-					/>
+					{isReady && (
+						<Image
+							src={iconImage.url}
+							alt={iconImage.alt}
+							fill
+							sizes='(max-width: 1023px) 100vw, 23vw'
+							loading='eager'
+							fetchPriority='high'
+						/>
+					)}
 				</S.Media>
 
 				<S.Texts>

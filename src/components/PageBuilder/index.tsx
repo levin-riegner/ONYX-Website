@@ -53,6 +53,7 @@ const renderBlock = (
 					heading={block.heading}
 					desc={block.desc ?? ''}
 					rows={block.rows ?? []}
+					isReady={isReady}
 				/>
 			);
 		case 'ComparisonTableRecord':

@@ -8,4 +8,5 @@ export interface AlternatingMediaRowProps {
 	heading: string;
 	desc: string;
 	rows: RowProps[];
+	isReady?: boolean;
 }

@@ -15,7 +15,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const AlternatingMediaRow = ({ heading, desc, rows }: I.AlternatingMediaRowProps) => {
+const AlternatingMediaRow = ({ heading, desc, rows, isReady }: I.AlternatingMediaRowProps) => {
 	return (
 		<S.Jacket>
 			<SideFrame />
@@ -54,6 +54,7 @@ const AlternatingMediaRow = ({ heading, desc, rows }: I.AlternatingMediaRowProps
 									showCompanyNames={showCompanyNames}
 									showDescription={showDescription}
 									iconImage={iconImage}
+									isReady={isReady}
 								/>
 								<Frame />
 							</Fragment>
