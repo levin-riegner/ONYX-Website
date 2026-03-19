@@ -93,8 +93,13 @@ export const Row = styled(Div)<StylesInterface>(
 
 			${bp.l`
 				--width: 24rem;
-				--height: 12rem;
+				--height: 10rem;
+
 				padding-inline: ${getGap('s')};
+
+				@media (min-height: 820px) {
+					--height: 12rem;
+				}
 			`}
 
 			img {
