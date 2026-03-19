@@ -37,7 +37,7 @@ const GridItem = ({ heading, desc, media, isEven, isReady }: I.GridItemProps) =>
 
 			gsap.set(mediaRef.current, {
 				autoAlpha: 0,
-				scale: 1.2,
+				scale: 1.5,
 			});
 
 			gsap.to(mediaRef.current, {
@@ -48,8 +48,8 @@ const GridItem = ({ heading, desc, media, isEven, isReady }: I.GridItemProps) =>
 					trigger: jacketRef.current,
 					scroller: scrollWrapper.current,
 					start: 'top 100%',
-					end: 'top 60%',
-					scrub: 0.5,
+					end: 'top 50%',
+					scrub: 0.25,
 				},
 			});
 		},

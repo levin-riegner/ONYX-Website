@@ -46,7 +46,13 @@ const renderBlock = (
 				<NumberedProcessGrid heading={block.heading} processes={block.processes ?? []} />
 			);
 		case 'StatisticsGridRecord':
-			return <StatisticsGrid heading={block.heading} statistics={block.statistics ?? []} />;
+			return (
+				<StatisticsGrid
+					heading={block.heading}
+					statistics={block.statistics ?? []}
+					isReady={isReady}
+				/>
+			);
 		case 'AlternatingMediaRowRecord':
 			return (
 				<AlternatingMediaRow
@@ -73,6 +79,7 @@ const renderBlock = (
 					inlineCallToAction={block.inlineCallToAction}
 					statistics={block.statistics}
 					contactTitle={contactTitle ?? null}
+					isReady={isReady}
 				/>
 			);
 		case 'HeadingDescriptionRecord':

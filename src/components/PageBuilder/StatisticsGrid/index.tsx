@@ -15,7 +15,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const StatisticsGrid = ({ heading, statistics }: I.StatisticsGridProps) => {
+const StatisticsGrid = ({ heading, statistics, isReady }: I.StatisticsGridProps) => {
 	return (
 		<S.Jacket>
 			<SideFrame />
@@ -53,6 +53,7 @@ const StatisticsGrid = ({ heading, statistics }: I.StatisticsGridProps) => {
 										symbolBeforeNumber={symbolBeforeNumber}
 										symbolAfterNumber={symbolAfterNumber}
 										number={number}
+										isReady={isReady}
 									/>
 									<S.FrameWrapper $mobileOnly>
 										<Frame />

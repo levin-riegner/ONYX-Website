@@ -33,6 +33,7 @@ const EditorialStoryCtaStat = ({
 	animatedText,
 	inlineCallToAction,
 	statistics,
+	isReady,
 }: I.EditorialStoryCtaStatProps) => {
 	// Refs
 	const jacketRef = useRef<HTMLDivElement>(null);
@@ -174,6 +175,7 @@ const EditorialStoryCtaStat = ({
 									symbolBeforeNumber={statistic.symbolBeforeNumber ?? ''}
 									symbolAfterNumber={statistic.symbolAfterNumber ?? ''}
 									number={statistic.number ?? ''}
+									isReady={isReady}
 								/>
 							))}
 						</ul>

@@ -7,4 +7,5 @@ import type { StatisticProps } from './Statistic/interface';
 export interface StatisticsGridProps {
 	heading: string;
 	statistics: StatisticProps[];
+	isReady?: boolean;
 }
