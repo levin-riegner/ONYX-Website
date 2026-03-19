@@ -29,8 +29,7 @@ const Process = ({ heading, description, itemIndex }: I.ProcessProps) => {
 
 			gsap.set(numberRef.current, {
 				autoAlpha: 0,
-				scale: isDesktop ? 0.5 : 1,
-				yPercent: 50,
+				scale: 2,
 			});
 
 			gsap.to(numberRef.current, {
@@ -41,7 +40,7 @@ const Process = ({ heading, description, itemIndex }: I.ProcessProps) => {
 					trigger: jacketRef.current,
 					scroller: scrollWrapper.current,
 					start: 'center 100%',
-					end: 'center 70%',
+					end: 'center 60%',
 					scrub: 0.5,
 				},
 			});

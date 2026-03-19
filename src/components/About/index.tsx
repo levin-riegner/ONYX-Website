@@ -33,7 +33,10 @@ const About = ({
 	legalTitle,
 }: I.AboutProps) => {
 	// Contexts
-	const { setAreModalsReady } = use(GlobalContext);
+	const { isModalOpen, modalActive, setAreModalsReady } = use(GlobalContext);
+
+	// Animation Checker
+	const isReady = isModalOpen && modalActive === title;
 
 	// Set Modal ready on mount
 	useEffect(() => {
@@ -44,7 +47,13 @@ const About = ({
 		<Modal title={title}>
 			<Hero title={title} heading={heading} desc={desc} featuredImage={featuredImage} />
 
-			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} contactTitle={contactTitle} />}
+			{pageBuilder && (
+				<PageBuilder
+					pageBuilder={pageBuilder}
+					contactTitle={contactTitle}
+					isReady={isReady}
+				/>
+			)}
 
 			<CallToAction
 				heading={ctaHeading}

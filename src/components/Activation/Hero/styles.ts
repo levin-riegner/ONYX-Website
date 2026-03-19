@@ -1,19 +1,19 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, Div, getGlobal, getGap, H3, P, Header } from '@tackl';
+import { bp, Section, Div, getGlobal, getGap, H3, P, Header, getEase } from '@tackl';
 import { bodyL, headlineL } from '@tackl/type';
 
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	$isReady?: boolean;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Header)<StylesInterface>(
-	() => css`
+	({ $isReady }) => css`
         position: relative;
         display: flex;
         flex-direction: column;
@@ -66,6 +66,10 @@ export const Desc = styled(P)<StylesInterface>(
 
         user-select: none;
         pointer-events: none;
+
+        * {
+            color: ${getGlobal('black', 50)};
+        }
 	`
 );
 
@@ -77,7 +81,11 @@ export const Top = styled(Section)<StylesInterface>(
 );
 
 export const Bottom = styled(Section)<StylesInterface>(
-	() => css`
+	({ $isReady }) => css`
 		position: relative;
+
+        transform: translateY(${$isReady ? 0 : 100}%);
+        opacity: ${$isReady ? 1 : 0};
+        transition: transform 1.2s ${getEase('bezzy3')}, opacity 1.2s ${getEase('bezzy3')};
 	`
 );

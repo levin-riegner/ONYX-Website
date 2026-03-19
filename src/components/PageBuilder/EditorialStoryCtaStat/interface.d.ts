@@ -1,5 +1,6 @@
 // Imports
 // ------------
+import type { StatisticProps } from '../StatisticsGrid/Statistic/interface';
 
 // Exports
 // ------------
@@ -7,6 +8,7 @@ export interface EditorialStoryCtaStatProps {
 	contactTitle?: string | null;
 	heading: string;
 	animatedText?: string;
+	isReady?: boolean;
 	inlineCallToAction?: {
 		description?: string;
 		buttonLabel?: string;
@@ -18,12 +20,5 @@ export interface EditorialStoryCtaStatProps {
 			blur?: string;
 		};
 	};
-	statistics?: {
-		symbolBeforeNumber?: string;
-		symbolAfterNumber?: string;
-		number?: string;
-		hasSymbolBefore?: boolean;
-		heading?: string;
-		id?: string;
-	}[];
+	statistics?: StatisticProps[];
 }

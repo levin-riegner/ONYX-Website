@@ -33,7 +33,10 @@ const Activation = ({
 	legalTitle,
 }: I.ActivationProps) => {
 	// Contexts
-	const { setAreModalsReady } = use(GlobalContext);
+	const { isModalOpen, modalActive, setAreModalsReady } = use(GlobalContext);
+
+	// Animation Checker
+	const isReady = isModalOpen && modalActive === title;
 
 	// Set Modal ready on mount
 	useEffect(() => {
@@ -42,9 +45,21 @@ const Activation = ({
 
 	return (
 		<Modal title={title}>
-			<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
+			<Hero
+				logoMarquee={logoMarquee}
+				title={title}
+				heading={heading}
+				desc={desc}
+				isReady={isReady}
+			/>
 
-			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} contactTitle={contactTitle} />}
+			{pageBuilder && (
+				<PageBuilder
+					pageBuilder={pageBuilder}
+					contactTitle={contactTitle}
+					isReady={isReady}
+				/>
+			)}
 
 			<CallToAction
 				heading={ctaHeading}

@@ -12,6 +12,7 @@ export interface RowProps {
 	showDescription: boolean;
 	iconImage: IconImage;
 	isEven: boolean;
+	isReady?: boolean;
 }
 
 export interface CompanyName {

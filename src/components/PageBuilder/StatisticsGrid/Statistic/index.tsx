@@ -27,6 +27,7 @@ const Statistic = ({
 	symbolBeforeNumber,
 	symbolAfterNumber,
 	number,
+	isReady,
 }: I.StatisticProps) => {
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
 
@@ -39,6 +40,7 @@ const Statistic = ({
 				!numberRef.current ||
 				!scrollWrapper.current ||
 				!lenisReady ||
+				!isReady ||
 				Number.isNaN(targetNumber)
 			)
 				return;
@@ -53,8 +55,7 @@ const Statistic = ({
 				{ value: 0 },
 				{
 					value: animationTarget,
-					duration: 1.2,
-					ease: slow,
+					ease: 'none',
 					onUpdate: () => {
 						if (!numberRef.current) return;
 						numberRef.current.textContent = formatDisplayValue(obj.value, useK);
@@ -62,13 +63,14 @@ const Statistic = ({
 					scrollTrigger: {
 						trigger: numberRef.current,
 						scroller: scrollWrapper.current,
-						start: 'top 90%',
-						toggleActions: 'play none none none',
+						start: 'top 100%',
+						end: 'top 60%',
+						scrub: 0.5,
 					},
 				}
 			);
 		},
-		{ scope: numberRef, dependencies: [lenisReady] }
+		{ scope: numberRef, dependencies: [lenisReady, isReady] }
 	);
 
 	return (

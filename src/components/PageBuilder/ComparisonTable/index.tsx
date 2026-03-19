@@ -72,6 +72,8 @@ const ComparisonTable = ({ heading, background, desc, table }: I.ComparisonTable
 						alt={background.alt}
 						fill
 						sizes='100vw, (min-width: 1024px) 66vw'
+						placeholder='blur'
+						blurDataURL={background.blur}
 					/>
 				)}
 			</S.Background>
