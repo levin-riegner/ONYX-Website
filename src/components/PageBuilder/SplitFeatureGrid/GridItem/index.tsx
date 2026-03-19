@@ -25,7 +25,7 @@ const GridItem = ({ heading, desc, media, isEven, isReady }: I.GridItemProps) =>
 
 	// Animations
 	useAnimation(
-		({ isDesktop }) => {
+		() => {
 			if (
 				!jacketRef.current ||
 				!mediaRef.current ||
@@ -49,7 +49,7 @@ const GridItem = ({ heading, desc, media, isEven, isReady }: I.GridItemProps) =>
 					scroller: scrollWrapper.current,
 					start: 'top 100%',
 					end: 'top 60%',
-					scrub: true,
+					scrub: 0.5,
 				},
 			});
 		},
