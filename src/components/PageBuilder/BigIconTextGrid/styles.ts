@@ -51,10 +51,9 @@ export const Top = styled(Section)(
 	`
 );
 
-export const Heading = styled(H2)(
+export const Heading = styled(Div)(
 	() => css`
-		${headlineS}
-        color: ${getGlobal('black')};
+	
 	`
 );
 

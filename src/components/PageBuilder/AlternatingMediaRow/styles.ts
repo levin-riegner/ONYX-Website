@@ -1,7 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, getGlobal, getGap, H3, P } from '@tackl';
+import { bp, Section, getGlobal, getGap, H3, P, Div } from '@tackl';
 import { bodyL, headlineS } from '@tackl/type';
 
 // Interfaces
@@ -49,19 +49,8 @@ export const Top = styled(Section)(
     `
 );
 
-export const Heading = styled(H3)(
+export const Heading = styled(Div)(
 	() => css`
-        ${headlineS}
-        position: relative;
-        z-index: 1;
-        color: ${getGlobal('black')};
-        text-wrap: balance;
-        
-        text-align: center;
-
-        ${bp.l`
-            text-align: left;
-        `}
     `
 );
 

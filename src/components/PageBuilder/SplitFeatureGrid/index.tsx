@@ -7,6 +7,7 @@ import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import GridItem from './GridItem';
 import { Fragment } from 'react';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -24,7 +25,9 @@ const SplitFeatureGrid = ({ heading, features, isReady }: I.SplitFeatureGridProp
 				<Frame className='top' />
 
 				<Grid>
-					<S.Heading $l='1/10'>{heading}</S.Heading>
+					<S.Heading>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 				</Grid>
 
 				<Frame className='bottom' />

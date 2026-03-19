@@ -116,11 +116,11 @@ export const Content = styled(Div)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H3)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-        ${headlineS}
-		color: ${getGlobal('white')};
-        text-wrap: balance;
+        h2, h2 * {
+            color: ${getGlobal('white')};
+        }
 	`
 );
 

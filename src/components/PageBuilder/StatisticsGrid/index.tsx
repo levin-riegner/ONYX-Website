@@ -7,6 +7,7 @@ import Statistic from './Statistic';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import { Fragment } from 'react';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -23,7 +24,9 @@ const StatisticsGrid = ({ heading, statistics, isReady }: I.StatisticsGridProps)
 			<S.Top>
 				<Frame className='top' />
 				<Grid>
-					<S.Heading $l='1/10'>{heading}</S.Heading>
+					<S.Heading $l='1/10'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 				</Grid>
 				<Frame className='bottom' />
 			</S.Top>

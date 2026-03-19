@@ -10,6 +10,7 @@ import { use, useRef } from 'react';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import gsap from 'gsap';
 import { useAnimation } from '@utils/useAnimation';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -69,7 +70,9 @@ const Section = ({ heading, desc, image }: I.SectionProps) => {
 
 			<S.Content>
 				<Grid>
-					<S.Heading $l='1/11'>{heading}</S.Heading>
+					<S.Heading $l='1/11'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Desc $l='1/11'>{desc}</S.Desc>
 				</Grid>
 			</S.Content>

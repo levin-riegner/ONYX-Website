@@ -48,19 +48,14 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H3)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-    ${headlineS}
-    color: ${getGlobal('black')};
-    text-wrap: balance;
-    text-align: center;
-    padding-block: ${getGap('xl')} ${getGap('l')};
+        padding-block: ${getGap('xl')} ${getGap('l')};
 
-    ${bp.l`
-        text-align: left;
-        padding-block: ${getGap('huge')} ${getGap('xxl')};
-    `}
-`
+        ${bp.l`
+            padding-block: ${getGap('huge')} ${getGap('xxl')};
+        `}
+    `
 );
 
 export const Bottom = styled(Section)<StylesInterface>(

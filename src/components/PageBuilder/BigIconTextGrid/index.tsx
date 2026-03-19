@@ -6,6 +6,7 @@ import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import SectionGrid from './SectionGrid';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -22,7 +23,9 @@ const BigIconTextGrid = ({ heading, desc, sections, isReady }: I.BigIconTextGrid
 
 			<S.Top>
 				<Grid>
-					<S.Heading $l='1/9'>{heading}</S.Heading>
+					<S.Heading $l='1/9'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Description $l='1/10'>{desc}</S.Description>
 				</Grid>
 			</S.Top>

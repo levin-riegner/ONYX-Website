@@ -20,12 +20,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const AnimatedHeading = ({
-	children,
-	className,
-	isReady = false,
-	trigger = true,
-}: I.AnimatedHeadingProps) => {
+const AnimatedHeading = ({ children, className, isReady = false }: I.AnimatedHeadingProps) => {
 	// Refs
 	const containerRef = useRef<HTMLDivElement>(null);
 

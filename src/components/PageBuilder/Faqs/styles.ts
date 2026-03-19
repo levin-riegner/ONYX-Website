@@ -78,12 +78,8 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H2)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-    ${headlineS}
-		position: relative;
-    color: ${getGlobal('black')};
-    text-wrap: balance;
 	`
 );
 

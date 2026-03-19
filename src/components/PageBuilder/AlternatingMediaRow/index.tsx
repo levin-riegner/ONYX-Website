@@ -7,6 +7,7 @@ import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Row from './Row';
 import { Fragment } from 'react';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -23,7 +24,9 @@ const AlternatingMediaRow = ({ heading, desc, rows, isReady }: I.AlternatingMedi
 			<S.Top>
 				<Frame className='top' />
 				<Grid>
-					<S.Heading $l='1/10'>{heading}</S.Heading>
+					<S.Heading $l='1/10'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Description $l='1/9'>{desc}</S.Description>
 				</Grid>
 				<Frame className='bottom' />

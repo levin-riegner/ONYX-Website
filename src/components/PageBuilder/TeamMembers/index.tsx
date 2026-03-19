@@ -2,13 +2,9 @@
 
 // Imports
 // ------------
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { CustomEase } from 'gsap/CustomEase';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(useGSAP, CustomEase, ScrollTrigger);
-
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
@@ -22,6 +18,10 @@ import Member from './Member';
 // ------------
 import type * as I from './interface';
 import * as S from './styles';
+
+// GSAP Plugins
+// ------------
+gsap.registerPlugin(ScrollTrigger);
 
 // Component
 // ------------
@@ -163,7 +163,9 @@ const TeamMembers = ({ heading, desc, teamMembers }: I.TeamMembersProps) => {
 			<S.Top>
 				<Frame className='top' isLight />
 				<Grid>
-					<S.Heading $l='3/11'>{heading}</S.Heading>
+					<S.Heading $l='3/11'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Desc $l='3/11'>{desc}</S.Desc>
 				</Grid>
 			</S.Top>
