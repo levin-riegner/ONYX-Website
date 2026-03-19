@@ -45,7 +45,13 @@ const Activation = ({
 
 	return (
 		<Modal title={title}>
-			<Hero logoMarquee={logoMarquee} title={title} heading={heading} desc={desc} />
+			<Hero
+				logoMarquee={logoMarquee}
+				title={title}
+				heading={heading}
+				desc={desc}
+				isReady={isReady}
+			/>
 
 			{pageBuilder && (
 				<PageBuilder
