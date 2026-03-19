@@ -27,6 +27,7 @@ interface StylesInterface {
 export const Jacket = styled(Footer)<StylesInterface>(
 	() => css`
         position: relative;
+        z-index: 3;
 
         display: flex;
         flex-direction: column;
@@ -81,14 +82,8 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H2)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-        ${headlineL}
-        
-		position: relative;
-
-        color: ${getGlobal('black')};
-        text-wrap: balance;
 	`
 );
 

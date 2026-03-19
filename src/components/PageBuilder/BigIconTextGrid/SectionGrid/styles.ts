@@ -29,21 +29,31 @@ interface StylesInterface {
 export const Jacket = styled(ListItem)<StylesInterface>(
 	() => css`
         position: relative;
+        z-index: 0;
         display: flex;
         flex-direction: column;
         gap: ${getGap('sm')};
         padding-bottom: ${getGap('l')};
+        background: ${getGlobal('luxuryWhite')};
+        
 
         ${bp.l`
+            position: sticky;
+            top: 0;
+            left: 0;
             gap: ${getGap('l')};
             padding-bottom: ${getGap('xxl')};
         `}
 
-        .frame.bottom {
+        .frame.top {
             position: absolute;
             left: 0;
-            bottom: 0;
+            top: var(--mobile-pad);
             z-index: 2;
+
+            ${bp.l`
+                top: ${getGap('sm')};
+            `}
         }
     `
 );

@@ -15,13 +15,19 @@ interface StylesInterface {
 export const Jacket = styled(Section)<StylesInterface>(
 	() => css`
         position: relative;
+        z-index: 0;
         background: ${getGlobal('luxuryWhite')};
         padding-block: var(--mobile-pad);
+        overflow: clip;
 
 
         ${bp.l`
             padding-block: ${getGap('sm')};
         `}
+
+        .side-frame {
+            z-index: 0;
+        }
     `
 );
 
@@ -31,7 +37,7 @@ export const Top = styled(Section)(
         padding-block: ${getGap('m')};
 
         ${bp.l`
-            padding-block: ${getGap('xxl')};
+            padding-block: ${getGap('xxl')} ${getGap('l')};
         `}
 
 
@@ -45,10 +51,9 @@ export const Top = styled(Section)(
 	`
 );
 
-export const Heading = styled(H2)(
+export const Heading = styled(Div)(
 	() => css`
-		${headlineS}
-        color: ${getGlobal('black')};
+	
 	`
 );
 
@@ -61,8 +66,8 @@ export const Description = styled(P)(
 
 export const Bottom = styled(Section)(
 	() => css`
-		position: relative;
-
+        background: ${getBrand('bc5')};
+        overflow: clip;
 
         ul {
             display: flex;

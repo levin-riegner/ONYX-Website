@@ -6,5 +6,5 @@
 export type HeroProps = {
 	title: string;
 	heading: string;
-	desc?: string;
+	desc: string;
 };

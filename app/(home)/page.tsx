@@ -91,7 +91,6 @@ const Page = async () => {
 				title={about.title}
 				heading={about.heading}
 				desc={about.desc}
-				featuredImage={about.featuredImage}
 				pageBuilder={about.pageBuilder}
 				isCtaOverridden={about.isCtaOverridden}
 				ctaOverrideHeading={about.overrideHeading}

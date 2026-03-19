@@ -2,12 +2,8 @@
 
 // Imports
 // ------------
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
 import { use, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Grid from '@waffl';
@@ -16,11 +12,16 @@ import Frame from '@parts/Frame';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import SingleFaq from './SingleFaq';
 import { useAnimation } from '@utils/useAnimation';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
 import * as S from './styles';
+
+// GSAP Plugins
+// ------------
+gsap.registerPlugin(ScrollTrigger);
 
 // Component
 // ------------
@@ -173,7 +174,9 @@ const Faqs = ({ heading, desc, allFaqs, background }: I.FaqsProps) => {
 
 			<S.Top>
 				<Grid>
-					<S.Heading $l='1/10'>{heading}</S.Heading>
+					<S.Heading $l='1/10'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Description $l='1/9'>{desc}</S.Description>
 				</Grid>
 			</S.Top>

@@ -15,6 +15,7 @@ interface StylesInterface {
 export const Jacket = styled(Header)<StylesInterface>(
 	() => css`
         position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -89,6 +90,10 @@ export const Desc = styled(P)<StylesInterface>(
 
         user-select: none;
         pointer-events: none;
+
+        * {
+            color: ${getGlobal('black', 50)};
+        }
 	`
 );
 

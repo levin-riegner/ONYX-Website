@@ -31,6 +31,10 @@ export const Jacket = styled(Section)<StylesInterface>(
       overflow: clip;
       background: ${getGlobal('luxuryWhite')};
 
+      .side-frame {
+        z-index: 1;
+      }
+
       > .frame {
         position: absolute;
         z-index: 2;
@@ -74,12 +78,8 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H2)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-    ${headlineS}
-		position: relative;
-    color: ${getGlobal('black')};
-    text-wrap: balance;
 	`
 );
 

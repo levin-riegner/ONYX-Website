@@ -1,7 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, getBrand, getGlobal, getGap, H2, P } from '@tackl';
+import { bp, Section, getBrand, getGlobal, getGap, H2, P, Div } from '@tackl';
 import { bodyL, headlineS } from '@tackl/type';
 
 // Interfaces
@@ -48,12 +48,14 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H2)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-		${headlineS}
-        color: ${getGlobal('luxuryWhite')};
-        text-wrap: balance;
-        text-align: center;
+		text-align: center;
+        
+		h2, h2 * {
+			text-align: center;
+			color: ${getGlobal('luxuryWhite')};
+		}
 	`
 );
 

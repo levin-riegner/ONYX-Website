@@ -1,7 +1,7 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Section, getBrand, getGlobal, getGap, H3, ListItem } from '@tackl';
+import { bp, Section, getBrand, getGlobal, getGap, H3, ListItem, Div } from '@tackl';
 import { headlineS } from '@tackl/type';
 
 // Interfaces
@@ -37,15 +37,9 @@ export const Top = styled(Section)(
     `
 );
 
-export const Heading = styled(H3)(
+export const Heading = styled(Div)(
 	() => css`
-        ${headlineS}
-        position: relative;
-        z-index: 1;
-
-        color: ${getGlobal('black')};
         margin-block: ${getGap('xxl')};
-        text-wrap: balance;
 
         ${bp.l`
             margin-block: ${getGap('xxl')} ${getGap('huge')};

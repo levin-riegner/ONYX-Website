@@ -7,9 +7,5 @@ export interface HeroProps {
 	title: string;
 	heading: string;
 	desc: string;
-	featuredImage?: {
-		url: string;
-		alt: string;
-		blur?: string;
-	};
+	isReady?: boolean;
 }

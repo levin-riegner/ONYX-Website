@@ -15,4 +15,6 @@ export interface SectionGridProps {
 		alt: string;
 		blur?: string;
 	};
+	isReady?: boolean;
+	isLast?: boolean;
 }

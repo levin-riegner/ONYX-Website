@@ -22,7 +22,7 @@ export const Jacket = styled(Div)<StylesInterface>(
 export const Content = styled(Div)<StylesInterface>(
 	({ $isEven }) => css`
         --aspect: 1/1;
-        --desktop-padd: ${getGap('uber')};
+        --desktop-pad: ${getGap('uber')};
 
         display: flex;
         flex-flow: column;
@@ -37,7 +37,7 @@ export const Content = styled(Div)<StylesInterface>(
             grid-template-columns: 1fr 1fr;
             grid-template-areas: '${$isEven ? 'media text' : 'text media'}';
             gap: ${getGap('l')};
-            padding-inline: ${$isEven ? `0 var(--desktop-padd)` : `var(--desktop-padd) 0`};
+            padding-inline: ${$isEven ? `0 var(--desktop-pad)` : `var(--desktop-pad) 0`};
             padding-bottom: 0;
         `}
     `

@@ -118,6 +118,7 @@ const renderBlock = (
 					heading={block.heading}
 					desc={block.desc ?? ''}
 					sections={block.sections ?? []}
+					isReady={isReady}
 				/>
 			);
 		case 'StandardContentRecord':
