@@ -15,7 +15,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const SplitFeatureGrid = ({ heading, features }: I.SplitFeatureGridProps) => {
+const SplitFeatureGrid = ({ heading, features, isReady }: I.SplitFeatureGridProps) => {
 	return (
 		<S.Jacket>
 			<SideFrame />
@@ -39,12 +39,16 @@ const SplitFeatureGrid = ({ heading, features }: I.SplitFeatureGridProps) => {
 						<Fragment key={feature.heading}>
 							<S.Feature $isEven={isEven}>
 								<S.FeatureMedia $isEven={isEven}>
-									<Image
-										src={feature.media.url}
-										alt={feature.media.alt}
-										width={360}
-										height={360}
-									/>
+									{isReady && (
+										<Image
+											src={feature.media.url}
+											alt={feature.media.alt}
+											width={360}
+											height={360}
+											loading='eager'
+											fetchPriority='high'
+										/>
+									)}
 								</S.FeatureMedia>
 
 								<S.Vertical />

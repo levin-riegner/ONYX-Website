@@ -33,7 +33,10 @@ const DataSupply = ({
 	legalTitle,
 }: I.DataSupplyProps) => {
 	// Contexts
-	const { setAreModalsReady } = use(GlobalContext);
+	const { isModalOpen, modalActive, setAreModalsReady } = use(GlobalContext);
+
+	// Animation Checker
+	const isReady = isModalOpen && modalActive === title;
 
 	// Set Modal ready on mount
 	useEffect(() => {
@@ -44,7 +47,13 @@ const DataSupply = ({
 		<Modal title={title}>
 			<Hero title={title} heading={heading} desc={desc} usaCoverage={usaCoverage} />
 
-			{pageBuilder && <PageBuilder pageBuilder={pageBuilder} contactTitle={contactTitle} />}
+			{pageBuilder && (
+				<PageBuilder
+					pageBuilder={pageBuilder}
+					contactTitle={contactTitle}
+					isReady={isReady}
+				/>
+			)}
 
 			<CallToAction
 				heading={ctaHeading}

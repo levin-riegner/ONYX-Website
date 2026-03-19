@@ -27,10 +27,20 @@ import type * as I from './interface';
 
 // Component
 // ------------
-const renderBlock = (block: I.PageBuilderBlock, contactTitle?: string | null) => {
+const renderBlock = (
+	block: I.PageBuilderBlock,
+	contactTitle?: string | null,
+	isReady?: boolean
+) => {
 	switch (block.__typename) {
 		case 'SplitFeatureGridRecord':
-			return <SplitFeatureGrid heading={block.heading} features={block.features ?? []} />;
+			return (
+				<SplitFeatureGrid
+					heading={block.heading}
+					features={block.features ?? []}
+					isReady={isReady}
+				/>
+			);
 		case 'NumberedProcessGridRecord':
 			return (
 				<NumberedProcessGrid heading={block.heading} processes={block.processes ?? []} />
@@ -109,11 +119,11 @@ const renderBlock = (block: I.PageBuilderBlock, contactTitle?: string | null) =>
 	}
 };
 
-const PageBuilder = ({ pageBuilder, contactTitle }: I.PageBuilderProps) => (
+const PageBuilder = ({ pageBuilder, contactTitle, isReady }: I.PageBuilderProps) => (
 	<>
 		{(pageBuilder ?? []).map(block => (
 			<Fragment key={`${block.__typename}-${block.id}`}>
-				{renderBlock(block, contactTitle ?? null)}
+				{renderBlock(block, contactTitle ?? null, isReady)}
 			</Fragment>
 		))}
 	</>
