@@ -1,8 +1,8 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Div, getBrand, getGlobal, getGap, Picture } from '@tackl';
-import { bodyM, captionL, titleL } from '@tackl/type';
+import { bp, Div, getGlobal, getGap, Picture } from '@tackl';
+import { bodyM, titleL } from '@tackl/type';
 
 // Interfaces
 // ------------
@@ -31,18 +31,21 @@ export const Content = styled(Div)<StylesInterface>(
         padding: 0 var(--mobile-extra-pad)  ${getGap('l')};
 
         ${bp.m`
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: '${$isEven ? 'media text' : 'text media'}';
             gap: ${getGap('l')};
             padding-inline: ${getGap('uber')};
-            flex-flow: ${$isEven ? 'row' : 'row-reverse'};
         `}
     `
 );
 
 export const Media = styled(Picture)(
 	() => css`
+        grid-area: media;
+
         position: relative;
         display: flex;
-        flex: 1 1 50%;
         aspect-ratio: var(--aspect);
 
         img {
@@ -57,6 +60,8 @@ export const Media = styled(Picture)(
 
 export const Texts = styled(Div)(
 	() => css`
+        grid-area: text;
+
         position: relative;
         display: flex;
         flex-direction: column;
@@ -64,13 +69,11 @@ export const Texts = styled(Div)(
         justify-content: center;
         width: 100%;
         gap: ${getGap('sm')};
-
         text-align: center;
+        overflow: hidden;
 
         ${bp.l`
-            flex: 1 1 50%;
             align-items: flex-start;
-            aspect-ratio: var(--aspect);
             gap: ${getGap('l')};
             text-align: left;
         `}
@@ -85,32 +88,6 @@ export const Texts = styled(Div)(
             ${bodyM}
             color: ${getGlobal('black', 60)};
             text-wrap: balance;
-
-            ${bp.l`
-                
-                
-            `}
-        }
-
-        ul {
-            display: flex;
-            gap: ${getGap('xs')};
-
-            li {
-                ${captionL}
-                color: ${getBrand('bc3')};
-
-                &:after {
-                    content: '•';
-                    margin-left: ${getGap('xs')};
-                }
-
-                &:last-child {
-                    &:after {
-                        content: none;
-                    }
-                }
-            }
         }
     `
 );
