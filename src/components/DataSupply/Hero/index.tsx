@@ -41,7 +41,6 @@ const Hero = ({ title, heading, desc, usaCoverage }: I.HeroProps) => {
 						<AnimatedHeading isReady={isReady}>{heading}</AnimatedHeading>
 					</S.Heading>
 
-					{/* <S.Desc $l='1/9'>{desc}</S.Desc> */}
 					<AnimatedDescription isReady={isReady} text={desc} l='1/9' />
 				</Grid>
 			</S.Top>

@@ -10,6 +10,7 @@ import AnimatedHeading from '@parts/AnimatedHeading';
 import { use } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import Form from './Form';
+import AnimatedDescription from '@parts/AnimatedDescription';
 
 // Styles + Interfaces
 // ------------
@@ -43,7 +44,7 @@ const Hero = ({ title, heading, desc }: I.HeroProps) => {
 						<AnimatedHeading isReady={isReady}>{heading}</AnimatedHeading>
 					</S.Heading>
 
-					<S.Desc $l='6/13'>{desc}</S.Desc>
+					<AnimatedDescription isReady={isReady} text={desc} l='6/13' />
 				</Grid>
 
 				<Frame className='bottom' />
