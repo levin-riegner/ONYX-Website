@@ -9,12 +9,13 @@ import { captionL } from '@tackl/type';
 interface StylesInterface {
 	$speed?: number;
 	$isMarquee?: boolean;
+	$canPlay?: boolean;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Section)<StylesInterface>(
-	({ $speed, $isMarquee }) => css`
+	({ $speed, $isMarquee, $canPlay }) => css`
         --gap: ${getGap('xs')};
         
         display: flex;
@@ -58,6 +59,7 @@ export const Jacket = styled(Section)<StylesInterface>(
                     justify-content: space-around;
                     gap: var(--gap);
                     animation: company-scroll ${($speed ?? 1) * 10}s linear infinite;
+                    animation-play-state: ${$canPlay ? 'running' : 'paused'};
                 `
 			}
 
