@@ -27,6 +27,7 @@ interface StylesInterface {
 export const Jacket = styled(Footer)<StylesInterface>(
 	() => css`
         position: relative;
+        z-index: 3;
 
         display: flex;
         flex-direction: column;

@@ -31,6 +31,10 @@ export const Jacket = styled(Section)<StylesInterface>(
       overflow: clip;
       background: ${getGlobal('luxuryWhite')};
 
+      .side-frame {
+        z-index: 1;
+      }
+
       > .frame {
         position: absolute;
         z-index: 2;

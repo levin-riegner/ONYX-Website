@@ -19,7 +19,6 @@ const About = ({
 	title,
 	heading,
 	desc,
-	featuredImage,
 	pageBuilder,
 	isCtaOverridden,
 	ctaOverrideHeading,
@@ -45,7 +44,7 @@ const About = ({
 
 	return (
 		<Modal title={title}>
-			<Hero title={title} heading={heading} desc={desc} featuredImage={featuredImage} />
+			<Hero title={title} heading={heading} desc={desc} isReady={isReady} />
 
 			{pageBuilder && (
 				<PageBuilder

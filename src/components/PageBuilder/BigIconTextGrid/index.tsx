@@ -14,7 +14,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const BigIconTextGrid = ({ heading, desc, sections }: I.BigIconTextGridProps) => {
+const BigIconTextGrid = ({ heading, desc, sections, isReady }: I.BigIconTextGridProps) => {
 	return (
 		<S.Jacket>
 			<SideFrame />
@@ -27,21 +27,23 @@ const BigIconTextGrid = ({ heading, desc, sections }: I.BigIconTextGridProps) =>
 				</Grid>
 			</S.Top>
 
-			<Frame className='bottom' />
-
 			<S.Bottom>
 				<ul>
-					{sections.map(({ id, subHeading, heading, desc, icon }) => (
+					{sections.map(({ id, subHeading, heading, desc, icon }, i) => (
 						<SectionGrid
 							key={id}
 							subHeading={subHeading}
 							heading={heading}
 							desc={desc}
 							icon={icon}
+							isReady={isReady}
+							isLast={i === sections.length - 1}
 						/>
 					))}
 				</ul>
 			</S.Bottom>
+
+			<Frame className='bottom' />
 		</S.Jacket>
 	);
 };
