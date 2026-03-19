@@ -19,7 +19,7 @@ export const Jacket = styled.form<StylesInterface>(
         display: flex;
         flex-direction: column;
         gap: ${getGap('sm')};
-        padding: ${getGap('l')} var(--mobile-extra-pad) 0;
+        padding: ${getGap('sm')} var(--mobile-extra-pad) 0;
 
         ${bp.l`
             gap: ${getGap('l')};
