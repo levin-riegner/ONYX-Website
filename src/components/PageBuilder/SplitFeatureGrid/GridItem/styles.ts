@@ -13,6 +13,7 @@ import {
 	Picture,
 	H4,
 	P,
+	H3,
 } from '@tackl';
 import { bodyL, titleL } from '@tackl/type';
 
@@ -110,7 +111,7 @@ export const FeatureContent = styled(Div)<StylesInterface>(
 	`
 );
 
-export const FeatureHeading = styled(H4)<StylesInterface>(
+export const FeatureHeading = styled(H3)<StylesInterface>(
 	() => css`
         ${titleL}
 		position: relative;
