@@ -65,6 +65,11 @@ const Section = ({ heading, desc, image }: I.SectionProps) => {
 					alt={image.alt ?? `${heading} Background`}
 					fill
 					sizes='100vw, (min-width: 1024px) 66vw'
+					loading='eager'
+					fetchPriority='high'
+					blurDataURL={image.blur}
+					placeholder='blur'
+					priority={true}
 				/>
 			</S.Background>
 

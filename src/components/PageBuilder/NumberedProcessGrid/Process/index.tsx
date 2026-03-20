@@ -57,7 +57,7 @@ const Process = ({ heading, description, itemIndex }: I.ProcessProps) => {
 			<S.Vertical />
 
 			<S.ProcessContent>
-				<h4>{heading}</h4>
+				<h3>{heading}</h3>
 				<p>{description}</p>
 			</S.ProcessContent>
 		</S.Jacket>

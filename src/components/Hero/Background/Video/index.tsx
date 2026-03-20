@@ -15,7 +15,9 @@ const READY_STATE_LOADED = 2;
 
 // Component
 // ------------
-const Video = ({ videoSrc }: I.VideoProps) => {
+const DEFAULT_CAPTIONS_SRC = '/captions-empty.vtt';
+
+const Video = ({ videoSrc, captionsSrc = DEFAULT_CAPTIONS_SRC }: I.VideoProps) => {
 	// Refs
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const hasFiredRef = useRef(false);
@@ -51,7 +53,11 @@ const Video = ({ videoSrc }: I.VideoProps) => {
 				preload='auto'
 				onLoadedData={handleReady}
 				onCanPlay={handleReady}
-			></video>
+			>
+				{captionsSrc ? (
+					<track kind='captions' srcLang='en' label='English' src={captionsSrc} />
+				) : null}
+			</video>
 		</S.Jacket>
 	);
 };
