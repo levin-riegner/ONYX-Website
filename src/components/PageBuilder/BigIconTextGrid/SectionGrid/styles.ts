@@ -28,7 +28,9 @@ interface StylesInterface {
 // ------------
 export const Jacket = styled(ListItem)<StylesInterface>(
 	() => css`
-        position: relative;
+        position: sticky;
+        top: 0;
+        left: 0;
         z-index: 0;
         display: flex;
         flex-direction: column;
@@ -38,9 +40,6 @@ export const Jacket = styled(ListItem)<StylesInterface>(
         
 
         ${bp.l`
-            position: sticky;
-            top: 0;
-            left: 0;
             gap: ${getGap('l')};
             padding-bottom: ${getGap('xxl')};
         `}
