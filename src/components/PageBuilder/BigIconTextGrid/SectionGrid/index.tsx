@@ -28,7 +28,7 @@ const SectionGrid = ({ subHeading, heading, desc, icon, isLast }: I.SectionGridP
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
 
 	useAnimation(
-		() => {
+		({ isDesktop }) => {
 			if (!jacketRef.current || !lenisReady || !scrollWrapper.current) return;
 
 			if (!isLast) {
