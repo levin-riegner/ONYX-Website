@@ -118,8 +118,11 @@ export const Content = styled(Div)<StylesInterface>(
 
 export const Heading = styled(Div)<StylesInterface>(
 	() => css`
+        text-align: left;
+
         h2, h2 * {
             color: ${getGlobal('white')};
+            text-align: left;
         }
 	`
 );
