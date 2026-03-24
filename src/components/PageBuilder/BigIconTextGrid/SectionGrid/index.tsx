@@ -33,8 +33,8 @@ const SectionGrid = ({ subHeading, heading, desc, icon, isLast }: I.SectionGridP
 
 			if (!isLast) {
 				gsap.to(jacketRef.current, {
-					opacity: 0,
-					yPercent: -50,
+					autoAlpha: 0,
+					yPercent: isDesktop ? -50 : -25,
 					ease: 'none',
 					scrollTrigger: {
 						trigger: jacketRef.current,
@@ -47,8 +47,8 @@ const SectionGrid = ({ subHeading, heading, desc, icon, isLast }: I.SectionGridP
 				});
 			} else {
 				gsap.to(jacketRef.current, {
-					opacity: 0,
-					yPercent: 50,
+					autoAlpha: 0,
+					yPercent: isDesktop ? 50 : 25,
 					ease: 'none',
 					scrollTrigger: {
 						trigger: jacketRef.current,
@@ -56,7 +56,6 @@ const SectionGrid = ({ subHeading, heading, desc, icon, isLast }: I.SectionGridP
 						start: 'top 0%',
 						end: 'bottom 0%',
 						scrub: true,
-						markers: false,
 					},
 				});
 			}
