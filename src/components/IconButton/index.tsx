@@ -25,13 +25,7 @@ const getDefaultAriaLabel = (icon: string): string => {
 const IconButton = ({ icon, to, ariaLabel }: I.IconButtonProps) => {
 	const label = ariaLabel ?? getDefaultAriaLabel(icon);
 	return (
-		<S.Jacket
-			href={to}
-			target='_blank'
-			rel='noopener noreferrer'
-			data-hover
-			aria-label={label}
-		>
+		<S.Jacket href={to} target='_blank' rel='noopener noreferrer' data-hover aria-label={label}>
 			<Icon type={icon} />
 		</S.Jacket>
 	);

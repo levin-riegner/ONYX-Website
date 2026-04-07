@@ -33,6 +33,7 @@ export const Jacket = styled(Button)<StylesInterface>(
 
         ${bp.l`
 			display:grid;
+
             ${
 				$isModalOpen &&
 				css`
@@ -44,8 +45,6 @@ export const Jacket = styled(Button)<StylesInterface>(
 
 		@media (hover: hover) and (pointer: fine) {
 			&:hover {
-				/* background: ${getGlobal('luxuryWhite')}; */
-
 				> span {
 					scale: 0.5;
 					opacity: 0;
