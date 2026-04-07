@@ -47,7 +47,7 @@ export const Jacket = styled(ListItem)<StylesInterface>(
             position: relative;
             top: auto;
             left: auto;
-            height: calc(100svh - var(--offset) * 4);
+            height: 48rem;
             max-width: 40rem;
             padding: ${getGap('l')};
         `}

@@ -2,21 +2,17 @@
 
 // Imports
 // ------------
-import { GlobalContext } from '@parts/Contexts';
-import { use, useEffect } from 'react';
+import Loader from '@parts/Loader';
 
 // Component
 // ------------
 const Template = ({ children }: { children: React.ReactNode }) => {
-	const { setIsFontsLoaded } = use(GlobalContext);
-
-	useEffect(() => {
-		document.fonts.ready.then(() => {
-			setIsFontsLoaded(true);
-		});
-	}, [setIsFontsLoaded]);
-
-	return <>{children}</>;
+	return (
+		<>
+			<Loader />
+			{children}
+		</>
+	);
 };
 
 // Exports

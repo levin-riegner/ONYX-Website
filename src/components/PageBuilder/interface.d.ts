@@ -43,4 +43,5 @@ export type PageBuilderBlock = {
 export type PageBuilderProps = {
 	pageBuilder?: PageBuilderBlock[];
 	contactTitle?: string;
+	isReady?: boolean;
 };

@@ -125,7 +125,7 @@ export const ProcessContent = styled(Div)(
             text-align: left;
         `}
 
-        h4 {
+        h3 {
             ${titleL}
             color: ${getGlobal('luxuryWhite')};
         }

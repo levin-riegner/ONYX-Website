@@ -8,4 +8,5 @@ export interface BigIconTextGridProps {
 	heading: string;
 	desc: string;
 	sections: SectionGridProps[];
+	isReady?: boolean;
 }

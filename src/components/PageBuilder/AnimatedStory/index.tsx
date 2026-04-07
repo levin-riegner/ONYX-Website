@@ -2,6 +2,12 @@
 
 // Imports
 // ------------
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(useGSAP, SplitText);
+
 import { StructuredText } from 'react-datocms/structured-text';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
@@ -10,8 +16,6 @@ import { use, useRef } from 'react';
 import { useAnimation } from '@utils/useAnimation';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import { GlobalContext } from '@parts/Contexts';
-import { SplitText } from 'gsap/SplitText';
-import gsap from 'gsap';
 import Button from '@parts/Button';
 
 // Styles + Interfaces
@@ -47,6 +51,7 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.Anim
 			});
 
 			const chars = split.chars as HTMLElement[];
+
 			if (!chars.length) {
 				split.revert();
 				return;
@@ -57,8 +62,8 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.Anim
 					scrub: true,
 					trigger: animatedTextRef.current,
 					scroller: scrollWrapper.current,
-					start: 'top 90%',
-					end: 'center 40%',
+					start: 'top 70%',
+					end: 'bottom 70%',
 				},
 			});
 

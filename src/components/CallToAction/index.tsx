@@ -8,6 +8,7 @@ import Grid from '@waffl';
 import { GlobalContext } from '@parts/Contexts';
 import { use } from 'react';
 import Button from '@parts/Button';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -55,7 +56,9 @@ const CallToAction = ({
 
 			<S.Top>
 				<Grid>
-					<S.Heading $l='1/12'>{sharedHeading}</S.Heading>
+					<S.Heading $l='1/12'>
+						<ScrollAnimatedHeading text={sharedHeading} />
+					</S.Heading>
 					<S.Button>
 						<Button
 							label={sharedButtonLabel}

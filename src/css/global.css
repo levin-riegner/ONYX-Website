@@ -30,11 +30,25 @@ html {
 	interpolate-size: allow-keywords; /* Allow keywords in interpolate-size – Not well supported yet in all browsers */
 }
 
+/*/ Breakpoint for devices under 380px */
+@media (max-width: 379px) {
+	html {
+		font-size: 50%;
+	}
+}
+
 /*/ Breakpoint for devices between 1024px and 1200px */
 @media (min-width: 1024px) and (max-width: 1399px) {
 	html {
 		/* 9px base font size */
 		font-size: 56.25%;
+	}
+}
+
+@media (min-width: 1800px) {
+	html {
+		/* Example: 12px base font size for extra large screens */
+		font-size: 76%;
 	}
 }
 
@@ -151,29 +165,4 @@ html.lenis body {
 	overflow-x: hidden;
 	overflow-y: scroll;
 	scrollbar-width: none;
-}
-
-/* Page Transitions using the new transitions API*/
-::view-transition-old(root),
-::view-transition-new(root) {
-	animation: none;
-}
-
-::view-transition-group(root) {
-	z-index: auto;
-}
-
-::view-transition-image-pair(root) {
-	isolation: isolate;
-	/* NOTE • Change to whatever property you want to animate */
-	will-change: transform, opacity, clip-path;
-	z-index: 1;
-}
-
-::view-transition-new(root) {
-	z-index: 2;
-}
-
-::view-transition-old(root) {
-	z-index: 1;
 }

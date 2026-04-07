@@ -11,4 +11,5 @@ export interface StatisticProps {
 	symbolAfterNumber: string;
 	number: string;
 	key?: React.Key;
+	isReady?: boolean;
 }

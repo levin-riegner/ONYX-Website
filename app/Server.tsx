@@ -2,13 +2,13 @@
 // ------------
 import Header from '@parts/Header';
 import { performRequest } from '@utils/datocms';
-import { EVERYTHING } from './(home)/query';
+import { HEADER } from '@parts/Header/query';
 
 // Data fetching at build time
 // ------------
 async function getAllData() {
 	try {
-		const data = await performRequest(EVERYTHING);
+		const data = await performRequest(HEADER);
 		return data;
 	} catch (error) {
 		console.error('Failed to fetch data from DatoCMS:', error);

@@ -31,7 +31,7 @@ export const Jacket = styled(Header)<StylesInterface>(
         flex-direction: column;
         justify-content: space-between;
 
-        padding-block: ${getGap('l')};
+        padding-block: ${getGap('l')} var(--mobile-extra-pad);
         width: 100%;
         min-height: clamp(50rem, 100svh, 1024rem);
 

@@ -7,6 +7,7 @@ import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Row from './Row';
 import { Fragment } from 'react';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -15,7 +16,7 @@ import * as S from './styles';
 
 // Component
 // ------------
-const AlternatingMediaRow = ({ heading, desc, rows }: I.AlternatingMediaRowProps) => {
+const AlternatingMediaRow = ({ heading, desc, rows, isReady }: I.AlternatingMediaRowProps) => {
 	return (
 		<S.Jacket>
 			<SideFrame />
@@ -23,7 +24,9 @@ const AlternatingMediaRow = ({ heading, desc, rows }: I.AlternatingMediaRowProps
 			<S.Top>
 				<Frame className='top' />
 				<Grid>
-					<S.Heading $l='1/10'>{heading}</S.Heading>
+					<S.Heading $l='1/10'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Description $l='1/9'>{desc}</S.Description>
 				</Grid>
 				<Frame className='bottom' />
@@ -54,6 +57,7 @@ const AlternatingMediaRow = ({ heading, desc, rows }: I.AlternatingMediaRowProps
 									showCompanyNames={showCompanyNames}
 									showDescription={showDescription}
 									iconImage={iconImage}
+									isReady={isReady}
 								/>
 								<Frame />
 							</Fragment>

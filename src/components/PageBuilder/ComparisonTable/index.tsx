@@ -11,6 +11,7 @@ import { use, useRef } from 'react';
 import gsap from 'gsap';
 import { useAnimation } from '@utils/useAnimation';
 import { NestedLenisContext } from '@parts/NestedLenis';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -72,6 +73,9 @@ const ComparisonTable = ({ heading, background, desc, table }: I.ComparisonTable
 						alt={background.alt}
 						fill
 						sizes='100vw, (min-width: 1024px) 66vw'
+						placeholder='blur'
+						blurDataURL={background.blur}
+						loading='lazy'
 					/>
 				)}
 			</S.Background>
@@ -82,7 +86,9 @@ const ComparisonTable = ({ heading, background, desc, table }: I.ComparisonTable
 				<Frame isLight className='top' />
 
 				<Grid>
-					<S.Heading $l='1/13'>{heading}</S.Heading>
+					<S.Heading $l='1/13'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Description $l='1/12'>{desc}</S.Description>
 				</Grid>
 

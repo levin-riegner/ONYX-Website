@@ -16,7 +16,8 @@ import type { Colors } from './interface';
 // NOTE • These colors serve as the base for all color variations
 export const colors: Colors = {
 	brand: {
-		bc1: generateColorVariants('#E8210C'),
+		bc1: generateColorVariants('#E51600'),
+		// bc1: generateColorVariants('#E71600'),
 		bc2: generateColorVariants('#593C4B'),
 		bc3: generateColorVariants('#323C60'),
 		bc4: generateColorVariants('#8375A2'),

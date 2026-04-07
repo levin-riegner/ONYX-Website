@@ -1,10 +1,12 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { Div } from '@tackl';
+import { bp, Div } from '@tackl';
 
 // Exports
 // ------------
+export const Poster = styled.img(() => css``);
+
 export const Jacket = styled(Div)(
 	() => css`
 		position: absolute;
@@ -15,8 +17,17 @@ export const Jacket = styled(Div)(
 		aspect-ratio: 48/27;
 		overflow: visible;
 
+		${bp.l`
+			top: auto;
+			bottom: 0;
+			transform: translate(-50%, 60%) rotate(90deg);
+			width: 200vh;
+			mix-blend-mode: screen;
+		`}
+
 		video,
-		mux-player {
+		mux-player,
+		img {
 			position: absolute;
 			inset: 0;
 			width: 100%;

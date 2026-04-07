@@ -29,6 +29,11 @@ export const Jacket = styled(Section)<StylesInterface>(
 	() => css`
       position: relative;
       overflow: clip;
+      background: ${getGlobal('luxuryWhite')};
+
+      .side-frame {
+        z-index: 1;
+      }
 
       > .frame {
         position: absolute;
@@ -57,6 +62,7 @@ export const Top = styled(Section)<StylesInterface>(
 	() => css`
 		position: relative;
     padding-top: ${getGap('xxl')};
+    background: ${getGlobal('luxuryWhite')};
 
     ${bp.l`
       padding-top: ${getGap('huge')};
@@ -72,12 +78,8 @@ export const Top = styled(Section)<StylesInterface>(
 	`
 );
 
-export const Heading = styled(H2)<StylesInterface>(
+export const Heading = styled(Div)<StylesInterface>(
 	() => css`
-    ${headlineS}
-		position: relative;
-    color: ${getGlobal('black')};
-    text-wrap: balance;
 	`
 );
 
@@ -95,6 +97,7 @@ export const Bottom = styled(Section)<StylesInterface>(
 		position: relative;
     width: 100%;
     padding: ${getGap('xl')} ${getGap('m')} ${getGap('m')} ${getGap('m')};
+    background: ${getGlobal('luxuryWhite')};
 
     ${bp.l`
       padding: ${getGap('huge')};

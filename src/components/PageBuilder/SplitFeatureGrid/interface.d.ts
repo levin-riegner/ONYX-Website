@@ -6,6 +6,7 @@
 export type SplitFeatureGridProps = {
 	heading: string;
 	features?: Feature[];
+	isReady?: boolean;
 };
 
 export interface Feature {

@@ -1,14 +1,14 @@
 // Imports
 // ------------
 import { performRequest } from '@utils/datocms';
-import { EVERYTHING } from './query';
+import { SEO } from './query';
 import type { Metadata } from 'next';
 
 // Data fetching at build time
 // ------------
 async function getAllData() {
 	try {
-		const data = await performRequest(EVERYTHING);
+		const data = await performRequest(SEO);
 		return data;
 	} catch (error) {
 		console.error('Failed to fetch data from DatoCMS:', error);
@@ -20,7 +20,14 @@ async function getAllData() {
 // SEO Metadata
 // ------------
 export async function generateMetadata(): Promise<Metadata> {
-	const { seo } = await getAllData();
+	const data = await getAllData();
+	const { seo, home } = data ?? {};
+
+	// LCP: preload video poster for mobile hero (fetchpriority=high, discoverable in HTML)
+	const muxPlaybackId = home?.video?.video?.muxPlaybackId;
+	const posterUrl = muxPlaybackId
+		? `https://image.mux.com/${muxPlaybackId}/thumbnail.webp?width=1000&fit_mode=smartcrop`
+		: null;
 
 	const FALLBACK = {
 		title: 'ONYX',
@@ -32,6 +39,28 @@ export async function generateMetadata(): Promise<Metadata> {
 	return {
 		title: seo?.meta?.title ?? FALLBACK.title,
 		metadataBase: new URL('https://onyxproject.com'),
+
+		// LCP + early connections: preload poster, preconnect to LCP origins
+		icons: {
+			other: [
+				// Preconnect to origins used for LCP (reduces connection latency)
+				{ url: 'https://image.mux.com', rel: 'preconnect' },
+				{ url: 'https://www.datocms-assets.com', rel: 'preconnect' },
+				{ url: 'https://assets.unicorn.studio', rel: 'preconnect' },
+				// Preload LCP poster
+				...(posterUrl
+					? [
+							{
+								url: posterUrl,
+								rel: 'preload',
+								as: 'image',
+								type: 'image/webp',
+								fetchPriority: 'high' as const,
+							},
+						]
+					: []),
+			].flat(),
+		},
 
 		// Basic Metadata
 		description: seo?.meta?.desc ?? FALLBACK.desc,

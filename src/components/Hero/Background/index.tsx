@@ -2,14 +2,10 @@
 
 // Imports
 // ------------
-import dynamic from 'next/dynamic';
-import { useResponsive } from '@utils/useResponsive';
-import { use, useCallback } from 'react';
+import { use } from 'react';
 import { GlobalContext } from '@parts/Contexts';
-
-// Lazy load: only the rendered component's bundle is fetched
-const UnicornScene = dynamic(() => import('unicornstudio-react/next'), { ssr: false });
-const MobileVideo = dynamic(() => import('./MobileVideo'), { ssr: false });
+import UnicornScene from 'unicornstudio-react/next';
+import Video from './Video';
 
 // Styles + Interfaces
 // ------------
@@ -18,47 +14,25 @@ import * as S from './styles';
 
 // Component
 // ------------
-const Background = ({ sceneId, video }: I.BackgroundProps) => {
-	// Responsive Hook
-	const { isDesktop, isMobile } = useResponsive();
-
-	// Contexts
-	const { setPageLoaded, isLoaderFinished, isModalOpen } = use(GlobalContext);
-
-	// Event Handlers (stable ref to avoid MobileVideo effect churn)
-	const handleLoad = useCallback(() => setPageLoaded(true), [setPageLoaded]);
-
-	// Don't load either until we know the device (avoids loading both bundles)
-	const isReady = isDesktop || isMobile;
+const Background = ({ sceneId }: I.BackgroundProps) => {
+	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
 
 	return (
 		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
-			{!isReady ? null : isDesktop ? (
+			{isLoaderFinished && (
 				<UnicornScene
 					className='unicorn'
 					projectId={sceneId}
 					width='100%'
 					height='100%'
-					onLoad={handleLoad}
-					lazyLoad={true}
 					production={true}
-					dpi={1.5}
-					fps={120}
-				/>
-			) : (
-				<MobileVideo
-					data={video}
-					src={
-						video?.streamingUrl ??
-						video?.mp4High ??
-						video?.mp4Med ??
-						video?.mp4Low ??
-						'/stone-desktop.mp4'
-					}
-					onReady={handleLoad}
-					isModalOpen={isModalOpen}
+					dpi={1}
+					fps={60}
+					sdkUrl='https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.4/dist/unicornStudio.umd.js'
 				/>
 			)}
+
+			<Video videoSrc='/stone.mp4' />
 		</S.Jacket>
 	);
 };

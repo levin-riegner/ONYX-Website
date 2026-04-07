@@ -7,6 +7,7 @@ import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
 import Grid from '@waffl';
 import Process from './Process';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
@@ -23,7 +24,9 @@ const NumberedProcessGrid = ({ heading, processes }: I.NumberedProcessGridProps)
 			<S.Top>
 				<Frame isLight className='top' />
 				<Grid>
-					<S.Heading $l='1/9'>{heading}</S.Heading>
+					<S.Heading $l='1/9'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 				</Grid>
 				<Frame isLight className='bottom' />
 			</S.Top>

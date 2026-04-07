@@ -2,21 +2,26 @@
 
 // Imports
 // ------------
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { use, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Grid from '@waffl';
 import SideFrame from '@parts/SideFrame';
 import Frame from '@parts/Frame';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 import { NestedLenisContext } from '@parts/NestedLenis';
 import SingleFaq from './SingleFaq';
 import { useAnimation } from '@utils/useAnimation';
+import ScrollAnimatedHeading from '@parts/ScrollAnimatedHeading';
 
 // Styles + Interfaces
 // ------------
 import type * as I from './interface';
 import * as S from './styles';
+
+// GSAP Plugins
+// ------------
+gsap.registerPlugin(ScrollTrigger);
 
 // Component
 // ------------
@@ -34,11 +39,18 @@ const Faqs = ({ heading, desc, allFaqs, background }: I.FaqsProps) => {
 	// Contexts
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
 
-	// Handle resize
+	// Handle resize (debounced to avoid rapid ScrollTrigger recreation during drag)
 	useEffect(() => {
-		const handleResize = () => setResizeKey(k => k + 1);
+		let timeoutId: ReturnType<typeof setTimeout>;
+		const handleResize = () => {
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => setResizeKey(k => k + 1), 150);
+		};
 		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		return () => {
+			clearTimeout(timeoutId);
+			window.removeEventListener('resize', handleResize);
+		};
 	}, []);
 
 	// Check if all refs are ready
@@ -162,7 +174,9 @@ const Faqs = ({ heading, desc, allFaqs, background }: I.FaqsProps) => {
 
 			<S.Top>
 				<Grid>
-					<S.Heading $l='1/10'>{heading}</S.Heading>
+					<S.Heading $l='1/10'>
+						<ScrollAnimatedHeading text={heading} />
+					</S.Heading>
 					<S.Description $l='1/9'>{desc}</S.Description>
 				</Grid>
 			</S.Top>

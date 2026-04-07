@@ -1,8 +1,8 @@
 // Imports
 // ------------
 import styled, { css } from 'styled-components';
-import { bp, Div, getBrand, getGlobal, getGap, Picture } from '@tackl';
-import { bodyM, captionL, titleL } from '@tackl/type';
+import { bp, Div, getGlobal, getGap, Picture } from '@tackl';
+import { bodyM, titleL } from '@tackl/type';
 
 // Interfaces
 // ------------
@@ -22,41 +22,58 @@ export const Jacket = styled(Div)<StylesInterface>(
 export const Content = styled(Div)<StylesInterface>(
 	({ $isEven }) => css`
         --aspect: 1/1;
+        --desktop-pad: ${getGap('uber')};
 
         display: flex;
         flex-flow: column;
         
         gap: ${getGap('sm')};
         width: 100%;
-        padding: 0 var(--mobile-extra-pad)  ${getGap('l')};
+        padding-inline: var(--mobile-extra-pad);
+        padding-bottom: ${getGap('l')};
 
         ${bp.m`
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: '${$isEven ? 'media text' : 'text media'}';
             gap: ${getGap('l')};
-            padding-inline: ${getGap('uber')};
-            flex-flow: ${$isEven ? 'row' : 'row-reverse'};
+            padding-inline: ${$isEven ? `0 var(--desktop-pad)` : `var(--desktop-pad) 0`};
+            padding-bottom: 0;
         `}
     `
 );
 
-export const Media = styled(Picture)(
+export const Media = styled(Div)(
 	() => css`
+        grid-area: media;
+
         position: relative;
         display: flex;
-        flex: 1 1 50%;
         aspect-ratio: var(--aspect);
+        overflow: hidden;
+    `
+);
+
+export const MediaAnimation = styled(Picture)(
+	() => css`
+        position: absolute;
+        inset: 0;
+        mix-blend-mode: multiply;
 
         img {
             display: block;
             object-fit: contain;
             width: 100%;
             height: 100%;
-            mix-blend-mode: multiply;
+            
         }
     `
 );
 
 export const Texts = styled(Div)(
 	() => css`
+        grid-area: text;
+
         position: relative;
         display: flex;
         flex-direction: column;
@@ -64,13 +81,11 @@ export const Texts = styled(Div)(
         justify-content: center;
         width: 100%;
         gap: ${getGap('sm')};
-
         text-align: center;
+        overflow: hidden;
 
         ${bp.l`
-            flex: 1 1 50%;
             align-items: flex-start;
-            aspect-ratio: var(--aspect);
             gap: ${getGap('l')};
             text-align: left;
         `}
@@ -85,32 +100,6 @@ export const Texts = styled(Div)(
             ${bodyM}
             color: ${getGlobal('black', 60)};
             text-wrap: balance;
-
-            ${bp.l`
-                
-                
-            `}
-        }
-
-        ul {
-            display: flex;
-            gap: ${getGap('xs')};
-
-            li {
-                ${captionL}
-                color: ${getBrand('bc3')};
-
-                &:after {
-                    content: '•';
-                    margin-left: ${getGap('xs')};
-                }
-
-                &:last-child {
-                    &:after {
-                        content: none;
-                    }
-                }
-            }
         }
     `
 );

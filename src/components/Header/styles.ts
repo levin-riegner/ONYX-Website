@@ -46,7 +46,7 @@ export const Jacket = styled(Header)<StylesInterface>(
 		${bp.l`
 			--offset: ${getGap('uber')};
 
-			background: ${getGlobal('luxuryWhite', 10)};
+			background: ${getGlobal('luxuryWhite', 5)};
 			backdrop-filter: blur(1.6rem);
 			height: 5.6rem;
 			justify-content: space-between;
