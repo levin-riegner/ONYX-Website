@@ -3,6 +3,7 @@
 // Imports
 // ------------
 import Contexts from '@parts/Contexts';
+import GoogleTagManager from '@parts/GoogleTagManager';
 // import CookieBar from '@parts/CookieBar';
 import { GlobalStyle, theme } from '@theme';
 import { neueHaas, pp } from '@theme/fonts';
@@ -15,6 +16,7 @@ const Client = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html lang='en' className={`${neueHaas.variable} ${pp.variable}`} suppressHydrationWarning>
 			<body>
+				<GoogleTagManager />
 				<StyledComponentsRegistry>
 					<ThemeProvider theme={theme} key='themeprovider'>
 						<GlobalStyle />
