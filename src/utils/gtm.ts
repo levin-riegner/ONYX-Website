@@ -1,3 +1,25 @@
+const DEFAULT_GTM_CONTAINER_ID = 'GTM-MC37B7RV';
+
+/**
+ * Resolves the GTM container id. Empty `NEXT_PUBLIC_GTM_ID` falls back to the default
+ * (empty string would otherwise disable the snippet).
+ */
+export const getGtmContainerId = (): string => {
+	const raw = process.env.NEXT_PUBLIC_GTM_ID;
+	if (raw === undefined || raw === null) return DEFAULT_GTM_CONTAINER_ID;
+
+	const t = String(raw).trim();
+	return t === '' ? DEFAULT_GTM_CONTAINER_ID : t;
+};
+
+/** Inline bootstrap snippet (Google’s standard install). */
+export const getGtmBootstrapInlineScript = (containerId: string) =>
+	`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${containerId}');`;
+
 /**
  * Push any payload to `window.dataLayer` (used by Google Tag Manager).
  * In GTM, create a **Custom Event** trigger matching `event` (e.g. `button_click`).

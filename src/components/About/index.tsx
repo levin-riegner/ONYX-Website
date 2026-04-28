@@ -32,10 +32,11 @@ const About = ({
 	legalTitle,
 }: I.AboutProps) => {
 	// Contexts
-	const { isModalOpen, modalActive, setAreModalsReady } = use(GlobalContext);
+	const { modalActive, setAreModalsReady } = use(GlobalContext);
 
-	// Animation Checker
-	const isReady = isModalOpen && modalActive === title;
+	// Keep About animations in their "open" state until close transition completes.
+	// `modalActive` is reset to `home` after modal close animation in `Modal`.
+	const isReady = modalActive === title;
 
 	// Set Modal ready on mount
 	useEffect(() => {
