@@ -29,7 +29,13 @@ const SectionGrid = ({ subHeading, heading, desc, icon, isLast }: I.SectionGridP
 
 	useAnimation(
 		({ isDesktop }) => {
-			if (!jacketRef.current || !lenisReady || !scrollWrapper.current) return;
+			const jacket = jacketRef.current;
+			if (!jacket) return;
+
+			if (!lenisReady || !scrollWrapper.current) {
+				gsap.set(jacket, { autoAlpha: 1, yPercent: 0, clearProps: 'transform' });
+				return;
+			}
 
 			if (!isLast) {
 				gsap.to(jacketRef.current, {
@@ -63,6 +69,7 @@ const SectionGrid = ({ subHeading, heading, desc, icon, isLast }: I.SectionGridP
 		{
 			scope: jacketRef,
 			dependencies: [lenisReady],
+			revertOnUpdate: true,
 		}
 	);
 
