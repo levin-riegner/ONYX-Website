@@ -12,6 +12,7 @@ interface StylesInterface {
 	ariaLabel?: string;
 	children?: React.ReactNode;
 	onClick?: () => void;
+	inert?: boolean;
 }
 
 // Exports

@@ -2,6 +2,7 @@
 
 // Imports
 // ------------
+import { GoogleTagManagerModalTracking } from '@parts/GoogleTagManager';
 import { createContext, useMemo, useState } from 'react';
 import { PerformanceProvider } from './Performance';
 
@@ -95,6 +96,7 @@ const Contexts = ({ children }: I.ContextsProps) => {
 
 	return (
 		<GlobalContext.Provider value={contextValue}>
+			<GoogleTagManagerModalTracking />
 			<PerformanceProvider>{children}</PerformanceProvider>
 		</GlobalContext.Provider>
 	);

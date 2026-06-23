@@ -12,6 +12,9 @@ interface StylesInterface {
 	children?: React.ReactNode;
 	onClick?: () => void;
 	$isModalOpen?: boolean;
+	inert?: boolean;
+	id?: string;
+	'aria-label'?: string;
 }
 
 // Exports

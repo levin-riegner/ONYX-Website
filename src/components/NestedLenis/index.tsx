@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 import Lenis from 'lenis';
-import { useRef, useLayoutEffect, useEffect, createContext, useState } from 'react';
+import { useRef, useLayoutEffect, createContext, useState } from 'react';
 
 // Styles (lenis rules inlined in global.css to reduce render-blocking requests)
 // ------------
@@ -108,28 +108,31 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 		const control = rafControlRef.current;
 		if (!control) return;
 
+		const resetScroll = () => {
+			const lenis = lenisInstance.current;
+			const wrapper = scrollWrapper.current;
+
+			if (lenis) {
+				lenis.scrollTo(0, { immediate: true });
+			}
+
+			if (wrapper) {
+				wrapper.scrollTop = 0;
+			}
+
+			ScrollTrigger.refresh();
+		};
+
 		if (isOpen) {
 			control.start();
+			// Reset scroll before enabling Lenis-driven animations (prevents stale scrub state on reopen)
+			resetScroll();
 			setLenisReady(true);
-			// Reset scroll when opening so modal always starts at top (fixes reopen-after-scroll-down)
-			requestAnimationFrame(() => {
-				lenisInstance.current?.scrollTo(0, { immediate: true });
-			});
 		} else {
-			control.stop();
 			setLenisReady(false);
+			control.stop();
+			resetScroll();
 		}
-	}, [isOpen]);
-
-	// When modal closes, reset scroll to top so it opens at top next time
-	useEffect(() => {
-		const timeout = setTimeout(() => {
-			if (!isOpen) {
-				lenisInstance.current?.scrollTo(0, {});
-			}
-		}, 1100);
-
-		return () => clearTimeout(timeout);
 	}, [isOpen]);
 
 	return (

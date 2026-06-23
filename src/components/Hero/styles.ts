@@ -7,10 +7,13 @@ import styled, { css } from 'styled-components';
 
 // Interfaces
 // ------------
+interface StylesInterface {
+	inert?: boolean;
+}
 
 // Exports
 // ------------
-export const Jacket = styled(Section)(
+export const Jacket = styled(Section)<StylesInterface>(
 	() => css`
         position: relative;
         overflow: hidden;

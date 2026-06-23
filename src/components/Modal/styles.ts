@@ -22,18 +22,27 @@ import { captionL } from '@/theme/tackl/type';
 // ------------
 interface StylesInterface {
 	$isOpen?: boolean;
+	$canClose?: boolean;
+	inert?: boolean;
+	'aria-hidden'?: boolean;
 	$isEnd?: boolean;
+	$isDark?: boolean;
 	type?: 'button';
+	disabled?: boolean;
+	'aria-disabled'?: boolean;
 	ariaLabel?: string;
 	children?: React.ReactNode;
-	onClick?: () => void;
-	$isDark?: boolean;
+	onClick?: React.MouseEventHandler<HTMLElement>;
+	role?: string;
+	'aria-modal'?: boolean;
+	'aria-label'?: string;
+	ref?: React.Ref<HTMLElement>;
 }
 
 // Exports
 // ------------
 export const Jacket = styled(Aside)<StylesInterface>(
-	({ $isOpen }) => css`
+	({ $isOpen, $canClose }) => css`
         position: fixed;
         z-index: 997;
         inset: 0;
@@ -43,16 +52,18 @@ export const Jacket = styled(Aside)<StylesInterface>(
         justify-content: flex-end;
 
         pointer-events: ${$isOpen ? 'auto' : 'none'};
+        cursor: ${$isOpen && $canClose ? 'pointer' : 'default'};
     `
 );
 
 export const Content = styled(Section)<StylesInterface>(
-	({ $isOpen }) => css`
+	() => css`
         --size: 100%;   
 
         position: relative;
         width: var(--size);
         min-height: 100svh;
+        cursor: default;
         
         ${bp.l` --size: 95rem; `}
     `
@@ -159,7 +170,7 @@ export const VerticalLinePlus = styled.span<StylesInterface>(
 );
 
 export const CloseButton = styled(Button)<StylesInterface>(
-	({ $isOpen }) => css`
+	({ $isOpen, $canClose }) => css`
         --size: 4rem;
         --icon-size: 1.6rem;
         --distance: ${getGap('l')};
@@ -179,7 +190,8 @@ export const CloseButton = styled(Button)<StylesInterface>(
 
         background: ${getBrand('bc1')};
         border-radius: ${getRadius('s')};
-        cursor: pointer;
+        cursor: ${$canClose ? 'pointer' : 'default'};
+        pointer-events: ${$canClose ? 'auto' : 'none'};
         transition:
             transform 1.1s ${getEase('bezzy3')} ${$isOpen ? 0.1 : 0}s,
             background 0.5s ${getEase('bezzy3')};

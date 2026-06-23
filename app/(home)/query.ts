@@ -6,6 +6,180 @@ const IMAGE_FRAGMENT = `
     }
 `;
 
+/**
+ * Shared page builder block spreads for activation, dataSupply, and about.
+ * Keep in sync with DatoCMS modular field blocks and PageBuilder routing.
+ */
+const PAGE_BUILDER_BLOCKS = `
+    __typename
+
+    ... on AlternatingMediaRowRecord {
+        id
+        heading
+        desc: description
+        rows: row {
+            heading
+            desc: description
+            companyNames {
+                heading
+            }
+            showCompanyNames
+            showDescription
+            iconImage {
+                ...ReusableImage
+            }
+        }
+    }
+
+    ... on AnimatedStoryRecord {
+        id
+        desc: description
+        animatedText {
+            value
+        }
+        buttonLabel
+    }
+
+    ... on BigIconTextGridRecord {
+        id
+        heading
+        desc: description
+        sections: iconTextGrid {
+            id
+            subHeading
+            heading
+            desc: description {
+                value
+            }
+            icon {
+                ...ReusableImage
+            }
+        }
+    }
+
+    ... on ComparisonTableRecord {
+        id
+        heading
+        desc: description
+        background: backgroundImage {
+            ...ReusableImage
+        }
+        table: comparisonRows {
+            id
+            onyx
+            feature
+            competitor
+        }
+    }
+
+    ... on EditorialStoryCtaStatRecord {
+        id
+        heading
+        animatedText
+
+        inlineCallToAction {
+            description
+            buttonLabel
+            heading
+            overrideBackground
+            backgroundImage {
+                ...ReusableImage
+            }
+        }
+
+        statistics {
+            symbolBeforeNumber
+            symbolAfterNumber
+            number
+            hasSymbolBefore
+            heading
+            id
+        }
+    }
+
+    ... on FaqRecord {
+        id
+        heading
+        desc: description
+        background: backgroundImage {
+            ...ReusableImage
+        }
+        faqs {
+            id
+            question
+            answer
+        }
+    }
+
+    ... on HeadingDescriptionRecord {
+        id
+        heading
+        desc: description
+    }
+
+    ... on MembersTeamRecord {
+        id
+        heading
+        desc: description
+        teamMembers {
+            id
+            name
+            role
+            linkedinUrl
+            email
+            image: profilePicture {
+                ...ReusableImage
+            }
+        }
+    }
+
+    ... on NumberedProcessGridRecord {
+        id
+        heading
+        processes {
+            heading
+            description
+        }
+    }
+
+    ... on ParallaxRecord {
+        id
+        parallaxSections {
+            id
+            heading
+            desc: description
+            image: backgroundImage {
+                ...ReusableImage
+            }
+        }
+    }
+
+    ... on SplitFeatureGridRecord {
+        id
+        heading
+        features {
+            heading
+            desc: description
+            media: iconImage {
+                ...ReusableImage
+            }
+        }
+    }
+
+    ... on StatisticsGridRecord {
+        id
+        heading
+        statistics {
+            id
+            heading
+            hasSymbolBefore
+            symbolBeforeNumber
+            symbolAfterNumber
+            number
+        }
+    }
+`;
+
 export const SEO = `
     query {
         seo {
@@ -81,74 +255,7 @@ export const EVERYTHING = `
                 ...ReusableImage
             }
             pageBuilder {
-                __typename
-                
-                ... on SplitFeatureGridRecord {
-                    id
-                    heading
-                    features {
-                        heading
-                        desc: description
-                        media: iconImage {
-                            ...ReusableImage
-                        }
-                    }
-                }
-
-                ... on NumberedProcessGridRecord {
-                    id
-                    heading
-                    processes {
-                        heading
-                        description
-                    }
-                }
-
-                ... on StatisticsGridRecord {
-                    id
-                    heading
-                    statistics {
-                        id
-                        heading
-                        hasSymbolBefore
-                        symbolBeforeNumber
-                        symbolAfterNumber
-                        number
-                    }
-                }
-
-                ... on AlternatingMediaRowRecord {
-                    id
-                    heading
-                    desc: description
-                    rows: row {
-                        heading
-                        desc: description
-                        companyNames {
-                            heading
-                        }
-                        showCompanyNames
-                        showDescription
-                        iconImage {
-                            ...ReusableImage
-                        }
-                    }
-                }
-
-                ... on ComparisonTableRecord {
-                    id
-                    heading
-                    desc: description
-                    background: backgroundImage {
-                        ...ReusableImage
-                    }
-                    table: comparisonRows {
-                        id
-                        onyx
-                        feature
-                        competitor
-                    }
-                }
+                ${PAGE_BUILDER_BLOCKS}
             }
 
             isCtaOverridden
@@ -167,50 +274,7 @@ export const EVERYTHING = `
             overrideButtonLabel: ctaButtonLabel
 
             pageBuilder {
-                __typename
-
-                ... on EditorialStoryCtaStatRecord {
-                    id
-                    heading
-                    animatedText
-
-                    inlineCallToAction {
-                        description
-                        buttonLabel
-                        heading
-                        overrideBackground
-                        backgroundImage {
-                            ...ReusableImage
-                        }
-                    }
-                        
-                    statistics {
-                        symbolBeforeNumber
-                        symbolAfterNumber
-                        number
-                        hasSymbolBefore
-                        heading
-                        id
-                    }
-                }
-
-                ... on HeadingDescriptionRecord {
-                    id
-                    heading
-                    desc: description
-                }
-
-                ... on ParallaxRecord {
-                    id
-                    parallaxSections {
-                        id
-                        heading
-                        desc: description
-                        image: backgroundImage {
-                            ...ReusableImage
-                        }
-                    }
-                }
+                ${PAGE_BUILDER_BLOCKS}
             }
         }
 
@@ -227,64 +291,7 @@ export const EVERYTHING = `
             overrideButtonLabel: ctaButtonLabel
 
             pageBuilder {
-                __typename
-                
-                ... on AnimatedStoryRecord {
-                    id
-                    desc: description
-                    animatedText {
-                        value
-                    }
-                    buttonLabel
-                }
-                
-                ... on BigIconTextGridRecord {
-                    id
-                    heading
-                    desc: description
-                    sections: iconTextGrid {
-                        id
-                        subHeading
-                        heading
-                        desc: description {
-                            value
-                        }
-                        icon {
-                            ...ReusableImage
-                        }
-                    }
-                }
-
-                
-                ... on FaqRecord {
-                    id
-                    heading
-                    desc: description
-                    background: backgroundImage {
-                        ...ReusableImage
-                    }
-                    faqs {
-                        id
-                        question
-                        answer
-                    }
-                }
-                
-                ... on MembersTeamRecord {
-                    id
-                    heading
-                    desc: description
-                    teamMembers {
-                        id
-                        name
-                        role
-                        linkedinUrl
-                        email
-                        image: profilePicture {
-                            ...ReusableImage
-                        }
-                    }
-                }
+                ${PAGE_BUILDER_BLOCKS}
             }
         }
     }

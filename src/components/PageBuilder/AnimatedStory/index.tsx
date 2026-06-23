@@ -94,16 +94,18 @@ const AnimatedStory = ({ desc, animatedText, buttonLabel, contactTitle }: I.Anim
 					<StructuredText data={animatedText.value} />
 				</S.AnimatedText>
 
-				<S.Desc $l='1/10'>{desc}</S.Desc>
+				{desc && <S.Desc $l='1/10'>{desc}</S.Desc>}
 
-				<S.Button>
-					<Button
-						label={buttonLabel ?? 'Get in Touch'}
-						ariaLabel={buttonLabel ?? 'Get in Touch'}
-						onClick={handleContact}
-						onLight
-					/>
-				</S.Button>
+				{buttonLabel && (
+					<S.Button>
+						<Button
+							label={buttonLabel}
+							ariaLabel={buttonLabel}
+							onClick={handleContact}
+							onLight
+						/>
+					</S.Button>
+				)}
 			</Grid>
 			<Frame className='bottom' />
 		</S.Jacket>

@@ -12,7 +12,8 @@ import * as S from './styles';
 
 // Constants
 // ------------
-const FORM_NAME = 'contact';
+/** Shown as the form name in Netlify submissions (must match `public/__forms.html`) */
+const FORM_NAME = 'Website Enquiry';
 const FORM_ACTION = '/__forms.html';
 const FORM_DATA = {
 	inputs: {
