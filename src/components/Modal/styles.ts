@@ -23,11 +23,14 @@ import { captionL } from '@/theme/tackl/type';
 interface StylesInterface {
 	$isOpen?: boolean;
 	$isEnd?: boolean;
+	$isDark?: boolean;
 	type?: 'button';
 	ariaLabel?: string;
 	children?: React.ReactNode;
-	onClick?: () => void;
-	$isDark?: boolean;
+	onClick?: React.MouseEventHandler<HTMLElement>;
+	role?: string;
+	'aria-modal'?: boolean;
+	'aria-label'?: string;
 }
 
 // Exports
@@ -43,16 +46,18 @@ export const Jacket = styled(Aside)<StylesInterface>(
         justify-content: flex-end;
 
         pointer-events: ${$isOpen ? 'auto' : 'none'};
+        cursor: ${$isOpen ? 'pointer' : 'default'};
     `
 );
 
 export const Content = styled(Section)<StylesInterface>(
-	({ $isOpen }) => css`
+	() => css`
         --size: 100%;   
 
         position: relative;
         width: var(--size);
         min-height: 100svh;
+        cursor: default;
         
         ${bp.l` --size: 95rem; `}
     `
