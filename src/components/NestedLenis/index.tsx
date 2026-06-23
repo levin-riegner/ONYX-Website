@@ -32,13 +32,17 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 	const scrollContent = useRef<HTMLDivElement>(null);
 	const lenisInstance = useRef<Lenis | null>(null);
 	const rafIdRef = useRef<number | null>(null);
-	const rafControlRef = useRef<{ start: () => void; stop: () => void } | null>(null);
 
 	// States
 	const [lenisReady, setLenisReady] = useState(false);
 
-	// Setup: create Lenis once (RAF controlled by isOpen in separate effect)
+	// Create Lenis only while the modal scroller is open (avoids 5 idle instances on page load)
 	useLayoutEffect(() => {
+		if (!isOpen) {
+			setLenisReady(false);
+			return;
+		}
+
 		const wrapper = scrollWrapper.current;
 		const content = scrollContent.current;
 
@@ -73,6 +77,12 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 
 		lenis.on('scroll', ScrollTrigger.update);
 
+		const stopRaf = () => {
+			if (rafIdRef.current === null) return;
+			cancelAnimationFrame(rafIdRef.current);
+			rafIdRef.current = null;
+		};
+
 		const startRaf = () => {
 			if (rafIdRef.current !== null) return;
 			const raf = (time: number) => {
@@ -82,57 +92,24 @@ const NestedLenis = ({ children, isOpen }: I.NestedLenisProps) => {
 			rafIdRef.current = requestAnimationFrame(raf);
 		};
 
-		const stopRaf = () => {
-			if (rafIdRef.current !== null) {
-				cancelAnimationFrame(rafIdRef.current);
-				rafIdRef.current = null;
-			}
+		const resetScroll = () => {
+			lenis.scrollTo(0, { immediate: true });
+			wrapper.scrollTop = 0;
+			ScrollTrigger.refresh();
 		};
 
-		rafControlRef.current = { start: startRaf, stop: stopRaf };
-
-		ScrollTrigger.refresh();
+		startRaf();
+		resetScroll();
+		setLenisReady(true);
 
 		return () => {
+			setLenisReady(false);
 			stopRaf();
 			lenis.off('scroll', ScrollTrigger.update);
 			ScrollTrigger.scrollerProxy(wrapper, {});
 			lenis.destroy();
 			lenisInstance.current = null;
-			rafControlRef.current = null;
 		};
-	}, []);
-
-	// Start RAF when modal opens, stop when closed (prevents 5 concurrent RAF loops draining CPU)
-	useLayoutEffect(() => {
-		const control = rafControlRef.current;
-		if (!control) return;
-
-		const resetScroll = () => {
-			const lenis = lenisInstance.current;
-			const wrapper = scrollWrapper.current;
-
-			if (lenis) {
-				lenis.scrollTo(0, { immediate: true });
-			}
-
-			if (wrapper) {
-				wrapper.scrollTop = 0;
-			}
-
-			ScrollTrigger.refresh();
-		};
-
-		if (isOpen) {
-			control.start();
-			// Reset scroll before enabling Lenis-driven animations (prevents stale scrub state on reopen)
-			resetScroll();
-			setLenisReady(true);
-		} else {
-			setLenisReady(false);
-			control.stop();
-			resetScroll();
-		}
 	}, [isOpen]);
 
 	return (

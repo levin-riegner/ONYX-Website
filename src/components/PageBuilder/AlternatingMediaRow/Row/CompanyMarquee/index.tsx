@@ -22,6 +22,7 @@ gsap.registerPlugin(ScrollTrigger);
 const CompanyMarquee = ({ speed, companies }: I.CompanyMarqueeProps) => {
 	// Refs
 	const jacketRef = useRef<HTMLDivElement>(null);
+	const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
 	// States
 	const [canPlay, setCanPlay] = useState(false);
@@ -29,12 +30,15 @@ const CompanyMarquee = ({ speed, companies }: I.CompanyMarqueeProps) => {
 	// Contexts
 	const { scrollWrapper, lenisReady } = use(NestedLenisContext);
 
-	// Animations • Pause marquee until needed
+	// Animations • Pause marquee until needed
 	useAnimation(
 		() => {
+			scrollTriggerRef.current?.kill();
+			scrollTriggerRef.current = null;
+
 			if (!jacketRef.current || !scrollWrapper.current || !lenisReady) return;
 
-			ScrollTrigger.create({
+			scrollTriggerRef.current = ScrollTrigger.create({
 				trigger: jacketRef.current,
 				scroller: scrollWrapper.current,
 				start: 'top bottom',
@@ -46,6 +50,12 @@ const CompanyMarquee = ({ speed, companies }: I.CompanyMarqueeProps) => {
 				onLeave: () => setCanPlay(false),
 				onLeaveBack: () => setCanPlay(false),
 			});
+
+			return () => {
+				scrollTriggerRef.current?.kill();
+				scrollTriggerRef.current = null;
+				setCanPlay(false);
+			};
 		},
 		{ scope: jacketRef, dependencies: [lenisReady] }
 	);
