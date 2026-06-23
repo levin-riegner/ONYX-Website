@@ -14,18 +14,19 @@ import * as S from './styles';
 // ------------
 const Home = () => {
 	// Contexts
-	const { isModalOpen, setIsModalOpen, setModalActive } = use(GlobalContext);
+	const { isModalOpen, closeModal } = use(GlobalContext);
 
 	// Handle Click
-	const handleClick = (label: string) => {
-		setIsModalOpen(false);
-		setModalActive(label);
+	const handleClick = () => {
+		if (!isModalOpen) return;
+		closeModal();
 	};
+
 	return (
 		<S.Jacket
 			data-hover
 			$isModalOpen={isModalOpen}
-			onClick={() => handleClick('home')}
+			onClick={handleClick}
 			type='button'
 			aria-label='Return to home'
 		>

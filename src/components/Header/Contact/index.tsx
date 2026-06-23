@@ -15,12 +15,12 @@ import * as S from './styles';
 // ------------
 const Contact = ({ contactTitle }: I.ContactProps) => {
 	// Contexts
-	const { isModalOpen, setIsModalOpen, setModalActive } = use(GlobalContext);
+	const { openModal, isNavLocked, isModalOpen } = use(GlobalContext);
 
 	// Handle Click
 	const handleClick = (label: string) => {
-		setIsModalOpen(true);
-		setModalActive(label);
+		if (isNavLocked) return;
+		openModal(label);
 	};
 
 	return (
@@ -28,8 +28,9 @@ const Contact = ({ contactTitle }: I.ContactProps) => {
 			data-hover
 			type='button'
 			aria-label={`Open ${contactTitle}`}
-			inert={isModalOpen ? true : undefined}
+			inert={isNavLocked ? true : undefined}
 			$isModalOpen={isModalOpen}
+			$isNavLocked={isNavLocked}
 			onClick={() => handleClick(contactTitle)}
 		>
 			<Icon type='mail' />

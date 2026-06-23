@@ -2,8 +2,9 @@
 
 // Imports
 // ------------
+import { MODAL_ANIMATION_MS } from '@/constants/modal';
 import { GoogleTagManagerModalTracking } from '@parts/GoogleTagManager';
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useMemo, useRef, useState } from 'react';
 import { PerformanceProvider } from './Performance';
 
 // Interface
@@ -15,6 +16,11 @@ import type * as I from './interface';
 export const GlobalContext = createContext({
 	isModalOpen: false,
 	setIsModalOpen: (_value: boolean) => {},
+
+	isNavLocked: false,
+
+	openModal: (_label: string) => {},
+	closeModal: () => {},
 
 	isLoaderFinished: false,
 	setIsLoaderFinished: (_value: boolean) => {},
@@ -61,6 +67,36 @@ const Contexts = ({ children }: I.ContextsProps) => {
 	const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
 	const [pageLoaded, setPageLoaded] = useState<boolean>(false);
 	const [modalActive, setModalActive] = useState<string>('home');
+	const [isModalClosing, setIsModalClosing] = useState(false);
+	const closeModalTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const isNavLocked = isModalOpen || isModalClosing;
+
+	const openModal = useCallback((label: string) => {
+		if (closeModalTimeoutRef.current) {
+			clearTimeout(closeModalTimeoutRef.current);
+			closeModalTimeoutRef.current = null;
+		}
+
+		setIsModalClosing(false);
+		setIsModalOpen(true);
+		setModalActive(label);
+	}, []);
+
+	const closeModal = useCallback(() => {
+		if (closeModalTimeoutRef.current) {
+			clearTimeout(closeModalTimeoutRef.current);
+			closeModalTimeoutRef.current = null;
+		}
+
+		setIsModalOpen(false);
+		setIsModalClosing(true);
+		closeModalTimeoutRef.current = setTimeout(() => {
+			setModalActive('home');
+			setIsModalClosing(false);
+			closeModalTimeoutRef.current = null;
+		}, MODAL_ANIMATION_MS);
+	}, []);
 	const [areModalsReady, setAreModalsReady] = useState<{
 		home: boolean;
 		activation: boolean;
@@ -82,6 +118,9 @@ const Contexts = ({ children }: I.ContextsProps) => {
 		() => ({
 			isModalOpen,
 			setIsModalOpen,
+			isNavLocked,
+			openModal,
+			closeModal,
 			isLoaderFinished,
 			setIsLoaderFinished,
 			pageLoaded,
@@ -91,7 +130,17 @@ const Contexts = ({ children }: I.ContextsProps) => {
 			areModalsReady,
 			setAreModalsReady,
 		}),
-		[isModalOpen, isLoaderFinished, pageLoaded, modalActive, areModalsReady]
+		[
+			isModalOpen,
+			isModalClosing,
+			isNavLocked,
+			openModal,
+			closeModal,
+			isLoaderFinished,
+			pageLoaded,
+			modalActive,
+			areModalsReady,
+		]
 	);
 
 	return (

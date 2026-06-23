@@ -14,19 +14,19 @@ import * as S from './styles';
 // ------------
 const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 	// Contexts
-	const { setIsModalOpen, setModalActive, isModalOpen } = use(GlobalContext);
+	const { openModal, isNavLocked } = use(GlobalContext);
 
 	// Handle Click
 	const handleClick = (label: string) => {
-		setIsModalOpen(true);
-		setModalActive(label);
+		if (isNavLocked) return;
+		openModal(label);
 	};
 
 	return (
 		<S.Jacket
 			id='mobile-navigation'
 			aria-label='Primary navigation'
-			inert={isModalOpen ? true : undefined}
+			inert={isNavLocked ? true : undefined}
 		>
 			{menuItems.map(({ label, icon }) => (
 				<li key={label}>
