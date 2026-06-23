@@ -23,6 +23,8 @@ import { captionL } from '@/theme/tackl/type';
 interface StylesInterface {
 	$isOpen?: boolean;
 	$canClose?: boolean;
+	inert?: boolean;
+	'aria-hidden'?: boolean;
 	$isEnd?: boolean;
 	$isDark?: boolean;
 	type?: 'button';
@@ -34,6 +36,7 @@ interface StylesInterface {
 	role?: string;
 	'aria-modal'?: boolean;
 	'aria-label'?: string;
+	ref?: React.Ref<HTMLElement>;
 }
 
 // Exports

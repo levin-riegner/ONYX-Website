@@ -28,6 +28,7 @@ const Contact = ({ contactTitle }: I.ContactProps) => {
 			data-hover
 			type='button'
 			aria-label={`Open ${contactTitle}`}
+			inert={isModalOpen ? true : undefined}
 			$isModalOpen={isModalOpen}
 			onClick={() => handleClick(contactTitle)}
 		>

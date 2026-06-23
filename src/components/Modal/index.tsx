@@ -3,6 +3,7 @@
 // Imports
 // ------------
 import { MODAL_ANIMATION_MS } from '@/constants/modal';
+import { useFocusTrap } from '@utils/useFocusTrap';
 import { use, useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import Icon from '@parts/Icon';
@@ -19,6 +20,7 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	// Contexts
 	const { setIsModalOpen, setModalActive, modalActive, isModalOpen } = use(GlobalContext);
 	const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const jacketRef = useRef<HTMLElement>(null);
 	const [isContentOpen, setIsContentOpen] = useState(false);
 	const [canClose, setCanClose] = useState(false);
 
@@ -36,6 +38,17 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 
 		return () => clearTimeout(timeout);
 	}, [isOpen]);
+
+	useFocusTrap(jacketRef, isOpen && canClose);
+
+	useEffect(() => {
+		if (!isOpen || !canClose || !jacketRef.current) return;
+
+		const closeButton = jacketRef.current.querySelector<HTMLButtonElement>(
+			'button[aria-label="Close modal"]'
+		);
+		closeButton?.focus();
+	}, [isOpen, canClose]);
 
 	// Handle Close
 	const handleClose = useCallback(() => {
@@ -112,8 +125,11 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 
 	return (
 		<S.Jacket
+			ref={jacketRef}
 			$isOpen={isOpen}
 			$canClose={canClose}
+			inert={!isOpen ? true : undefined}
+			aria-hidden={!isOpen}
 			role='dialog'
 			aria-modal={isOpen}
 			aria-label={title}

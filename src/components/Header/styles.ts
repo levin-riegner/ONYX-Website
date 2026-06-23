@@ -12,6 +12,8 @@ interface StylesInterface {
 	onClick?: () => void;
 	$isModalOpen?: boolean;
 	$isLoaderFinished?: boolean;
+	inert?: boolean;
+	id?: string;
 }
 
 // Exports
