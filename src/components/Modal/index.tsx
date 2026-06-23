@@ -2,7 +2,7 @@
 
 // Imports
 // ------------
-import { use, useEffect, useRef, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import Icon from '@parts/Icon';
 import NestedLenis from '@parts/NestedLenis';
@@ -21,8 +21,11 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	const CLOSE_ANIMATION_MS = 1200;
 	const [isContentOpen, setIsContentOpen] = useState(false);
 
+	// Check if modal is open
+	const isOpen = isModalOpen && modalActive === title;
+
 	// Handle Close
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		if (closeTimeoutRef.current) {
 			clearTimeout(closeTimeoutRef.current);
 			closeTimeoutRef.current = null;
@@ -33,10 +36,35 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 			setModalActive('home');
 			closeTimeoutRef.current = null;
 		}, CLOSE_ANIMATION_MS);
+	}, [setIsModalOpen, setModalActive]);
+
+	const handleBackdropClick = () => {
+		if (!isOpen) return;
+		handleClose();
 	};
 
-	// Check if modal is open
-	const isOpen = isModalOpen && modalActive === title;
+	const handleCloseClick = (event: MouseEvent<HTMLButtonElement>) => {
+		event.stopPropagation();
+		handleClose();
+	};
+
+	const handleContentClick = (event: MouseEvent<HTMLElement>) => {
+		event.stopPropagation();
+	};
+
+	useEffect(() => {
+		if (!isOpen) return;
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key !== 'Escape') return;
+			event.preventDefault();
+			handleClose();
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => document.removeEventListener('keydown', handleKeyDown);
+	}, [isOpen, handleClose]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -67,20 +95,26 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	const year = new Date().getFullYear();
 
 	return (
-		<S.Jacket $isOpen={isOpen}>
+		<S.Jacket
+			$isOpen={isOpen}
+			role='dialog'
+			aria-modal={isOpen}
+			aria-label={title}
+			onClick={handleBackdropClick}
+		>
 			<S.CloseButton
 				$isOpen={isOpen}
 				aria-label='Close modal'
 				type='button'
 				data-hover
-				onClick={() => handleClose()}
+				onClick={handleCloseClick}
 			>
 				<Icon type='close' />
 			</S.CloseButton>
 
 			<S.Copyright $isOpen={isOpen}>ONYX &copy; {year}</S.Copyright>
 
-			<S.Content>
+			<S.Content onClick={handleContentClick}>
 				<S.VerticalLine $isOpen={isOpen}>
 					<S.VerticalLinePlus />
 					<S.VerticalLinePlus $isEnd />
