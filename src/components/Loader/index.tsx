@@ -119,6 +119,11 @@ const Loader = () => {
 			);
 
 			pulseRef.current = tl;
+
+			return () => {
+				pulseRef.current?.kill();
+				pulseRef.current = null;
+			};
 		},
 		{ scope: jacketRef }
 	);
@@ -178,6 +183,11 @@ const Loader = () => {
 			);
 
 			frameRef.current = tl;
+
+			return () => {
+				frameRef.current?.kill();
+				frameRef.current = null;
+			};
 		},
 		{
 			scope: jacketRef,

@@ -18,8 +18,7 @@ import * as S from './styles';
 // ------------
 const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	// Contexts
-	const { setIsModalOpen, setModalActive, modalActive, isModalOpen } = use(GlobalContext);
-	const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const { closeModal, modalActive, isModalOpen } = use(GlobalContext);
 	const jacketRef = useRef<HTMLElement>(null);
 	const [isContentOpen, setIsContentOpen] = useState(false);
 	const [canClose, setCanClose] = useState(false);
@@ -53,18 +52,8 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	// Handle Close
 	const handleClose = useCallback(() => {
 		if (!canClose) return;
-
-		if (closeTimeoutRef.current) {
-			clearTimeout(closeTimeoutRef.current);
-			closeTimeoutRef.current = null;
-		}
-
-		setIsModalOpen(false);
-		closeTimeoutRef.current = setTimeout(() => {
-			setModalActive('home');
-			closeTimeoutRef.current = null;
-		}, MODAL_ANIMATION_MS);
-	}, [canClose, setIsModalOpen, setModalActive]);
+		closeModal();
+	}, [canClose, closeModal]);
 
 	const handleBackdropClick = () => {
 		if (!isOpen || !canClose) return;
@@ -112,13 +101,6 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 
 		setIsContentOpen(false);
 	}, [isOpen, modalActive, title]);
-
-	useEffect(() => {
-		return () => {
-			if (!closeTimeoutRef.current) return;
-			clearTimeout(closeTimeoutRef.current);
-		};
-	}, []);
 
 	// Get the current year
 	const year = new Date().getFullYear();

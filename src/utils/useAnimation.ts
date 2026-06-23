@@ -1,16 +1,26 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import type { RefObject } from 'react';
 
 type Breakpoints = Record<string, string>;
 
 type MatchMediaConditions = Record<string, boolean>;
 
+type AnimationCleanup = () => void;
+
 /**
  * A callback function that receives the current match media conditions.
- *
- * @param conditions - An object mapping each breakpoint key to a boolean indicating if that media query currently matches.
+ * Return a cleanup function to revert SplitText, timelines, or other manual resources.
  */
-type AnimationCallback = (conditions: MatchMediaConditions) => void;
+type AnimationCallback = (
+	conditions: MatchMediaConditions
+) => void | AnimationCleanup;
+
+type UseAnimationOptions = {
+	scope?: RefObject<Element | null>;
+	dependencies?: unknown[];
+	revertOnUpdate?: boolean;
+};
 
 const DEFAULT_BREAKPOINTS: Breakpoints = {
 	isDesktop: '(min-width: 1024px)',
@@ -21,61 +31,30 @@ const DEFAULT_BREAKPOINTS: Breakpoints = {
 /**
  * React hook for running GSAP animations with responsive match media conditions.
  *
- * This hook abstracts the GSAP `matchMedia` pattern, allowing you to define animations that respond to custom breakpoints.
- * It automatically sets up and cleans up GSAP's matchMedia context.
- *
- * @template TScope
- * @param animationCallback - A function that receives an object with boolean keys for each breakpoint (e.g., `{ isDesktop, isMobile, isTablet }`).
- *   Use these booleans to conditionally run different GSAP animations for each breakpoint.
- * @param options - (Optional) Options to pass to `useGSAP` (e.g., `{ scope: ref }`).
- *   See: https://gsap.com/docs/v3/Plugins/React/#useGSAP
- * @param breakpoints - (Optional) Custom breakpoint definitions. Each key is a name, and each value is a valid CSS media query string.
- *   These are merged with the defaults: `isDesktop`, `isMobile`, `isTablet`.
- *
- * @example
- * ```tsx
- * import { useRef } from 'react';
- * import { useAnimation } from '@utils/useAnimation';
- * import gsap from 'gsap';
- *
- * const MyComponent = () => {
- *   const elementRef = useRef<HTMLDivElement>(null);
- *
- *   useAnimation(
- *     ({ isDesktop, isMobile }) => {
- *       gsap.from(elementRef.current, {
- *         y: isDesktop ? '2rem' : '1rem',
- *         scrollTrigger: {
- *           trigger: elementRef.current,
- *           start: 'top 100%',
- *           end: isDesktop ? 'bottom 50%' : 'bottom 80%',
- *           scrub: true,
- *         },
- *       });
- *     },
- *     { scope: elementRef }
- *   );
- *
- *   return <div ref={elementRef}>Content</div>;
- * };
- * ```
+ * When `dependencies` are provided, `revertOnUpdate` defaults to `true` so ScrollTriggers
+ * and tweens are torn down before re-running (e.g. when modal Lenis opens/closes).
  */
 export function useAnimation(
 	animationCallback: AnimationCallback,
-	options: Record<string, any> = {},
+	options: UseAnimationOptions = {},
 	breakpoints: Breakpoints = {}
 ): void {
 	const mergedBreakpoints: Breakpoints = { ...DEFAULT_BREAKPOINTS, ...breakpoints };
+	const { dependencies, revertOnUpdate, scope } = options;
 
-	useGSAP(() => {
-		const mm = gsap.matchMedia();
+	const shouldRevertOnUpdate =
+		revertOnUpdate ?? (Array.isArray(dependencies) && dependencies.length > 0);
 
-		mm.add(mergedBreakpoints, (context: { conditions?: MatchMediaConditions }) => {
-			// context.conditions is optional, so provide a fallback
-			animationCallback(context.conditions ?? {});
-		});
+	useGSAP(
+		() => {
+			const mm = gsap.matchMedia();
 
-		// Clean up matchMedia on unmount
-		return () => mm.revert();
-	}, options);
+			mm.add(mergedBreakpoints, (context: { conditions?: MatchMediaConditions }) => {
+				return animationCallback(context.conditions ?? {});
+			});
+
+			return () => mm.revert();
+		},
+		{ scope, dependencies, revertOnUpdate: shouldRevertOnUpdate }
+	);
 }

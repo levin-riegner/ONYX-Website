@@ -12,6 +12,7 @@ interface StylesInterface {
 	children?: React.ReactNode;
 	onClick?: () => void;
 	$isModalOpen?: boolean;
+	$isNavLocked?: boolean;
 	inert?: boolean;
 	id?: string;
 	'aria-label'?: string;
@@ -20,7 +21,7 @@ interface StylesInterface {
 // Exports
 // ------------
 export const Jacket = styled(Nav)<StylesInterface>(
-	({ $isModalOpen }) => css`
+	({ $isModalOpen, $isNavLocked }) => css`
         display: none;
 
         ${bp.l`
@@ -34,7 +35,7 @@ export const Jacket = styled(Nav)<StylesInterface>(
             width: max-content;
             
             opacity: ${$isModalOpen ? 0 : 1};
-            pointer-events: ${$isModalOpen ? 'none' : 'auto'};
+            pointer-events: ${$isNavLocked ? 'none' : 'auto'};
             transition: opacity 0.5s ${getEase('bezzy3')};
             transition-delay: ${$isModalOpen ? 0 : 0.35}s;
         `}

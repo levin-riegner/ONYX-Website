@@ -14,20 +14,21 @@ import * as S from './styles';
 // ------------
 const Navigation = ({ menuItems }: I.NavigationProps) => {
 	// Contexts
-	const { setIsModalOpen, isModalOpen, setModalActive } = use(GlobalContext);
+	const { openModal, isNavLocked, isModalOpen } = use(GlobalContext);
 
 	// Handle Click
 	const handleClick = (label: string) => {
-		setIsModalOpen(true);
-		setModalActive(label);
+		if (isNavLocked) return;
+		openModal(label);
 	};
 
 	return (
 		<S.Jacket
 			id='primary-navigation'
 			aria-label='Primary navigation'
-			inert={isModalOpen ? true : undefined}
+			inert={isNavLocked ? true : undefined}
 			$isModalOpen={isModalOpen}
+			$isNavLocked={isNavLocked}
 		>
 			{menuItems.map(({ label }) => (
 				<button

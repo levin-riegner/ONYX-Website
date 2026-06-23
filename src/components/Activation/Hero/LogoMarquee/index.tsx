@@ -112,6 +112,11 @@ const LogoMarquee = ({ logoMarquee }: I.LogoMarqueeProps) => {
 				onEnterBack: () => setIsPlaying(true),
 			});
 			scrollTriggerRef.current = trigger;
+
+			return () => {
+				scrollTriggerRef.current?.kill();
+				scrollTriggerRef.current = null;
+			};
 		},
 		{ scope: jacketRef, dependencies: [lenisReady, isNestedScrollActive] }
 	);

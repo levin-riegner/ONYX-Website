@@ -8,6 +8,7 @@ import { bodyS, captionL } from '@tackl/type';
 // ------------
 interface StylesInterface {
 	$isModalOpen?: boolean;
+	$isNavLocked?: boolean;
 	type?: 'button';
 	ariaLabel?: string;
 	children?: React.ReactNode;
@@ -18,7 +19,7 @@ interface StylesInterface {
 // Exports
 // ------------
 export const Jacket = styled(Button)<StylesInterface>(
-	({ $isModalOpen }) => css`
+	({ $isModalOpen, $isNavLocked }) => css`
         position: relative;
         overflow: hidden;
 
@@ -34,14 +35,8 @@ export const Jacket = styled(Button)<StylesInterface>(
 
         ${bp.l`
 			display:grid;
-
-            ${
-				$isModalOpen &&
-				css`
-                    opacity: 0;
-                    pointer-events: none;
-                `
-			}
+			opacity: ${$isModalOpen ? 0 : 1};
+			pointer-events: ${$isNavLocked ? 'none' : 'auto'};
         `}
 
 		@media (hover: hover) and (pointer: fine) {
