@@ -2,6 +2,7 @@
 
 // Imports
 // ------------
+import { MODAL_ANIMATION_MS } from '@/constants/modal';
 import { use, useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { GlobalContext } from '@parts/Contexts';
 import Icon from '@parts/Icon';
@@ -18,14 +19,28 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	// Contexts
 	const { setIsModalOpen, setModalActive, modalActive, isModalOpen } = use(GlobalContext);
 	const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-	const CLOSE_ANIMATION_MS = 1200;
 	const [isContentOpen, setIsContentOpen] = useState(false);
+	const [canClose, setCanClose] = useState(false);
 
 	// Check if modal is open
 	const isOpen = isModalOpen && modalActive === title;
 
+	useEffect(() => {
+		if (!isOpen) {
+			setCanClose(false);
+			return;
+		}
+
+		setCanClose(false);
+		const timeout = setTimeout(() => setCanClose(true), MODAL_ANIMATION_MS);
+
+		return () => clearTimeout(timeout);
+	}, [isOpen]);
+
 	// Handle Close
 	const handleClose = useCallback(() => {
+		if (!canClose) return;
+
 		if (closeTimeoutRef.current) {
 			clearTimeout(closeTimeoutRef.current);
 			closeTimeoutRef.current = null;
@@ -35,16 +50,17 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 		closeTimeoutRef.current = setTimeout(() => {
 			setModalActive('home');
 			closeTimeoutRef.current = null;
-		}, CLOSE_ANIMATION_MS);
-	}, [setIsModalOpen, setModalActive]);
+		}, MODAL_ANIMATION_MS);
+	}, [canClose, setIsModalOpen, setModalActive]);
 
 	const handleBackdropClick = () => {
-		if (!isOpen) return;
+		if (!isOpen || !canClose) return;
 		handleClose();
 	};
 
 	const handleCloseClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation();
+		if (!canClose) return;
 		handleClose();
 	};
 
@@ -56,7 +72,7 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 		if (!isOpen) return;
 
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key !== 'Escape') return;
+			if (event.key !== 'Escape' || !canClose) return;
 			event.preventDefault();
 			handleClose();
 		};
@@ -64,7 +80,7 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 		document.addEventListener('keydown', handleKeyDown);
 
 		return () => document.removeEventListener('keydown', handleKeyDown);
-	}, [isOpen, handleClose]);
+	}, [isOpen, canClose, handleClose]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -76,7 +92,7 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 		if (modalActive === title) {
 			const timeout = setTimeout(() => {
 				setIsContentOpen(false);
-			}, CLOSE_ANIMATION_MS);
+			}, MODAL_ANIMATION_MS);
 
 			return () => clearTimeout(timeout);
 		}
@@ -97,6 +113,7 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 	return (
 		<S.Jacket
 			$isOpen={isOpen}
+			$canClose={canClose}
 			role='dialog'
 			aria-modal={isOpen}
 			aria-label={title}
@@ -104,9 +121,12 @@ const Modal = ({ children, title, isDark }: I.ModalProps) => {
 		>
 			<S.CloseButton
 				$isOpen={isOpen}
+				$canClose={canClose}
 				aria-label='Close modal'
 				type='button'
 				data-hover
+				disabled={!canClose}
+				aria-disabled={!canClose}
 				onClick={handleCloseClick}
 			>
 				<Icon type='close' />
