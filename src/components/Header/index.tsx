@@ -20,7 +20,11 @@ const Header = ({ menuItems, contactTitle }: I.HeaderProps) => {
 	const { isLoaderFinished, isModalOpen } = use(GlobalContext);
 
 	return (
-		<S.Jacket $isLoaderFinished={isLoaderFinished} $isModalOpen={isModalOpen}>
+		<S.Jacket
+			id='site-header'
+			$isLoaderFinished={isLoaderFinished}
+			$isModalOpen={isModalOpen}
+		>
 			<Home />
 			<Navigation menuItems={menuItems} />
 			<Contact contactTitle={contactTitle} />

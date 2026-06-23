@@ -14,7 +14,7 @@ import * as S from './styles';
 // ------------
 const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 	// Contexts
-	const { setIsModalOpen, setModalActive } = use(GlobalContext);
+	const { setIsModalOpen, setModalActive, isModalOpen } = use(GlobalContext);
 
 	// Handle Click
 	const handleClick = (label: string) => {
@@ -23,7 +23,11 @@ const MobileNav = ({ menuItems }: I.MobileNavProps) => {
 	};
 
 	return (
-		<S.Jacket>
+		<S.Jacket
+			id='mobile-navigation'
+			aria-label='Primary navigation'
+			inert={isModalOpen ? true : undefined}
+		>
 			{menuItems.map(({ label, icon }) => (
 				<li key={label}>
 					<button

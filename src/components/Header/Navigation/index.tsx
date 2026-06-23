@@ -23,7 +23,12 @@ const Navigation = ({ menuItems }: I.NavigationProps) => {
 	};
 
 	return (
-		<S.Jacket $isModalOpen={isModalOpen}>
+		<S.Jacket
+			id='primary-navigation'
+			aria-label='Primary navigation'
+			inert={isModalOpen ? true : undefined}
+			$isModalOpen={isModalOpen}
+		>
 			{menuItems.map(({ label }) => (
 				<button
 					key={label}

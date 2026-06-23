@@ -7,7 +7,9 @@ import { captionL } from '@tackl/type';
 // Interfaces
 // ------------
 interface StylesInterface {
-	example?: boolean;
+	inert?: boolean;
+	id?: string;
+	'aria-label'?: string;
 }
 
 // Exports

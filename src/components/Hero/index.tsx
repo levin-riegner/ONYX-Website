@@ -107,7 +107,7 @@ const Hero = ({ menuItems, title, description, logos, unicornId, video }: I.Hero
 	}, [isModalOpen]);
 
 	return (
-		<S.Jacket ref={jacketRef}>
+		<S.Jacket ref={jacketRef} inert={isModalOpen ? true : undefined}>
 			<Background sceneId={unicornId} video={video} />
 
 			<S.FullFrame>
